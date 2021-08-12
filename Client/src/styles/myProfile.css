@@ -1,0 +1,12 @@
+.profileContainer {
+    display: grid;
+    grid-template-columns: repeat(2,50%);
+}
+
+.projectsTable {
+    margin-right: 50px;
+}
+
+.issuesTable {
+    margin-right: 50px;
+}

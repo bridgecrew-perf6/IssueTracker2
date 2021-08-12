@@ -1,0 +1,8 @@
+.projectPageHeader {
+    display: flex;
+    align-items: center;
+}
+
+.projectPageHeader * {
+    margin-right: 20px;
+}

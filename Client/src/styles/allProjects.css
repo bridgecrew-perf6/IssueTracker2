@@ -1,0 +1,12 @@
+.allProjectsContainer {
+    /* display: flex; */
+    width: 100%;
+}
+
+.mappedProjects {
+    margin-right: 100px;
+}
+
+.table {
+    width: 100%;
+}

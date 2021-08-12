@@ -1,47 +1,55 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
-const Issue = require("./Issues")
 
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
-        required: true,
+        required: [true, "Username is requied"]
     },
     password: {
         type: String,
-        required: true,
+        required: [true, "Password is requied"]
+    },
+    email: {
+        type: String
     },
     issues: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Issue"
+    }],
+    projects: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Project"
     }]
-})
 
-userSchema.pre("save", async function(next) {
+}, { timestamps: true })
+
+userSchema.pre("save", async function (next) {
     //use bcrpy to hash password before saving onto the database
     try {
         if (!this.isModified("password")) {
             next()
         }
-        const news = await bcrypt.hash(this.password, 12)
-        this.password = news
+        const hashedPassword = await bcrypt.hash(this.password, 12)
+        this.password = hashedPassword
         return next()
-    } catch(e) {
+    } catch (e) {
         return next(e)
     }
 })
 
-userSchema.methods.validatePassword = async function ( password, next ) {
+
+userSchema.methods.validatePassword = async function (password, next) {
     try {
         const isValidated = await bcrypt.compare(password, this.password)
         return isValidated
-    } catch(err) {
+    } catch (err) {
         return next()
     }
 
 }
 
-const User = mongoose.model("User", userSchema)       
+const User = mongoose.model("User", userSchema)
 
 module.exports = User

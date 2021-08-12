@@ -1,13 +1,22 @@
-import axios from 'axios'
 import React from 'react'
-import { Link, Route, Switch } from 'react-router-dom'
-
-export default function Main() {
+import CloseButton from 'react-bootstrap/CloseButton'
+function Main(props) {
+    const { currentUser } = props
+    if (currentUser.isAuthenticated) {
+        return (
+            <div>
+                Logged in
+                <CloseButton variant="white" />
+            </div>
+        )
+    }
     return (
         <div>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signup</Link>
-            <Link to="/test">Test</Link>
+            <h1>
+                Not Logged In Mate
+            </h1>
         </div>
     )
 }
+
+export default Main
