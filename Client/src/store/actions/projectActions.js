@@ -84,7 +84,6 @@ export function deleteProject(projectId) {
         apiCall("delete", `/api/users/${id}/projects/${projectId}`)
             .then(res => dispatch(removeProject(res.project._id)))
             .catch(err => {
-                console.log(err)
                 dispatch(addError(err.message))
             })
     }

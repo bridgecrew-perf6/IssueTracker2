@@ -28,7 +28,7 @@ app.get("/api/projects", async function (req, res, next) {
     const allProjects = await Project.find({})
         .sort({ createdAt: "asc" })
         .populate("createdBy", { username: true })
-        .populate("issues")
+        .populate({ path: "issues", populate: { path: "createdBy", select: "username"}})
     return res.status(200).json(allProjects)
 })
 

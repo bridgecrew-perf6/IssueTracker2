@@ -11,11 +11,11 @@ function IssueItem({ issue, index, history, setEdit, setIssueId, small, setShow 
             case "edit":
                 setEdit(true)
                 setIssueId(issue._id)
-                setShow(prev => ({...prev, createModal: true}))
+                setShow(prev => ({ ...prev, createModal: true }))
                 break
             case "remove":
                 setIssueId(issue._id)
-                setShow(prev => ({...prev, removeModal: true}))
+                setShow(prev => ({ ...prev, removeModal: true }))
                 break
             default:
                 return
@@ -27,6 +27,8 @@ function IssueItem({ issue, index, history, setEdit, setIssueId, small, setShow 
             <tr>
                 <th scope="row">{index}</th>
                 <td>{issue.title}</td>
+                <td>{issue.createdBy.username}</td>
+                <td>{newDate}</td>
                 <td>{newTargetDate}</td>
             </tr>
         )

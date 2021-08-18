@@ -1,5 +1,5 @@
 import { apiCall } from "../../services/api";
-import { ADD_ISSUE, LOAD_ISSUES, REMOVE_ISSUES, UPDATE_ISSUES } from "../actionTypes";
+import { ADD_ISSUE, ADD_ISSUE_TO_PROJECT, LOAD_ISSUES, REMOVE_ISSUES, UPDATE_ISSUES } from "../actionTypes";
 import { addError, removeError } from './errorActions'
 
 //api call syntax apiCall(method, path, payload)
@@ -31,6 +31,12 @@ function addIssue(issue) {
         issue
     }
 }
+function addIssueToProject(issue) {
+    return {
+        type: ADD_ISSUE_TO_PROJECT,
+        issue
+    }
+}
 
 export function getIssues() {
     return dispatch => {
@@ -50,6 +56,7 @@ export function postIssue(issueData) {
             .then(res => {
                 dispatch(removeError())
                 dispatch(addIssue(res))
+                dispatch(addIssueToProject(res))
                 resolve()
             })
             .catch(err => {

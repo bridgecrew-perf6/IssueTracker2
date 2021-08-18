@@ -5,7 +5,8 @@ export default function AuthForm(props) {
     const { authUser, signup, errors, history, removeError } = props
     const [state, setState] = useState({
         username: "",
-        password: ""
+        password: "",
+        email: ""
     })
 
     const handleSubmit = (e) => {
@@ -29,8 +30,8 @@ export default function AuthForm(props) {
                 <div className="loginInputs">
                     {signup &&
                         <div className="mb-3" >
-                            <label htmlFor="EmailAddress" className="form-label">Email Address</label>
-                            <input onChange={handleChange} type="text" className="form-control" name="EmailAddress" placeholder="name@example.com" />
+                            <label htmlFor="email" className="form-label">Email Address</label>
+                            <input onChange={handleChange} type="text" className="form-control" name="email" placeholder="name@example.com" />
                         </div>
                     }
                     <div className="mb-3" >

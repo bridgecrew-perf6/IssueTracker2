@@ -9,7 +9,7 @@ function SideBar({ currentUser }) {
             <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
                 <NavLink className="nav-link text-truncate" exact to="/">Homepage</NavLink>
                 <NavLink className="nav-link text-truncate" to="/projects">Projects</NavLink>
-                <NavLink className="nav-link text-truncate" to={`/${currentUser.user.id}/issues`}>My Issues</NavLink>
+                <NavLink className="nav-link text-truncate" to={`/issues`}>My Issues</NavLink>
                 <NavLink className="nav-link text-truncate" to={`/${currentUser.user.id}/profile`}>My Profile</NavLink>
             </ul>
         </div>
@@ -23,3 +23,4 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, null)(SideBar)
+// export default SideBar

@@ -14,10 +14,10 @@ import jwtDecode from 'jwt-decode'
 
 const store = configureStore()
 
-if (localStorage.jawt) {
+if (localStorage.jwt) {
   try {
-    setTokenHeader(localStorage.jawt)
-    store.dispatch(setUser(jwtDecode(localStorage.jawt)))
+    setTokenHeader(localStorage.jwt)
+    store.dispatch(setUser(jwtDecode(localStorage.jwt)))
   } catch (err) {
     store.dispatch(setUser({}))
   }

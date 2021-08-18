@@ -1,33 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
-import { postIssue, deleteIssue, patchIssue } from '../store/actions/issueActions'
+import { postIssue, deleteIssue, patchIssue, getIssues } from '../store/actions/issueActions'
 import IssuesForm from '../components/IssuesForm'
-import IssueItem from '../components/IssueItem'
 import '../styles/allIssues.css'
 import { removeError } from '../store/actions/errorActions'
-import Table from "react-bootstrap/table"
 import Modal from "react-bootstrap/Modal"
 import Button from 'react-bootstrap/Button'
+import TestTable from '../components/TestTable'
+import { issueColumns } from '../data/columns'
 
-function MyIssues({ users, issues, postIssue, history, projects, deleteIssue, patchIssue, errors, removeError }) {
+function AllIssues({ users, issues, postIssue, history, projects, deleteIssue, patchIssue, errors, removeError, getIssues }) {
     const [edit, setEdit] = useState(false)
     const [issueId, setIssueId] = useState("")
     const [show, setShow] = useState({
         createModal: false,
         removeModal: false
     });
+    useEffect(() => {
+        getIssues()
+    }, [getIssues])
 
-    const mappedIssues = issues.map((issue, i) => (
-        <IssueItem
-            issue={issue}
-            key={i}
-            index={i + 1}
-            history={history}
-            setEdit={setEdit}
-            setIssueId={setIssueId}
-            setShow={setShow}
-        />
-    ))
+    const handleClick = (e, value) => {
+        switch (e.target.name) {
+            case "view":
+                history.push(`/issues/${value}`)
+                break
+            case "edit":
+                setEdit(true)
+                setIssueId(value)
+                setShow(prev => ({ ...prev, createModal: true }))
+                break
+            case "remove":
+                setIssueId(value)
+                setShow(prev => ({ ...prev, removeModal: true }))
+                break
+            default:
+                return
+        }
+    }
 
     const handleClose = () => setShow(prev => ({ ...prev, removeModal: false }))
 
@@ -36,6 +46,20 @@ function MyIssues({ users, issues, postIssue, history, projects, deleteIssue, pa
     })
 
     const issueDetails = issues.find(issue => issue._id === issueId)
+    const columns = useMemo(() => (
+        [...issueColumns, { 
+                Header: "functions",
+                accessor: "_id",
+                Cell: ({value}) => (
+                    <>
+                        <button onClick={(e) => handleClick(e,value)} name="view">View</button>
+                        <button onClick={(e) => handleClick(e,value)} name="edit">edit</button>
+                        <button onClick={(e) => handleClick(e,value)} name="remove">remove</button>
+                    </>
+                )
+        }]
+    ), [])
+    const data = useMemo(() => issues ? issues : [], [issues])
 
     return (
         <div className="allIssuesContainer">
@@ -44,24 +68,7 @@ function MyIssues({ users, issues, postIssue, history, projects, deleteIssue, pa
                 Create Issue
             </button>
             <div className="mappedIssues">
-                <Table hover>
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Project Name</th>
-                            <th scope="col">Created By</th>
-                            <th scope="col">Priority</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Created</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {mappedIssues}
-                    </tbody>
-                </Table>
+                <TestTable columns={columns} data={data} />
             </div>
             <div>
                 <IssuesForm
@@ -89,7 +96,7 @@ function MyIssues({ users, issues, postIssue, history, projects, deleteIssue, pa
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={() => { deleteIssue(issueId); handleClose() }}>
                         Remove
                     </Button>
                 </Modal.Footer>
@@ -106,4 +113,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { postIssue, deleteIssue, patchIssue, removeError })(MyIssues)
+export default connect(mapStateToProps, { getIssues, postIssue, deleteIssue, patchIssue, removeError })(AllIssues)

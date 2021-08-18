@@ -1,6 +1,6 @@
 import { ADD_ISSUE, LOAD_ISSUES, REMOVE_ISSUES, UPDATE_ISSUES } from "../actionTypes"
 
-export default (state = [], action) => {
+ const issueReducer = (state = [], action) => {
     switch(action.type) {
         case LOAD_ISSUES: 
             return [...action.issues]
@@ -16,3 +16,4 @@ export default (state = [], action) => {
             return state
     }
 }
+export default issueReducer

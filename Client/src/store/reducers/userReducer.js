@@ -1,6 +1,6 @@
 import { LOAD_USERS } from "../actionTypes"
 
-export default (state = [], action) => {
+const  userReducer = (state = [], action) => {
     switch(action.type) {
         case LOAD_USERS:
             return [...action.users]
@@ -8,3 +8,5 @@ export default (state = [], action) => {
             return state
     }
 }
+
+export default userReducer

@@ -7,6 +7,7 @@ import ProjectPage from '../components/ProjectPage'
 import AllProjects from '../containers/AllProjects'
 import MyProfile from '../components/MyProfile'
 import AllIssues from './AllIssues'
+// import AllIssues from './allissuesbackup'
 import { connect } from 'react-redux';
 import { authUser } from '../store/actions/authActions';
 import { getProjects } from '../store/actions/projectActions'
@@ -14,24 +15,26 @@ import { getIssues } from '../store/actions/issueActions'
 import { getUsers } from '../store/actions/userActions';
 import { removeError } from '../store/actions/errorActions';
 import "../App.css"
+import IssuePage from '../components/IssuePage';
 
 function App(props) {
-  const { getUsers, currentUser, errors, removeError, authUser, getProjects, projects, getIssues, issues } = props
+  const { getUsers, currentUser, errors, removeError, authUser, getProjects, projects, getIssues, issues, users } = props
 
   useEffect(() => {
-    getProjects()
-    getIssues()
-    getUsers()
-  }, [getProjects, getIssues, getUsers])
+      getProjects()
+      getUsers()
+      getIssues()
+  }, [getProjects, getUsers, getIssues])
 
   const findProject = (projectId) => {
     return projects.find(project => project._id === projectId)
   }
-
+  const findIssue = (issueId) => {
+    return issues.find(issue => issue._id === issueId)
+  }
   const filterMyProjects = (userId) => {
     return projects.filter(project => project.createdBy._id === userId)
   }
-
   const filterMyIssues = (userId) => {
     return issues.filter(issue => issue.createdBy._id === userId)
   }
@@ -66,6 +69,7 @@ function App(props) {
           render={(routeProps) =>
             <ProjectPage
               projects={projects}
+              users={users}
               project={findProject(routeProps.match.params.projectId)}
               {...routeProps}
             />
@@ -86,7 +90,15 @@ function App(props) {
               {...routeProps}
             />
           } />
-        <Route exact path={`/:userId/issues`}
+        <Route exact path="/issues/:issueId"
+          render={(routeProps) =>
+            <IssuePage
+              issues={issues}
+              issue={findIssue(routeProps.match.params.issueId)}
+              {...routeProps}
+            />
+          } />
+        <Route exact path={`/issues`}
           render={(routeProps) =>
             <AllIssues
               projects={projects}
@@ -105,7 +117,7 @@ const mapStateToProps = (state) => {
     errors: state.errors,
     projects: state.projects,
     issues: state.issues,
-    users: state.users
+    users: state.users,
   }
 }
 

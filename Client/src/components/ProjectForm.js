@@ -21,7 +21,7 @@ function ProjectForm({ project, users, postProject, edit, patchProject, projectI
 
     useEffect(() => {
         if (edit && project) {
-            const newDateString = new Date(project.targetEndDate).toISOString().split('T')[0]
+            const newDateString = project.targetEndDate.split('T')[0]
             setState({ ...project, targetEndDate: newDateString })
         }
     }, [project, setProjectId, edit])

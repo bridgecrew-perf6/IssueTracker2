@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
         required: [true, "Password is requied"]
     },
     email: {
-        type: String
+        type: String,
+        required: [true, "Email is requied"]
     },
     issues: [{
         type: mongoose.Schema.Types.ObjectId,

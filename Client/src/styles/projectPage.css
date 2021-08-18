@@ -6,3 +6,21 @@
 .projectPageHeader * {
     margin-right: 20px;
 }
+
+.projectPage {
+    
+}
+
+.projectPageTables {
+    display: flex;
+}
+
+.IssuesTable {
+    width: 50%;
+
+}
+
+.assignedDeveloperTable {
+    width: 50%;
+    margin-right: 30px;
+}

@@ -26,7 +26,7 @@ function IssuesForm({ issue, postIssue, users, edit, projects, patchIssue, issue
 
     useEffect(() => {
         if (edit && issue) {
-            const newDateString = new Date(issue.targetEndDate).toISOString().split('T')[0]
+            const newDateString = issue.targetEndDate.split('T')[0]
             setState({ ...issue, targetEndDate: newDateString, project: issue.project._id, user: issue.createdBy._id })
         }
     }, [issue, setIssueId, edit])
@@ -57,8 +57,8 @@ function IssuesForm({ issue, postIssue, users, edit, projects, patchIssue, issue
     //filter users for default values of multi select
     const filterUsers = userOptions.filter(user => issue?.assignedUsers.includes(user.value))
 
-    const handleChange = e => {
-        setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    const handleChange = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value })
     }
     const handleMultipleSelect = e => {
         const newState = e.map(val => val.value)

@@ -23,7 +23,7 @@ export function authUser(type, userData) {
         return new Promise((resolve, reject) => {
            apiCall('post', `api/auth/${type}`, userData)
            .then(({token, ...userInfo}) => {
-                localStorage.setItem("jawt", token)
+                localStorage.setItem("jwt", token)
                 setTokenHeader(token)
                 dispatch(setUser(userInfo))
                 dispatch(removeError())

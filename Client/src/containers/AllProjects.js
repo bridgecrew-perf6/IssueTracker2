@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { getProjects, postProject, patchProject, deleteProject } from '../store/actions/projectActions'
 import '../styles/allProjects.css'
 import ProjectForm from '../components/ProjectForm'
-import ProjectItem from '../components/ProjectItem'
 import { removeError } from '../store/actions/errorActions'
-import Table from 'react-bootstrap/Table'
 import Modal from "react-bootstrap/Modal"
 import Button from 'react-bootstrap/Button'
+import TestTable from '../components/TestTable'
+import { projectColumns } from '../data/columns'
 
-function AllProjects({ projects, users, errors, removeError, postProject, history, patchProject, deleteProject }) {
+function AllProjects({ projects, users, errors, removeError, postProject, history, patchProject, deleteProject, getProjects }) {
     const [edit, setEdit] = useState(false)
     const [projectId, setProjectId] = useState("")
     const [show, setShow] = useState({
@@ -17,44 +17,51 @@ function AllProjects({ projects, users, errors, removeError, postProject, histor
         removeModal: false
     });
 
-    let projectsMap = projects.map((project, i) =>
-        <ProjectItem
-            key={i}
-            setProjectId={setProjectId}
-            setEdit={setEdit}
-            index={i + 1}
-            history={history}
-            project={project}
-            setShow={setShow}
-        />)
-    const handleClose = () => setShow(prev => ({...prev, removeModal: false}))
+    const handleClick = (e, value) => {
+        switch (e.target.name) {
+            case "view":
+                history.push(`/projects/${value}`)
+                break
+            case "edit":
+                setEdit(true)
+                setProjectId(value)
+                setShow(prev => ({...prev, createModal: true}))
+                break
+            case "remove": 
+                setProjectId(value)
+                setShow(prev => ({...prev, removeModal: true}))    
+                break
+            default:
+                return
+        }   
+    }
+    const handleClose = () => setShow(prev => ({ ...prev, removeModal: false }))
     history.listen(() => {
         removeError()
     })
-
+    const columns = useMemo(() => (
+        [...projectColumns, { 
+            Header: "functions",
+            accessor: "_id",
+            Cell: ({value}) => (
+                <>
+                    <button onClick={(e) => handleClick(e, value)} name="view">View</button>
+                    <button onClick={(e) => handleClick(e, value)} name="edit">edit</button>
+                    <button onClick={(e) => handleClick(e, value)} name="remove">remove</button>
+                </>
+            )
+    }]
+), [])
+    const data = useMemo(() => projects ? projects : [], [projects])
     const projectDetails = projects.find(project => project._id === projectId)
 
     return (
         <div className="allProjectsContainer">
             <h1 className="display-6">Projects</h1>
-            <button onClick={() => { setEdit(false); setShow(prev => ({ ...prev, createModal: true})) }} type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal">
+            <button onClick={() => { setEdit(false); setShow(prev => ({ ...prev, createModal: true })) }} type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal">
                 Create
             </button>
-            <div className="mappedProjects">
-                <Table hover>
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {projectsMap}
-                    </tbody>
-                </Table>
-            </div>
+            <TestTable columns={columns} data={data} />
             <div className="projectForm">
                 <ProjectForm
                     edit={edit}
@@ -80,7 +87,7 @@ function AllProjects({ projects, users, errors, removeError, postProject, histor
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={() => { deleteProject(projectId); handleClose() }}>
                         Remove
                     </Button>
                 </Modal.Footer>

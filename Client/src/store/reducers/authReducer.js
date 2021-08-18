@@ -5,7 +5,7 @@ const defaultState = {
     user: {}
 }
 
-export default (state = defaultState, action) => {
+const authReducer = (state = defaultState, action) => {
     switch(action.type) {
         case SET_CURRENT_USER:
             return {
@@ -16,3 +16,5 @@ export default (state = defaultState, action) => {
             return state
     }
 }
+
+export default authReducer
