@@ -64,7 +64,8 @@ function AllIssues({ users, issues, postIssue, history, projects, deleteIssue, p
     return (
         <div className="allIssuesContainer">
             <h1 className="display-6">Issues</h1>
-            <button onClick={() => { setEdit(false); setShow(prev => ({ ...prev, createModal: true })) }} type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#issueModal">
+            {/* <button onClick={() => { setEdit(false); setShow(prev => ({ ...prev, createModal: true })) }} type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#issueModal"> */}
+            <button onClick={() => { setEdit(false); setShow(prev => ({ ...prev, createModal: true })) }} type="button" className="btn btn-outline-danger btn-block btn-round" data-bs-toggle="modal" data-bs-target="#issueModal">
                 Create Issue
             </button>
             <div className="mappedIssues">
