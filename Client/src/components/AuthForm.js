@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/authForm.css'
 
+
 export default function AuthForm(props) {
     const { authUser, signup, errors, history, removeError } = props
     const [state, setState] = useState({

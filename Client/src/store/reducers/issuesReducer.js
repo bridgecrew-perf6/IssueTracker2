@@ -10,7 +10,7 @@ import { ADD_ISSUE, LOAD_ISSUES, REMOVE_ISSUES, UPDATE_ISSUES } from "../actionT
             return state.filter(issue => issue._id !== action.id )
         case UPDATE_ISSUES:
             return state.map(issue => (
-                issue._id === action.id ? { ...action.issue} : issue
+                issue._id === action.id ? { ...action.issue } : issue
             )) 
         default:
             return state

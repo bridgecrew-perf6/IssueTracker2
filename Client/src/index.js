@@ -1,13 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './containers/App'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store'
 import Navbar from './components/Navbar'
-import SideBar from './components/SideBar'
 import { setTokenHeader, setUser } from './store/actions/authActions'
 import jwtDecode from 'jwt-decode'
 
@@ -28,7 +27,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Navbar />
       <div className="componentContainer">
-        <SideBar />
+        {/* <SideBar /> */}
         <App />
       </div>
     </BrowserRouter>

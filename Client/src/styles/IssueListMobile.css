@@ -1,0 +1,16 @@
+.spanStyles {
+    display: inline-block;
+    margin-bottom: 0.35em;
+}
+
+.itemButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.itemButtons .bi {
+  font-size: 1.25em;
+  vertical-align: middle;
+}
+

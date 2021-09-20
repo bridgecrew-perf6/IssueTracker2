@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Toggler(initialValue) {
+export default function useToggler(initialValue) {
     const [booleanValue, setBooleanValue] = useState(initialValue)
 
     const toggle = () => {

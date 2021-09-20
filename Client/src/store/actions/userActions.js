@@ -9,6 +9,7 @@ function loadUsers(users) {
     }
 } 
 
+
 export function getUsers() {
     return dispatch => {
         apiCall("get", "/api/users")

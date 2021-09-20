@@ -4,9 +4,8 @@ import "../styles/projectPage.css"
 
 function IssuePage(props) {
     const { issue } = props
-    console.log(issue)
     if (issue) {
-        return (
+      return (
             <div>
                 <div className="projectPageHeader">
                     <h1 className="display-6">{issue.title}</h1>
@@ -17,18 +16,9 @@ function IssuePage(props) {
                     <p>Created By: {issue.createdBy.username}</p>
                 </blockquote>
                 <div className="issuesTable">
-                    <table className="table table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">title</th>
-                                <th scope="col">target date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
+                  { issue.comments.map((c, i) => (
+                    <p key={i}>{c}</p>
+                  ))}
                 </div>
             </div>
         )

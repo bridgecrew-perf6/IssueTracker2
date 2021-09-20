@@ -20,16 +20,17 @@ app.get("/api/issues", async function (req, res, next) {
     const allIssues = await Issue.find({})
         .sort({ createdAt: "asc" })
         .populate("createdBy", { username: true })
-        .populate("project", { projectName: true})
+        // .populate("project", { projectName: true})
     return res.status(200).json(allIssues)
 })
 
 app.get("/api/projects", async function (req, res, next) {
     const allProjects = await Project.find({})
         .sort({ createdAt: "asc" })
-        .populate("createdBy", { username: true })
+        .populate("assignedUsers", { username: true, email: true })
+        .populate("createdBy", { username: true, email: true })
         .populate({ path: "issues", populate: { path: "createdBy", select: "username"}})
-    return res.status(200).json(allProjects)
+        return res.status(200).json(allProjects)
 })
 
 app.get("/api/users", async function (req, res, next) {

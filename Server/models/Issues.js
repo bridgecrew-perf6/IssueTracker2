@@ -20,6 +20,9 @@ const issueSchema = new mongoose.Schema({
     targetEndDate: {
         type: Date
     },
+    comments: [{
+        type: String,
+    }],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -35,7 +38,7 @@ const issueSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["open", "inProgress", "completed"],
+        enum: ["open", "closed"],
     },
     type: { 
         type: String,

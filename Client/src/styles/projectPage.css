@@ -7,20 +7,48 @@
     margin-right: 20px;
 }
 
-.projectPage {
-    
+.subtitle p {
+    margin-bottom: 0px;
 }
 
-.projectPageTables {
+.pageButtons {
+    margin-top: 5px;
     display: flex;
 }
 
-.IssuesTable {
-    width: 50%;
+.projectPageTables {
+    /* display: flex; */
+}
 
+.card {
+    margin-top: 1em;
+}
+
+.issuesTable {
+    width: 100%;
 }
 
 .assignedDeveloperTable {
-    width: 50%;
-    margin-right: 30px;
+    margin-top: 1em;
+}
+
+.bi-people {
+    font-size: 1.5em;
+    margin-right: 0.5em;
+}
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+.h4 {
+    display: inline-block;
+}
+
+table {
+    text-align: center;
+}
+ 
+.page-btn:hover {
+    text-decoration: underline;
 }

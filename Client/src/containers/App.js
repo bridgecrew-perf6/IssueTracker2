@@ -1,21 +1,20 @@
-import React, { useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { Route, Switch } from 'react-router-dom'
 import Main from '../components/Main'
 import AuthForm from '../components/AuthForm'
 import Test from '../components/Test'
-import ProjectPage from '../components/ProjectPage'
+import ProjectPage from '../containers/ProjectPage'
 import AllProjects from '../containers/AllProjects'
 import MyProfile from '../components/MyProfile'
 import AllIssues from './AllIssues'
-// import AllIssues from './allissuesbackup'
-import { connect } from 'react-redux';
-import { authUser } from '../store/actions/authActions';
+import { connect } from 'react-redux'
+import { authUser } from '../store/actions/authActions'
 import { getProjects } from '../store/actions/projectActions'
 import { getIssues } from '../store/actions/issueActions'
-import { getUsers } from '../store/actions/userActions';
-import { removeError } from '../store/actions/errorActions';
+import { getUsers } from '../store/actions/userActions'
+import { removeError } from '../store/actions/errorActions'
 import "../App.css"
-import IssuePage from '../components/IssuePage';
+import IssuePage from '../components/IssuePage'
 
 function App(props) {
   const { getUsers, currentUser, errors, removeError, authUser, getProjects, projects, getIssues, issues, users } = props
@@ -25,10 +24,11 @@ function App(props) {
       getUsers()
       getIssues()
   }, [getProjects, getUsers, getIssues])
-
+  
   const findProject = (projectId) => {
     return projects.find(project => project._id === projectId)
   }
+
   const findIssue = (issueId) => {
     return issues.find(issue => issue._id === issueId)
   }
@@ -40,7 +40,7 @@ function App(props) {
   }
 
   return (
-    <div className="appContainer">
+    <div className="container">
       <Switch>
         <Route exact path="/" render={routeProps => <Main {...routeProps} currentUser={currentUser} />} />
         <Route exact path="/login"
@@ -71,6 +71,7 @@ function App(props) {
               projects={projects}
               users={users}
               project={findProject(routeProps.match.params.projectId)}
+              issues={issues}
               {...routeProps}
             />
           } />
@@ -121,4 +122,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { authUser, getProjects, getIssues, getUsers, removeError })(App);
+export default connect(mapStateToProps, { authUser, getProjects, getIssues, getUsers, removeError })(App)
