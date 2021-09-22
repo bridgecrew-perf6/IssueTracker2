@@ -17,10 +17,9 @@ function addProject(project) {
   }
 }
 
-function updateProject(id, newProject) {
+function updateProject(newProject) {
   return {
     type: UPDATE_PROJECTS,
-    id,
     project: newProject
   }
 }
@@ -33,8 +32,10 @@ function removeProject(id) {
 }
 
 export function getProjects() {
-  return dispatch => {
-    apiCall("get", "/api/projects")
+  return (dispatch, getState) => {
+    const { currentUser } = getState()
+    const { id } = currentUser.user
+    apiCall("get", `/${id}/api/projects`)
       .then(res => dispatch(loadProjects(res)))
       .catch(err => dispatch(addError(err.message)))
   }
@@ -67,12 +68,12 @@ export function patchProject(projectId, projectData, closeModal) {
       const { id } = currentUser
       apiCall("patch", `/api/users/${id}/projects/${projectId}`, projectData)
         .then(res => {
-          dispatch(updateProject(res.project._id, res.project))
+          dispatch(updateProject(res.project))
           closeModal()
           resolve()
         })
         .catch(err => {
-          console.log(err)
+          console.log("patch")
           dispatch(addError(err.message))
           reject()
         })
@@ -80,12 +81,29 @@ export function patchProject(projectId, projectData, closeModal) {
   }
 }
 
-export function deleteProject(projectId) {
+export function deleteProject(projectId, history) {
   return (dispatch, getState) => {
     const { currentUser } = getState()
     const { id } = currentUser.user
     apiCall("delete", `/api/users/${id}/projects/${projectId}`)
-      .then(res => dispatch(removeProject(res.project._id)))
+      .then(res => {
+        history.push("/projects")
+        dispatch(removeProject(res.project._id))
+      })
+      .catch(err => {
+        dispatch(addError(err.message))
+      })
+  }
+}
+
+export function leaveProject(projectId) {
+  return (dispatch, getState) => {
+    const { currentUser } = getState()
+    const { id } = currentUser.user
+    apiCall("delete", `/api/users/${id}/projects/${projectId}/leave`)
+      .then(res => {
+        dispatch(updateProject(res.project))
+      })
       .catch(err => {
         dispatch(addError(err.message))
       })

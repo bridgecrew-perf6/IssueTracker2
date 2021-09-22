@@ -5,7 +5,8 @@ function Main(props) {
     if (currentUser.isAuthenticated) {
         return (
             <div>
-                Logged in
+                Logged in As &nbsp;
+                {currentUser.user.username}
                 <CloseButton variant="white" />
             </div>
         )

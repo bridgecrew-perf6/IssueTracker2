@@ -33,7 +33,9 @@ exports.createIssue = async function (req, res, next) {
 exports.deleteIssue = async function (req, res, next) {
   try {
     const foundIssue = await Issue.findById(req.params.issueId)
+    console.log("delete1")
     const result = await foundIssue.remove()
+    console.log("delete2")
     return res.status(200).json({
       issue: foundIssue
     })
@@ -69,7 +71,6 @@ exports.updateIssueStatus = async function (req, res, next) {
 //Update Issue/s /api/users/:id/issues/:issueId/edit
 exports.updateIssue = async function (req, res, next) {
   try {
-    console.log(req.body)
     const issue = await Issue.findByIdAndUpdate(req.params.issueId, req.body, { new: true , runValidators: true})
       .populate("createdBy", { username: true })
     return res.status(200).json({

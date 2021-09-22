@@ -10,7 +10,7 @@ const projectReducer = (state = [], action) => {
       return state.filter(project => project._id !== action.id)
     case UPDATE_PROJECTS:
       return state.map(project => (
-        project._id === action.id ? { ...action.project } : project
+        project._id === action.project._id ? { ...action.project } : project
       ))
     case REMOVE_USER_FROM_PROJECT:
       return state.assignedUsers.filter(users => users)

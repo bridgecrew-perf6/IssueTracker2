@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, "Email is requied"]
+        // required: [true, "Email is requied"]
     },
     issues: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -30,7 +30,7 @@ userSchema.pre("save", async function (next) {
     //use bcrpy to hash password before saving onto the database
     try {
         if (!this.isModified("password")) {
-            next()
+            return next()
         }
         const hashedPassword = await bcrypt.hash(this.password, 12)
         this.password = hashedPassword

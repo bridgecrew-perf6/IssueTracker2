@@ -14,9 +14,9 @@ exports.createProject = async function (req, res, next) {
   try {
     const { id } = req.params
     const post = await Project.create({ ...req.body, createdBy: id })
-    const user = await User.findOne({ _id: id })
-    user.projects.push(post)
-    await user.save()
+    const foundUser = await User.findById(id)
+    foundUser.projects.push(post)
+    await foundUser.save()
     const project = await Project.findOne(req.body).populate("createdBy", { username: true, projects: true })
     return res.status(200).json(project)
   } catch (err) {
@@ -56,3 +56,20 @@ exports.removeProject = async function (req, res, next) {
     return next(err)
   }
 }
+
+exports.leaveProject = async function (req, res, next) {
+  try {
+    const foundUser = await User.findById(req.params.id)
+    const foundProject = await Project.findById(req.params.projectId)
+      .populate("assignedUsers", { username: true, email: true })
+      .populate("createdBy", { username: true, email: true })
+    foundProject.assignedUsers.remove(foundUser)
+    await foundProject.save()
+    return res.status(200).json({
+      project: foundProject
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+

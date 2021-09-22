@@ -14,7 +14,6 @@ const soptions = [
 
 export default function Test() {
     const [selectedOption, setSelectedOption] = useState(null);
-    console.log(selectedOption)
     return (
         <div className="cont">
             <div className="App">

@@ -17,7 +17,7 @@ function TestTable({ columns, data, title }) {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize },
-  } = useTable({ columns, data, initialState: { pageSize: 5 } }, usePagination)
+  } = useTable({ columns, data, initialState: { pageSize: 20 } }, usePagination)
   return (
     <div>
       <h3>{title}</h3>

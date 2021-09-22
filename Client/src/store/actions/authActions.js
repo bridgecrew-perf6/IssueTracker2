@@ -1,7 +1,12 @@
 import axios from "axios";
+import jwtDecode from 'jwt-decode'
 import { apiCall } from "../../services/api";
 import { SET_CURRENT_USER } from "../actionTypes";
 import { addError, removeError } from "./errorActions";
+import { getIssues } from "./issueActions";
+import { getProjects } from "./projectActions";
+import { getUsers } from "./userActions";
+
 
 export function setUser(user) {
     return {
@@ -16,6 +21,30 @@ export function setTokenHeader(token) {
     } else {
         delete axios.defaults.headers.common['Authorization']
     }
+}
+
+export function logout() {
+  return dispatch => {
+    localStorage.clear()
+    setTokenHeader(false)
+    dispatch(setUser({}))
+  }
+}
+
+export function autoLogin() {
+  return dispatch => {
+    if (localStorage.jwt) {
+      try {
+        setTokenHeader(localStorage.jwt)
+        dispatch(setUser(jwtDecode(localStorage.jwt)))
+        dispatch(getProjects())
+        dispatch(getUsers())
+        dispatch(getIssues())
+      } catch (err) {
+        dispatch(setUser({}))
+      }
+    }
+  }
 }
 
 export function authUser(type, userData) {

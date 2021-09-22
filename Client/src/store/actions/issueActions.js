@@ -113,7 +113,6 @@ export function updateIssueStatus(issueId, type) {
     const { id } = currentUser.user
     apiCall("post", `/api/users/${id}/issues/${issueId}/${type}`)
       .then(res => {
-        console.log(res)
         dispatch(updateIssue(res.issue._id, res.issue))
       })
       .catch(err => console.log(err))
@@ -126,7 +125,6 @@ export function postComment(issueId, comment) {
     const { id } = currentUser.user
     apiCall("post", `/api/users/${id}/issues/${issueId}/comment`, { comment })
       .then(res => {
-        console.log(res)
         dispatch(updateIssue(res.issue._id, res.issue))
       })
       .catch(err => console.log(err))

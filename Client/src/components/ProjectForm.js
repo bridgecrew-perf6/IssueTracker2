@@ -30,9 +30,7 @@ function ProjectForm({
     : users.filter(user => user._id !== currentUser.user.id).map((user, i) => (
       { label: user.username, value: user._id }
     ))
-  console.log(users.filter(user => user._id !== currentUser.user._id))
-  console.log(users)
-  console.log(currentUser)
+
   //filter users for default values of multi select
   const filteredUsers = edit
     // ? userOptions.filter(user => project?.assignedUsers._id.includes(user.value))

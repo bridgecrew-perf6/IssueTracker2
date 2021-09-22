@@ -21,7 +21,6 @@ function IssuesForm({
   const [state, setState] = useState(initialState)
   const { users, errors } = useSelector(state => state)
   const dispatch = useDispatch()
-  console.log(state)
   const handleSubmit = (e) => {
     e.preventDefault()
     edit ? dispatch(patchIssue(issue?._id, state, closeModal)) : dispatch(postIssue(state, projectId, closeModal))
