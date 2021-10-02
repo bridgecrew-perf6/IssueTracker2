@@ -1,4 +1,4 @@
-const { User, Issue, Project } = require("../models")
+const { User, Issue, Project, Comment } = require("../models")
 //handle errors, then create a more human readable error message
 const handleErrors = (err) => {
   let elements = []
@@ -13,15 +13,17 @@ const handleErrors = (err) => {
 exports.createIssue = async function (req, res, next) {
   try {
     const { id, projectId } = req.params
-    const post = await Issue.create({ ...req.body, createdBy: id, project: projectId})
+    const post = await Issue.create({ ...req.body, createdBy: id, project: projectId })
     const foundUser = await User.findById(id)
     foundUser.issues.push(post)
     await foundUser.save()
     const foundProject = await Project.findById(projectId)
     foundProject.issues.push(post)
     await foundProject.save()
-    const issue = await Issue.findOne(req.body)
+    const issue = await Issue.findOne(post._id)
       .populate("createdBy", { username: true })
+      // .populate("assignedUsers", { username: true, email: true })
+      .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
     return res.status(200).json(issue)
   } catch (err) {
     const errorMessageArray = handleErrors(err)
@@ -33,9 +35,7 @@ exports.createIssue = async function (req, res, next) {
 exports.deleteIssue = async function (req, res, next) {
   try {
     const foundIssue = await Issue.findById(req.params.issueId)
-    console.log("delete1")
     const result = await foundIssue.remove()
-    console.log("delete2")
     return res.status(200).json({
       issue: foundIssue
     })
@@ -48,6 +48,9 @@ exports.deleteIssue = async function (req, res, next) {
 exports.getIssue = async function (req, res, next) {
   try {
     const issue = await Issue.findById(req.params.issueId)
+      .populate("createdBy", { username: true })
+      .populate("assignedUsers", { username: true, email: true })
+      .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
     return res.status(200).json({
       issue,
     })
@@ -59,7 +62,10 @@ exports.getIssue = async function (req, res, next) {
 exports.updateIssueStatus = async function (req, res, next) {
   try {
     const status = req.params.type
-    const issue = await Issue.findByIdAndUpdate(req.params.issueId, { status }, { new: true})
+    const issue = await Issue.findByIdAndUpdate(req.params.issueId, { status }, { new: true })
+      .populate("createdBy", { username: true, email: true })
+      // .populate("assignedUsers", { username: true, email: true })
+      .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
     return res.status(200).json({
       issue,
     })
@@ -71,8 +77,10 @@ exports.updateIssueStatus = async function (req, res, next) {
 //Update Issue/s /api/users/:id/issues/:issueId/edit
 exports.updateIssue = async function (req, res, next) {
   try {
-    const issue = await Issue.findByIdAndUpdate(req.params.issueId, req.body, { new: true , runValidators: true})
-      .populate("createdBy", { username: true })
+    const issue = await Issue.findByIdAndUpdate(req.params.issueId, req.body, { new: true, runValidators: true })
+      .populate("createdBy", { username: true, email: true })
+      .populate("assignedUsers", { username: true, email: true })
+      .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
     return res.status(200).json({
       issue
     })
@@ -84,13 +92,69 @@ exports.updateIssue = async function (req, res, next) {
 //Add a comment to the comments array
 exports.postComment = async function (req, res, next) {
   try {
+    const { id, issueId } = req.params
     const { comment } = req.body
-    const issue = await Issue.findById(req.params.issueId)
-    // await issue.updateOne({ comments: [...issue.comments, comment]}, { new: true})
-    issue.comments = [...issue.comments, comment]
-    issue.save()
+    const newComment = await Comment.create({ text: comment, createdBy: id })
+    const issue = await Issue.findById(issueId)
+      .populate("createdBy", { username: true, email: true })
+      .populate("assignedUsers", { username: true, email: true })
+    issue.comments.push(newComment)
+    await issue.save().then(t => t.populate({ path: "comments", populate: { path: "createdBy", select: "username" } }).execPopulate())
     return res.status(200).json({
       issue
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+exports.patchComment = async function (req, res, next) {
+  try {
+    const { issueId, commentId } = req.params
+    const { comment } = req.body
+    await Comment.findByIdAndUpdate(commentId, { text: comment })
+    const issue = await Issue.findById(issueId)
+      .populate("createdBy", { username: true, email: true })
+      .populate("assignedUsers", { username: true, email: true })
+      .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
+    return res.status(200).json({
+      issue
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+exports.removeComment = async function (req, res, next) {
+  try {
+    const { issueId, commentId } = req.params
+    const foundComment = await Comment.findById(commentId)
+    await foundComment.remove()
+    const issue = await Issue.findById(issueId)
+      .populate("createdBy", { username: true, email: true })
+      .populate("assignedUsers", { username: true, email: true })
+      .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
+    await issue.comments.remove(commentId)
+    return res.status(200).json({
+      issue
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+exports.leaveIssue = async function (req, res, next) {
+  try {
+    const foundUser = await User.findById(req.params.id)
+    const foundIssue = await Issue.findById(req.params.issueId)
+    .populate("createdBy", { username: true, email: true })
+    .populate("assignedUsers", { username: true, email: true })
+    .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
+    console.log(req.params.issueId)
+    foundIssue.assignedUsers.remove(foundUser)
+    await foundIssue.save()
+    return res.status(200).json({
+      issue: foundIssue
     })
   } catch (err) {
     return next(err)

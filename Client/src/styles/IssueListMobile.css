@@ -1,9 +1,4 @@
-.spanStyles {
-    display: inline-block;
-    margin-bottom: 0.35em;
-}
-
-.itemButtons {
+.issueItemButtons {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,3 +9,12 @@
   vertical-align: middle;
 }
 
+.link {
+  text-decoration: none;
+  color: #212529;
+}
+
+.link:hover, .link:active {
+  text-decoration: underline;
+
+}

@@ -9,18 +9,18 @@ import { getUsers } from "./userActions";
 
 
 export function setUser(user) {
-    return {
-        type: SET_CURRENT_USER,
-        user
-    }
+  return {
+    type: SET_CURRENT_USER,
+    user
+  }
 }
 
 export function setTokenHeader(token) {
-    if (token) { 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    } else {
-        delete axios.defaults.headers.common['Authorization']
-    }
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  } else {
+    delete axios.defaults.headers.common['Authorization']
+  }
 }
 
 export function logout() {
@@ -48,20 +48,23 @@ export function autoLogin() {
 }
 
 export function authUser(type, userData) {
-    return dispatch => {
-        return new Promise((resolve, reject) => {
-           apiCall('post', `api/auth/${type}`, userData)
-           .then(({token, ...userInfo}) => {
-                localStorage.setItem("jwt", token)
-                setTokenHeader(token)
-                dispatch(setUser(userInfo))
-                dispatch(removeError())
-                resolve()
-           })
-           .catch(err => {
-               dispatch(addError(err.message))
-               reject() 
-           }) 
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      apiCall('post', `api/auth/${type}`, userData)
+        .then(({ token, ...userInfo }) => {
+          localStorage.setItem("jwt", token)
+          setTokenHeader(token)
+          dispatch(setUser(userInfo))
+          dispatch(removeError())
+          dispatch(getProjects())
+          dispatch(getUsers())
+          dispatch(getIssues())
+          resolve()
         })
-    }
+        .catch(err => {
+          dispatch(addError(err.message))
+          reject()
+        })
+    })
+  }
 }

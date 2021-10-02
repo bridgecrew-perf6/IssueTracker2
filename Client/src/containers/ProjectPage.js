@@ -1,20 +1,20 @@
 import React, { useMemo } from 'react'
 import TestTable from '../components/TestTable'
-import { projectPageIssueColumns, projectPageUsersColumns } from '../data/columns'
-import Card from 'react-bootstrap/Card'
-import useToggler from '../hooks/useToggle'
+import { projectPageIssueColumns, membersColumns } from '../data/columns'
 import Collapse from 'react-bootstrap/Collapse'
+import Card from 'react-bootstrap/Card'
+import DialogTemplate from '../components/DialogTemplate'
+import useToggler from '../hooks/useToggle'
 import IssueListMobile from '../components/IssueListMobile'
 import { formatDateTime } from '../utils/helperFunctions'
 import { useMediaQuery } from 'react-responsive'
-import DialogTemplate from '../components/DialogTemplate'
 import IssuesForm from '../components/IssuesForm'
 import ProjectForm from '../components/ProjectForm'
 import { useHistory, useParams } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { deleteProject } from '../store/actions/projectActions'
+import { deleteProject, leaveProject } from '../store/actions/projectActions'
+import Button from 'react-bootstrap/Button'
 import "../styles/projectPage.css"
-
 
 function ProjectPage(props) {
   const { project, issues, user } = props
@@ -23,25 +23,24 @@ function ProjectPage(props) {
   const issueData = useMemo(() => issues ? issues.filter(i => i.project === projectId) : [], [issues, projectId])
   const userData = useMemo(() => project ? [...project.assignedUsers, project.createdBy] : [], [project])
   const issueColumns = useMemo(() => projectPageIssueColumns(), [])
-  const usersColumns = useMemo(() => projectPageUsersColumns(project?.createdBy), [project])
+  const usersColumns = useMemo(() => membersColumns(project?.createdBy), [project])
   const [show, toggle] = useToggler(false)
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const dispatch = useDispatch()
   const handleDeleteProject = () => dispatch(deleteProject(project._id, history))
-  // const handleLeaveProject = () => dispatch(leaveProject(project._id, history))
+  const handleLeaveProject = () => dispatch(leaveProject(project._id, history))
 
-  const adminButtons = () => {
-    return project?.createdBy._id === user.id
+  const adminButtons = () => 
+    project?.createdBy._id === user.id
       ? (
         <>
           <DialogTemplate
             title="Edit Project"
             dialogType="form"
             trigger={{
-              type: "normal",
+              type: isMobile ? "icon" : "normal",
               text: "Edit Project",
               icon: "bi-pencil-square",
-              iconStyle: { marginRight: '10px' },
             }}
           >
             <ProjectForm
@@ -55,10 +54,9 @@ function ProjectPage(props) {
             actionBtnText="Remove Project"
             actionFunc={handleDeleteProject}
             trigger={{
-              type: "normal",
+              type: isMobile ? "icon" : "normal",
               text: "Delete Project",
-              icon: "bi-pencil-square",
-              iconStyle: { marginRight: '10px' },
+              icon: "bi-trash",
             }}
           />
         </>
@@ -67,15 +65,13 @@ function ProjectPage(props) {
         title="Leave Project"
         contentText="Are you sure you want to leave this project"
         actionBtnText="Leave Project"
-        actionFunc={handleDeleteProject}
+        actionFunc={handleLeaveProject}
         trigger={{
-          type: "normal",
+          type: isMobile ? "icon" : "normal",
           text: "Leave Project",
           icon: "bi-pencil-square",
-          iconStyle: { marginRight: '10px' },
         }}
       />
-  }
 
   if (project) {
     return (
@@ -84,16 +80,32 @@ function ProjectPage(props) {
           <Card>
             <Card.Body>
               <div className="projectPageHeader">
-                <h1 className="display-6">{project.projectName}</h1>
+                <h1 className="display-6">Project Name: {project.projectName}</h1>
               </div>
-              <p className="display">{project.description}</p>
+              <p className="display">Project Description: {project.description}</p>
               <hr />
               <div className="subtitle">
                 <p><strong>Admin: {project.createdBy.username}</strong></p>
                 <p><em>Created At: {formatDateTime(project.createdAt)}</em></p>
               </div>
               <div className="pageButtons">
-                <button className="btn btn-outline-primary" onClick={toggle}>{show ? "HIDE MEMBERS" : "SHOW MEMBERS"}</button>
+                {!isMobile
+                  ? <Button variant="primary" onClick={toggle}>
+                    <i style={{ marginRight: '10px' }} className="bi bi-people"></i>
+                    {show ? "HIDE MEMBERS" : "SHOW MEMBERS"}
+                  </Button>
+                  : <Button
+                    variant="secondary"
+                    onClick={toggle}
+                    style={{
+                      height: "45px",
+                      width: "45px",
+                      borderRadius: '2em',
+                    }}
+                  >
+                    <i className="bi bi-people"></i>
+                  </Button>
+                }
                 {adminButtons()}
               </div>
 
@@ -120,15 +132,15 @@ function ProjectPage(props) {
                   type: "menu",
                   text: "Create Issue",
                   icon: "bi-pencil-square",
-                  iconStyle: { marginRight: '10px' },
                 }}
               >
                 <IssuesForm
                   projectId={projectId}
                 />
               </DialogTemplate>
+              <hr />
               {isMobile ?
-                <IssueListMobile issueData={issueData} />
+                <IssueListMobile issues={issueData} />
                 :
                 <div className="issuesTable">
                   <TestTable

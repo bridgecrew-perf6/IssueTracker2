@@ -20,3 +20,7 @@ export const cellColors = {
   "bugs/error": "#d8aa28"
 }
 
+export const spanStyles = {
+  display: "inline-block",
+  marginBottom: "0.35em",
+}

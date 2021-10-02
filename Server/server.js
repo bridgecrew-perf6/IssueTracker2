@@ -19,8 +19,9 @@ app.use("/api/users/:id/projects", loginRequired, projectRoutes)
 app.get("/api/issues", async function (req, res, next) {
   const allIssues = await Issue.find({})
     .sort({ createdAt: "asc" })
-    .populate("createdBy", { username: true })
-  // .populate("project", { projectName: true})
+    .populate("assignedUsers", { username: true, email: true })
+    .populate("createdBy", { username: true, email: true })
+    .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
   return res.status(200).json(allIssues)
 })
 

@@ -1,83 +1,99 @@
-import React, { Fragment } from 'react';
-import '../styles/IssueListMobile.css'
+import React, { Fragment } from 'react'
 import { formatDateTime } from '../utils/helperFunctions'
 import IssueMenu from './IssueMenu'
-import { cellStyles, cellColors } from '../styles/customStyles'
+import { cellStyles, cellColors, spanStyles } from '../styles/customStyles'
+import { Link } from 'react-router-dom'
+import '../styles/IssueListMobile.css'
+import { useSelector } from 'react-redux'
 
-function IssueListMobile({ issueData = [] }) {
-    const mappedIssues = issueData.map((issue, i) => (
-        <Fragment key={i}>
-            <ul className="list-unstyled">
-                <li>
-                    <span className="h5">
-                        {issue.title}&nbsp;
-                    </span>
-                    <i className="bi bi-link-45deg"></i>
-                </li>
-                <li>
-                    <span className="spanStyles">
-                        Priority:
-                    </span>
-                    <div style={{
-                        ...cellStyles,
-                        backgroundColor: cellColors[issue.priority],
-                        color: issue.priority === 'low' ? '#000' : '#fff',
-                    }}>{issue.priority}</div>
-                </li>
-                <li>
-                    <span className="spanStyles">
-                        Status:
-                    </span>
-                    <div style={{
-                        ...cellStyles,
-                        backgroundColor: cellColors[issue.status],
-                        color: issue.status === 'closed' ? '#008000' : '#000080',
-                    }}>{issue.status}</div>
-                </li>
+function IssueListMobile({ issues = [] }) {
+  const { user } = useSelector(state => state.currentUser)
+  
+  const mappedIssues = issues.map((issue, i) => {
+    const isAdmin = user?.id === issue.createdBy._id
+    const isMember = issue?.assignedUsers.map(user => user._id).includes(user.id) || isAdmin
+    return <Fragment key={issue._id}>
+      <ul className="list-unstyled">
+        <li className="h5 link">
+          <Link to={`/issues/${issue._id}`} className="link">
+            {issue.title}&nbsp;
+          </Link>
+          <i className="bi bi-link-45deg"></i>
+        </li>
+        <li>
+          <span style={{ ...spanStyles }}>
+            Your Role:
+          </span>
+          <div style={{
+            ...cellStyles,
+          }}>{isMember ? isAdmin ? "Admin" : "Member" : "None"}</div>
+        </li>
+        <li>
+          <span style={{ ...spanStyles }}>
+            Priority:
+          </span>
+          <div style={{
+            ...cellStyles,
+            backgroundColor: cellColors[issue.priority],
+            color: issue.priority === 'low' ? '#000' : '#fff',
+          }}>{issue.priority}</div>
+        </li>
+        <li>
+          <span style={{ ...spanStyles }}>
+            Status:
+          </span>
+          <div style={{
+            ...cellStyles,
+            backgroundColor: cellColors[issue.status],
+            color: issue.status === 'closed' ? '#008000' : '#000080',
+          }}>{issue.status}</div>
+        </li>
 
-                <li>
-                    <span className="spanStyles">
-                        Type:
-                    </span>
-                    <div style={{
-                        ...cellStyles,
-                        backgroundColor: cellColors[issue.type],
-                    }}>{issue.type}</div>
-                </li>
-                <li>
-                    <span className="spanStyles">
-                        Created:
-                    </span>
-                    <div style={{
-                        ...cellStyles,
+        <li>
+          <span style={{ ...spanStyles }}>
+            Type:
+          </span>
+          <div style={{
+            ...cellStyles,
+            backgroundColor: cellColors[issue.type],
+          }}>{issue.type}</div>
+        </li>
+        <li>
+          <span style={{ ...spanStyles }}>
+            Created:
+          </span>
+          <div style={{
+            ...cellStyles,
 
-                    }}>{formatDateTime(issue.createdAt)}</div>
-                </li>
-                <li>
-                    <span className="spanStyles">
-                        Updated:
-                    </span>
-                    <div style={{
-                        ...cellStyles,
+          }}>{formatDateTime(issue.createdAt)}</div>
+        </li>
+        <li>
+          <span style={{ ...spanStyles }}>
+            Updated:
+          </span>
+          <div style={{
+            ...cellStyles,
 
-                    }}>{formatDateTime(issue.updatedAt)}</div>
-                </li>
-                <li className="itemButtons">
-                    <div>
-                        <i className="bi bi-chat-square-text"></i>
-                        &nbsp;: {issue?.comments.length}
-                    </div>
-                    <IssueMenu issue={issue} />
-                </li>
-            </ul>
-            <hr />
-        </Fragment>
-    ))
-    return (
-        <div className="issueListContainer">
-            {mappedIssues}
-        </div>
-    )
+          }}>{formatDateTime(issue.updatedAt)}</div>
+        </li>
+        <li className="issueItemButtons">
+          <div>
+            <i className="bi bi-chat-square-text"></i>
+            &nbsp;: {issue?.comments.length}
+            &nbsp;&nbsp;<i className="bi bi-people"></i>
+            &nbsp;: {issue?.assignedUsers.length + 1}
+          </div>
+          <IssueMenu issue={issue} />
+        </li>
+      </ul>
+      {i + 1 !== issues.length && <hr />}
+    </Fragment>
+  })
+  return (
+    <div className="issueListContainer">
+      {issues.length !== 0 ? mappedIssues : "No Issues Added Yet"}
+    </div>
+  )
 }
 
 export default IssueListMobile

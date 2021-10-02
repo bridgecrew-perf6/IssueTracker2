@@ -1,30 +1,41 @@
 import { Link } from 'react-router-dom'
 import IssueMenu from '../components/IssueMenu'
-// import { cellStyles, cellColors } from '../styles/customStyles'
 import { formatDateTime } from '../utils/helperFunctions'
 import '../styles/columnStyles.css'
+import { ProjectMenu } from '../components/ProjectMenu'
 
-
-export const projectColumns = [
-  {
-    Header: "Title",
-    accessor: "projectName",
-  },
-  {
-    Header: "Created By",
-    accessor: "createdBy.username",
-  },
-  {
-    Header: "Created At",
-    accessor: "createdAt",
-    Cell: ({ value }) => new Date(value).toDateString()
-  },
-  {
-    Header: "Target Date",
-    accessor: "targetEndDate",
-    Cell: ({ value }) => new Date(value).toDateString()
-  },
-]
+export const projectColumns = () => {
+  const projectLink = (values) => <Link to={`/projects/${values._id}`} className="link">{values.projectName}</Link>
+  return [
+    {
+      Header: "Title",
+      accessor: "projectName",
+      Cell: (cellInfo) => projectLink(cellInfo.row.original)
+    },
+    {
+      Header: "Created By",
+      accessor: "createdBy.username",
+    },
+    {
+      Header: "Created At",
+      accessor: "createdAt",
+      Cell: ({ value }) => value ? new Date(value).toDateString() : "No Date Set"
+    },
+    {
+      Header: "Members",
+      Cell: (cellInfo) => cellInfo.row.original.assignedUsers.length + 1
+    },
+    {
+      Header: "Target Date",
+      accessor: "targetEndDate",
+      Cell: ({ value }) => value ? new Date(value).toDateString() : "No Date Set"
+    },
+    {
+      Header: "Actions",
+      Cell: (cellInfo) => <ProjectMenu project={cellInfo.row.original} />
+    },
+  ]
+}
 
 
 export const projectPageIssueColumns = () => {
@@ -47,7 +58,7 @@ export const projectPageIssueColumns = () => {
     {
       Header: "Updated",
       accessor: "updatedAt",
-      Cell: ({ value }) => value ? formatDateTime(value) : "No Date Set"
+      Cell: ({ value }) => formatDateTime(value) 
     },
     {
       Header: "Actions",
@@ -56,7 +67,7 @@ export const projectPageIssueColumns = () => {
   ]
 }
 
-export const projectPageUsersColumns = (admin) => [
+export const membersColumns = (admin) => [
   {
     Header: "Username",
     accessor: "username",
@@ -68,37 +79,5 @@ export const projectPageUsersColumns = (admin) => [
   {
     Header: "Email Address",
     accessor: "email",
-  },
-]
-
-export const issueColumns = [
-  {
-    Header: "Title",
-    accessor: "title",
-  },
-  {
-    Header: "Project Name",
-    accessor: "project.projectName",
-  },
-  {
-    Header: "Created By",
-    accessor: "createdBy.username",
-  },
-  {
-    Header: "Priority",
-    accessor: "priority",
-  },
-  {
-    Header: "Status",
-    accessor: "status",
-  },
-  {
-    Header: "Type",
-    accessor: "type",
-  },
-  {
-    Header: "Created At",
-    accessor: "createdAt",
-    Cell: ({ value }) => new Date(value).toDateString()
   },
 ]

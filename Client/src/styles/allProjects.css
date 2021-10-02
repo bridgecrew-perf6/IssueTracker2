@@ -3,6 +3,11 @@
     width: 100%;
 }
 
+.allProjectsTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
 .mappedProjects {
     margin-right: 100px;
 }

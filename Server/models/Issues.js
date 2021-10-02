@@ -21,7 +21,8 @@ const issueSchema = new mongoose.Schema({
         type: Date
     },
     comments: [{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
     }],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

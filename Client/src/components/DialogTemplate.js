@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Modal from "react-bootstrap/Modal"
 import Button from 'react-bootstrap/Button'
-// import { useDispatch } from 'react-redux'
 
 function DialogTemplate({
   title,
@@ -28,35 +27,40 @@ function DialogTemplate({
     switch (trigger.type) {
       case "icon":
         return (
-          <i
-            className={`bi ${trigger.icon}`}
-            onClick={handleModalOpen}
-            style={trigger.iconStyle}
-          >
-          </i>
+          <Button style={{
+            height: "45px",
+            width: "45px",
+            borderRadius: '2em',
+          }}>
+            <i
+              className={`bi ${trigger.icon}`}
+              onClick={handleModalOpen}
+            >
+            </i>
+          </Button>
         )
       case "menu":
         return (
           <Dropdown.Item onClick={handleModalOpen} >
-            <i style={trigger.iconStyle} className={`bi ${trigger.icon}`}></i>
+            <i style={{ marginRight: '10px' }} className={`bi ${trigger.icon}`}></i>
             {trigger.text}
           </Dropdown.Item>
         )
-      default: 
-          return (
-            <Button onClick={handleModalOpen}>
-              {trigger.icon && <i style={trigger.iconStyle} className={`bi ${trigger.icon}`}></i>}
-              {trigger.text}
-            </Button>
-          )
+      default:
+        return (
+          <Button variant={`outline-${trigger.variant ? trigger.variant : "primary"}`} size={trigger.size} onClick={handleModalOpen}>
+            {trigger.icon && <i style={{ marginRight: '10px' }} className={`bi ${trigger.icon}`}></i>}
+            {trigger.text}
+          </Button>
+        )
     }
   }
 
   const proppedChildren = React.isValidElement(children)
-  ? React.cloneElement(children, {
+    ? React.cloneElement(children, {
       closeModal: handleModalClose,
     })
-  : children
+    : children
 
   return (
     <div>

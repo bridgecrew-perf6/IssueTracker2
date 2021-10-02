@@ -10,12 +10,14 @@ exports.signup = async function (req, res, next) {
             const token = jwt.sign({
                 id,
                 username,
+                email
             },
             process.env.SECRET_KEY
             )
             return res.status(200).json({
                 id,
                 username,
+                email,
                 token
             })
         } else {
@@ -31,20 +33,21 @@ exports.login = async function (req, res, next) {
     try {
         //find the user
         const user = await User.findOne({ username: req.body.username })
-        const { id, username } = user
+        const { id, username, email } = user
         //authenticate user and log them in
         const correctPassword = await user.validatePassword(req.body.password)
         if(correctPassword) {
             const token = jwt.sign({
                 id,
                 username,
+                email
             },
             process.env.SECRET_KEY
             )
-            console.log(" all g")
             return res.status(200).json({
                 id,
                 username,
+                email,
                 token,
             })
         } else {

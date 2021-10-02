@@ -1,22 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../store/actions/authActions'
 import { NavLink } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
+import Offcanvas from 'react-bootstrap/Offcanvas'
 import '../styles/navbar.css'
+
 function Navbar() {
   const { currentUser } = useSelector(state => state)
   const dispatch = useDispatch()
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const isMobile = useMediaQuery({ maxWidth: 767 })
   const buttons = () => {
     if (currentUser.isAuthenticated) {
-      const handleLogout = () => dispatch(logout())
+      const handleLogout = () => {
+        dispatch(logout())
+      }
       return (
-        <>
-          <NavLink className="nav-link text-truncate" exact to="/">Homepage</NavLink>
-          <NavLink className="nav-link text-truncate" to="/projects">Projects</NavLink>
-          <NavLink className="nav-link text-truncate" to={`/issues`}>My Issues</NavLink>
-          <NavLink className="nav-link text-truncate" to={`/${currentUser.user.id}/profile`}>My Profile</NavLink>
-          <a onClick={handleLogout} className="nav-link text-truncate">Logout</a>
-        </>
+        isMobile
+          ? <>
+            <i onClick={handleShow} className="bi bi-list navbarIcon"></i>
+            <Offcanvas placement='end' style={{ width: '50%' }} show={show} onHide={handleClose}>
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title>{currentUser.user.username}</Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <NavLink onClick={handleClose} className="nav-link text-truncate" to="/">Projects</NavLink>
+                <NavLink onClick={handleClose} className="nav-link text-truncate" to={`/${currentUser.user.id}/profile`}>My Profile/Issues</NavLink>
+                <button onClick={handleLogout} className="nav-link text-truncate">Logout</button>
+              </Offcanvas.Body>
+            </Offcanvas>
+          </>
+          : <>
+            <NavLink className="nav-link text-truncate" to="/">Projects</NavLink>
+            <NavLink className="nav-link text-truncate" to={`/${currentUser.user.id}/profile`}>My Profile/Issues</NavLink>
+            <button onClick={handleLogout} className="nav-link text-truncate nav-button">Logout</button>
+          </>
       )
     } else {
       return (
@@ -28,7 +50,7 @@ function Navbar() {
     }
   }
   return (
-    <div className="navbars">
+    <div className={isMobile ? "navbar-mobile" : "navbar"}>
       {buttons()}
     </div>
   )

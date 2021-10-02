@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const User = require("./Users")
 
 const projectSchema = new mongoose.Schema({
     projectName: {
@@ -34,6 +35,17 @@ const projectSchema = new mongoose.Schema({
 
 
 }, { timestamps: true })
+
+projectSchema.pre("remove", async function (next) {
+  //find user from ref then remove Issue from Issues array in User model
+  try {
+      const user = await User.findById(this.createdBy)
+      user.projects.remove(this._id)
+      await user.save()
+  } catch (err) {
+      return next(err)
+  }
+})
 
 const Project = mongoose.model("Project", projectSchema)
 

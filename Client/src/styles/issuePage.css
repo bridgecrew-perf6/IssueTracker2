@@ -1,0 +1,17 @@
+.issueButtons {
+  display: flex;
+  margin-top: 5px;
+  overflow:auto
+}
+
+.issueButtons button {
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 0.8em;
+}
+
+.title em{
+  font-size: 0.7rem;
+}

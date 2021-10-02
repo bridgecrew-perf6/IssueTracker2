@@ -31,18 +31,6 @@ function addIssue(issue) {
     issue
   }
 }
-// function addIssueToProject(issue) {
-//   return {
-//     type: ADD_ISSUE_TO_PROJECT,
-//     issue
-//   }
-// }
-// function removeIssueFromProject(issue) {
-//   return {
-//     type: REMOVE_ISSUE_FROM_PROJECT,
-//     issue
-//   }
-// }
 
 export function getIssues() {
   return dispatch => {
@@ -131,3 +119,42 @@ export function postComment(issueId, comment) {
   }
 }
 
+export function patchComment(issueId, commentId, comment) {
+  console.log(commentId)
+  return (dispatch, getState) => {
+    const { currentUser } = getState()
+    const { id } = currentUser.user
+    apiCall("patch", `/api/users/${id}/issues/${issueId}/comment/${commentId}`, { comment })
+      .then(res => {
+        dispatch(updateIssue(res.issue._id, res.issue))
+      })
+      .catch(err => console.log(err))
+  }
+}
+
+export function deleteComment(commentId, issueId) {
+  return (dispatch, getState) => {
+    const { currentUser } = getState()
+    const { id } = currentUser.user
+    apiCall("delete", `/api/users/${id}/issues/${issueId}/comment/${commentId}`)
+      .then(res => {
+        dispatch(updateIssue(res.issue._id, res.issue))
+      })
+      .catch(err => console.log(err))
+  }
+}
+
+export function leaveIssue(issueId, history) {
+  return (dispatch, getState) => {
+    const { currentUser } = getState()
+    const { id } = currentUser.user
+    apiCall("patch", `/api/users/${id}/issues/${issueId}/leave`)
+      .then(res => {
+        dispatch(updateIssue(res.issue._id, res.issue))
+        history && history.push("/projects")
+      })
+      .catch(err => {
+        dispatch(addError(err.message))
+      })
+  }
+}

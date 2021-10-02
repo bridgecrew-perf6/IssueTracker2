@@ -19,18 +19,23 @@ function IssuesForm({
     type: issue?.type || "bugs/error",
   }
   const [state, setState] = useState(initialState)
-  const { users, errors } = useSelector(state => state)
+  const { users, errors, currentUser } = useSelector(state => state)
   const dispatch = useDispatch()
   const handleSubmit = (e) => {
     e.preventDefault()
     edit ? dispatch(patchIssue(issue?._id, state, closeModal)) : dispatch(postIssue(state, projectId, closeModal))
   }
   //mapping onto a react-select array of objects
-  const userOptions = users.map((user, i) => (
+  const userOptions = edit
+  ? users.filter(user => user._id !== issue.createdBy._id).map((user, i) => (
     { label: user.username, value: user._id }
   ))
+  : users.filter(user => user._id !== currentUser.user.id).map((user, i) => (
+    { label: user.username, value: user._id }
+  ))
+
   //filter users for default values of multi select
-  const filterUsers = userOptions.filter(user => issue?.assignedUsers.includes(user.value))
+  const filterUsers = userOptions.filter(user => issue?.assignedUsers.map(user => user._id).includes(user.value))
 
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value })
@@ -82,7 +87,6 @@ function IssuesForm({
               <option value="closed">Closed</option>
             </select>
           </div>
-          Work needs to be done here
           <div className="mb-3" >
             <label htmlFor="type" className="form-label">Type</label>
             <select value={state.type ? state.type : "bugs/error"} name="type" onChange={handleChange} className="form-select" aria-label="Default select example">

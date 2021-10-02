@@ -87,8 +87,8 @@ export function deleteProject(projectId, history) {
     const { id } = currentUser.user
     apiCall("delete", `/api/users/${id}/projects/${projectId}`)
       .then(res => {
-        history.push("/projects")
         dispatch(removeProject(res.project._id))
+        history && history.push("/projects")
       })
       .catch(err => {
         dispatch(addError(err.message))
@@ -96,13 +96,14 @@ export function deleteProject(projectId, history) {
   }
 }
 
-export function leaveProject(projectId) {
+export function leaveProject(projectId, history) {
   return (dispatch, getState) => {
     const { currentUser } = getState()
     const { id } = currentUser.user
-    apiCall("delete", `/api/users/${id}/projects/${projectId}/leave`)
+    apiCall("patch", `/api/users/${id}/projects/${projectId}/leave`)
       .then(res => {
-        dispatch(updateProject(res.project))
+        dispatch(removeProject(res.project._id))
+        history && history.push("/projects")
       })
       .catch(err => {
         dispatch(addError(err.message))

@@ -16,8 +16,8 @@
     display: flex;
 }
 
-.projectPageTables {
-    /* display: flex; */
+.pageButtons button {
+  margin-right: 10px;
 }
 
 .card {
@@ -30,11 +30,6 @@
 
 .assignedDeveloperTable {
     margin-top: 1em;
-}
-
-.bi-people {
-    font-size: 1.5em;
-    margin-right: 0.5em;
 }
 
 .btn:focus {

@@ -1,6 +1,6 @@
 import React from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteIssue, updateIssueStatus } from '../store/actions/issueActions'
 import DialogTemplate from './DialogTemplate'
@@ -22,7 +22,8 @@ function IssueMenu({
     >
     </i>
   ))
-
+  const { user } = useSelector(state => state.currentUser)
+  const currentUserInIssue = issue.assignedUsers.map(user => user._id).includes(user.id) || issue.createdBy._id === user.id
   const dispatch = useDispatch()
   const handleDeleteIssue = () => dispatch(deleteIssue(issue._id))
   const handleIssueStatus = () => {
@@ -37,21 +38,20 @@ function IssueMenu({
         <Dropdown.Menu >
           <Dropdown.Item as={Link} to={`/issues/${issue._id}`} href="#/action-2">
             <i style={{ marginRight: '10px' }} className="bi bi-link-45deg"></i>
-            View Bug
+            View Issue
           </Dropdown.Item>
-          <DialogTemplate
+          {currentUserInIssue && <DialogTemplate
             title="Remove"
             contentText="Are you sure you want to remove issue"
             actionBtnText="Remove"
             actionFunc={handleDeleteIssue}
             trigger={{
               type: "menu",
-              text: "Remove Bug",
+              text: "Remove Issue",
               icon: "bi-trash",
-              iconStyle: { marginRight: '10px' },
             }}
-          />
-          {issue.status === "open" ? (
+          />}
+          {currentUserInIssue && (issue.status === "open" ? (
             <DialogTemplate
               title="Close"
               contentText="Are you sure you want to close issue"
@@ -61,7 +61,6 @@ function IssueMenu({
                 type: "menu",
                 text: "Close Issue",
                 icon: "bi-check2",
-                iconStyle: { marginRight: '10px' },
               }}
             />
           ) : (
@@ -74,11 +73,10 @@ function IssueMenu({
                 type: "menu",
                 text: "Re-open Issue",
                 icon: "bi-arrow-return-right",
-                iconStyle: { marginRight: '10px' },
               }}
             />
-          )}
-          <DialogTemplate
+          ))}
+          {currentUserInIssue && <DialogTemplate
             title="Edit Issue"
             actionBtnText="Edit Issue"
             dialogType="form"
@@ -86,14 +84,13 @@ function IssueMenu({
               type: "menu",
               text: "Edit Issue",
               icon: "bi-pencil-square",
-              iconStyle: { marginRight: '10px' },
             }}
           >
             <IssuesForm
               issue={issue}
               edit
             />
-          </DialogTemplate>
+          </DialogTemplate>}
           <DialogTemplate
             title="Add Comment"
             dialogType="form"
@@ -101,11 +98,10 @@ function IssueMenu({
               type: "menu",
               text: "Add Comment",
               icon: "bi-card-text",
-              iconStyle: { marginRight: '10px' },
             }}
           >
             <CommentsForm
-              id={issue._id}
+              issueId={issue._id}
             />
           </DialogTemplate>
         </Dropdown.Menu>
