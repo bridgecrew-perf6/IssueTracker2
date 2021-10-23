@@ -41,6 +41,15 @@ export function getIssues() {
   }
 }
 
+export function getIssueHistory() {
+  return dispatch => {
+    apiCall("get", "/api/issues/history")
+      .then(res => {
+        console.log(res)
+      })
+  }
+}
+
 export function postIssue(issueData, projectId, closeModal) {
   return async (dispatch, getState) => {
     return new Promise((resolve, reject) => {
@@ -61,14 +70,12 @@ export function postIssue(issueData, projectId, closeModal) {
   }
 }
 
-
-
-export function patchIssue(issueId, issueData, closeModal) {
+export function patchIssue(issueId, issueData,issueDifferences, closeModal) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       const { currentUser } = getState()
       const { id } = currentUser.user
-      apiCall("patch", `/api/users/${id}/issues/${issueId}`, issueData)
+      apiCall("patch", `/api/users/${id}/issues/${issueId}`, {issueData, issueDifferences})
         .then(res => {
           dispatch(updateIssue(res.issue._id, res.issue))
           dispatch(removeError())
@@ -101,6 +108,7 @@ export function updateIssueStatus(issueId, type) {
     const { id } = currentUser.user
     apiCall("post", `/api/users/${id}/issues/${issueId}/${type}`)
       .then(res => {
+        console.log(res.issue)
         dispatch(updateIssue(res.issue._id, res.issue))
       })
       .catch(err => console.log(err))

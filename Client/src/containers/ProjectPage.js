@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react'
 import TestTable from '../components/TestTable'
-import { projectPageIssueColumns, membersColumns } from '../data/columns'
+import { projectPageIssueColumns, membersColumns, issueChangesColumns } from '../data/columns'
 import Collapse from 'react-bootstrap/Collapse'
 import Card from 'react-bootstrap/Card'
 import DialogTemplate from '../components/DialogTemplate'
 import useToggler from '../hooks/useToggle'
 import IssueListMobile from '../components/IssueListMobile'
+import HistoryListMobile from '../components/HistoryListMobile'
 import { formatDateTime } from '../utils/helperFunctions'
 import { useMediaQuery } from 'react-responsive'
 import IssuesForm from '../components/IssuesForm'
@@ -24,13 +25,15 @@ function ProjectPage(props) {
   const userData = useMemo(() => project ? [...project.assignedUsers, project.createdBy] : [], [project])
   const issueColumns = useMemo(() => projectPageIssueColumns(), [])
   const usersColumns = useMemo(() => membersColumns(project?.createdBy), [project])
+  const changesColumns = useMemo(() => issueChangesColumns, [])
+  const changesData = useMemo(() => project ? project.history : [], [project])
   const [show, toggle] = useToggler(false)
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const dispatch = useDispatch()
   const handleDeleteProject = () => dispatch(deleteProject(project._id, history))
   const handleLeaveProject = () => dispatch(leaveProject(project._id, history))
 
-  const adminButtons = () => 
+  const adminButtons = () =>
     project?.createdBy._id === user.id
       ? (
         <>
@@ -124,25 +127,28 @@ function ProjectPage(props) {
           </Card>
           <Card>
             <Card.Body>
-              <DialogTemplate
-                title="Edit Issue"
-                actionBtnText="Create Issue"
-                dialogType="form"
-                trigger={{
-                  type: "menu",
-                  text: "Create Issue",
-                  icon: "bi-pencil-square",
-                }}
-              >
-                <IssuesForm
-                  projectId={projectId}
-                />
-              </DialogTemplate>
+              <div className="issuesTitle">
+                <h4 className="tableHeaders">Issues</h4>
+                <DialogTemplate
+                  title="Create Issue"
+                  actionBtnText="Create Issue"
+                  dialogType="form"
+                  trigger={{
+                    type: "menu",
+                    text: "Create Issue",
+                    icon: "bi-pencil-square",
+                  }}
+                >
+                  <IssuesForm
+                    projectId={projectId}
+                  />
+                </DialogTemplate>
+              </div>
               <hr />
               {isMobile ?
                 <IssueListMobile issues={issueData} />
-                :
-                <div className="issuesTable">
+                : issueData.length 
+                ? <div className="issuesTable">
                   <TestTable
                     title="Issues"
                     columns={issueColumns}
@@ -150,7 +156,28 @@ function ProjectPage(props) {
                     small
                   />
                 </div>
+                : <p className="lead">No Issues Added Yet</p>
               }
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <h4 className="tableHeaders">History</h4>
+              <hr />
+              {isMobile ?
+                <HistoryListMobile history={changesData} />
+                : changesData.length 
+                ? <div className="issuesTable">
+                  <TestTable
+                    columns={changesColumns}
+                    data={changesData}
+                    numColumns={10}
+                    small
+                  />
+                </div>
+                : <p className="lead">No edits have been made</p>
+              }
+
             </Card.Body>
           </Card>
           <br />

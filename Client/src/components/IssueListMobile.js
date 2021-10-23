@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 
 function IssueListMobile({ issues = [] }) {
   const { user } = useSelector(state => state.currentUser)
-  
+
   const mappedIssues = issues.map((issue, i) => {
     const isAdmin = user?.id === issue.createdBy._id
     const isMember = issue?.assignedUsers.map(user => user._id).includes(user.id) || isAdmin
@@ -91,7 +91,7 @@ function IssueListMobile({ issues = [] }) {
   })
   return (
     <div className="issueListContainer">
-      {issues.length !== 0 ? mappedIssues : "No Issues Added Yet"}
+      {issues.length ? mappedIssues : <p className="lead">No Issues Added Yet</p>}
     </div>
   )
 }

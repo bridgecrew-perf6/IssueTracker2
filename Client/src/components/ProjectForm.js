@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux'
+import { formatFormDate } from '../utils/helperFunctions'
+import { differences } from '../utils/historyFunctions'
 import { postProject, patchProject } from '../store/actions/projectActions'
 
 function ProjectForm({
@@ -19,7 +21,10 @@ function ProjectForm({
   const dispatch = useDispatch()
   const handleSubmit = (e) => {
     e.preventDefault()
-    edit ? dispatch(patchProject(project._id, state, closeModal)) : dispatch(postProject(state, closeModal))
+    if (edit) {
+      const projectDifferences = differences(project, state, users)
+      dispatch(patchProject(project._id, state, projectDifferences, closeModal))
+    } else dispatch(postProject(state, closeModal))
   }
 
   //mapping onto a react-select array of objects
@@ -60,7 +65,7 @@ function ProjectForm({
           </div>
           <div className="mb-3" >
             <label htmlFor="targetEndDate" className="form-label">Target End Date</label>
-            <input value={state.targetEndDate ? state.targetEndDate : ""} onChange={handleChange} type="date" className="form-control" name="targetEndDate" />
+            <input value={state.targetEndDate ? formatFormDate(state.targetEndDate) : ""} onChange={handleChange} type="date" className="form-control" name="targetEndDate" />
           </div>
         </>
         <div className="mb-3" >

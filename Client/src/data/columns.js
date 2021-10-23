@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import IssueMenu from '../components/IssueMenu'
-import { formatDateTime } from '../utils/helperFunctions'
+import { formatDateTime, formatFormDate } from '../utils/helperFunctions'
 import '../styles/columnStyles.css'
 import { ProjectMenu } from '../components/ProjectMenu'
 
@@ -58,7 +58,7 @@ export const projectPageIssueColumns = () => {
     {
       Header: "Updated",
       accessor: "updatedAt",
-      Cell: ({ value }) => formatDateTime(value) 
+      Cell: ({ value }) => formatDateTime(value)
     },
     {
       Header: "Actions",
@@ -79,5 +79,41 @@ export const membersColumns = (admin) => [
   {
     Header: "Email Address",
     accessor: "email",
+  },
+]
+
+export const issueChangesColumns = [
+  {
+    Header: "Property",
+    accessor: "property",
+  },
+  {
+    Header: "Old Value",
+    accessor: "oldValue",
+    Cell: ({ value, row }) => {
+      switch (row.values.property) {
+        case "targetEndDate": return formatFormDate(value)
+        case "assignedUsers": return value.length ? value.map(val => val.username + ", ") : "No Users"
+        default: return value
+      }
+    }
+  },
+  {
+    Header: "New Value",
+    accessor: "newValue",
+    Cell: ({ value, row }) => {
+      switch (row.values.property) {
+        case "targetEndDate": return formatFormDate(value)
+        case "assignedUsers": return value.length ? value.map(val => val.username + ", ") : "No Users"
+        default: return value
+      }
+    }
+  },
+  {
+    Header: "Updated By",
+    accessor: "updatedBy",
+    Cell: ({ value, row }) => value?.username 
+    ?`${value.username} ~${formatDateTime(row.original.updatedAt)}`
+    : "Undefined User"
   },
 ]

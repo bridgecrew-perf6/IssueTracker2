@@ -2,7 +2,7 @@ require("dotenv").config()
 const express = require("express")
 const app = express()
 const cors = require("cors")
-const { User, Issue, Project } = require("./models")
+const { User, Issue, Project, IssueHistory } = require("./models")
 const authRoutes = require("./routes/authRoutes")
 const issueRoutes = require("./routes/issueRoutes")
 const projectRoutes = require("./routes/projectRoutes")
@@ -21,8 +21,15 @@ app.get("/api/issues", async function (req, res, next) {
     .sort({ createdAt: "asc" })
     .populate("assignedUsers", { username: true, email: true })
     .populate("createdBy", { username: true, email: true })
+    .populate({ path: "history", populate: { path: "updatedBy", select: "username" } })
     .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
   return res.status(200).json(allIssues)
+})
+
+app.get("/api/issues/history", async function (req, res, next) {
+  const allHistory = await IssueHistory.find({})
+    .sort({ createdAt: "asc" })
+  return res.status(200).json(allHistory)
 })
 
 app.get("/:id/api/projects", async function (req, res, next) {
@@ -32,6 +39,7 @@ app.get("/:id/api/projects", async function (req, res, next) {
     .populate("assignedUsers", { username: true, email: true })
     .populate("createdBy", { username: true, email: true })
     .populate({ path: "issues", populate: { path: "createdBy", select: "username" } })
+    .populate({ path: "history", populate: { path: "updatedBy", select: "username" } })
   return res.status(200).json(allProjects)
 })
 

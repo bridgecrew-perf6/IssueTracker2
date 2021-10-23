@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 exports.signup = async function (req, res, next) {
     try {
         const user = await User.create(req.body)
-        const { id, username } = user
+        const { id, username, email } = user
         const correctPassword = await user.validatePassword(req.body.password)
         if (correctPassword) {
             const token = jwt.sign({

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const User = require("./Users")
+const ProjectHistory = require("./ProjectHistory")
 
-const projectSchema = new mongoose.Schema({
+let projectSchema = new mongoose.Schema({
     projectName: {
         type: String,
         required: [true, "Name for project is required"],
@@ -28,6 +29,10 @@ const projectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+    history: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ProjectHistory"
+    }],
     issues: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Issue"
@@ -42,6 +47,7 @@ projectSchema.pre("remove", async function (next) {
       const user = await User.findById(this.createdBy)
       user.projects.remove(this._id)
       await user.save()
+      await ProjectHistory.remove({ _id: { $in: this.history } })
   } catch (err) {
       return next(err)
   }

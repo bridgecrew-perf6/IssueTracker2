@@ -18,6 +18,8 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.14"
+    "mongoose": "^5.12.14",
+    "mongoose-history": "^0.8.0",
+    "mongoose-history-trace": "^1.7.1"
   }
 }

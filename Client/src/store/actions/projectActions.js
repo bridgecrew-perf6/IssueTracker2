@@ -61,12 +61,12 @@ export function postProject(projectData, closeModal) {
   }
 }
 
-export function patchProject(projectId, projectData, closeModal) {
+export function patchProject(projectId, projectData, projectDifferences, closeModal) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       const { currentUser } = getState()
-      const { id } = currentUser
-      apiCall("patch", `/api/users/${id}/projects/${projectId}`, projectData)
+      const { id } = currentUser.user
+      apiCall("patch", `/api/users/${id}/projects/${projectId}`, {projectData, projectDifferences})
         .then(res => {
           dispatch(updateProject(res.project))
           closeModal()

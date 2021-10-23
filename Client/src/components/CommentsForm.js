@@ -11,7 +11,8 @@ export default function CommentsForm( { closeModal, issueId, comment, edit}) {
 
   const handleSubmit = e => {
     e.preventDefault()
-    edit ? dispatch(patchComment(issueId, comment._id, newComment)) : dispatch(postComment(issueId, newComment))
+    edit ? dispatch(patchComment(issueId, comment._id, newComment)) 
+    : dispatch(postComment(issueId, newComment))
     closeModal()
   }
   return (

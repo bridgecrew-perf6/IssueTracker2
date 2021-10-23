@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select'
 import { patchIssue, postIssue } from '../store/actions/issueActions'
+import { differences } from '../utils/historyFunctions'
+import { formatFormDate } from '../utils/helperFunctions'
 
 function IssuesForm({
   issue,
@@ -18,21 +20,27 @@ function IssuesForm({
     status: issue?.status || "open",
     type: issue?.type || "bugs/error",
   }
+
   const [state, setState] = useState(initialState)
   const { users, errors, currentUser } = useSelector(state => state)
   const dispatch = useDispatch()
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    edit ? dispatch(patchIssue(issue?._id, state, closeModal)) : dispatch(postIssue(state, projectId, closeModal))
+    if (edit) {
+      const issueDifferences = differences(issue, state, users);
+      dispatch(patchIssue(issue?._id, state, issueDifferences, closeModal))
+    }
+    else dispatch(postIssue(state, projectId, closeModal))
   }
   //mapping onto a react-select array of objects
   const userOptions = edit
-  ? users.filter(user => user._id !== issue.createdBy._id).map((user, i) => (
-    { label: user.username, value: user._id }
-  ))
-  : users.filter(user => user._id !== currentUser.user.id).map((user, i) => (
-    { label: user.username, value: user._id }
-  ))
+    ? users.filter(user => user._id !== issue.createdBy._id).map((user, i) => (
+      { label: user.username, value: user._id }
+    ))
+    : users.filter(user => user._id !== currentUser.user.id).map((user, i) => (
+      { label: user.username, value: user._id }
+    ))
 
   //filter users for default values of multi select
   const filterUsers = userOptions.filter(user => issue?.assignedUsers.map(user => user._id).includes(user.value))
@@ -58,7 +66,7 @@ function IssuesForm({
           </div>
           <div className="mb-3" >
             <label htmlFor="targetEndDate" className="form-label">Target End Date</label>
-            <input value={state.targetEndDate ? state.targetEndDate : ""} onChange={handleChange} type="date" className="form-control" name="targetEndDate" />
+            <input value={state.targetEndDate ? formatFormDate(state.targetEndDate) : ""} onChange={handleChange} type="date" className="form-control" name="targetEndDate" />
           </div>
           <div className="mb-3" >
             <label htmlFor="assignedUsers" className="form-label">Assigned User</label>

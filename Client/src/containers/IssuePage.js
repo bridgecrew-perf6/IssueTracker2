@@ -7,9 +7,10 @@ import { formatDateTime, formatTimeAgo } from '../utils/helperFunctions'
 import { deleteIssue, updateIssueStatus, deleteComment, leaveIssue } from '../store/actions/issueActions'
 import CommentsForm from '../components/CommentsForm'
 import IssuesForm from '../components/IssuesForm'
+import HistoryListMobile from '../components/HistoryListMobile'
 import { cellStyles, cellColors, spanStyles } from '../styles/customStyles'
 import TestTable from '../components/TestTable'
-import { membersColumns } from '../data/columns'
+import { membersColumns, issueChangesColumns } from '../data/columns'
 import Collapse from 'react-bootstrap/Collapse'
 import useToggler from '../hooks/useToggle'
 import { useMediaQuery } from 'react-responsive'
@@ -20,6 +21,8 @@ function IssuePage({ issue, user }) {
   const [show, toggle] = useToggler(false)
   const usersColumns = useMemo(() => membersColumns(issue?.createdBy), [issue])
   const userData = useMemo(() => issue ? [...issue.assignedUsers, issue.createdBy] : [], [issue])
+  const changesColumns = useMemo(() => issueChangesColumns, [])
+  const changesData = useMemo(() => issue ? issue.history : [], [issue])
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const isAdmin = user.id === issue?.createdBy._id
   const isMember = issue?.assignedUsers.map(user => user._id).includes(user.id) || isAdmin
@@ -93,6 +96,14 @@ function IssuePage({ issue, user }) {
           <span style={{ ...spanStyles }}>
             <strong>Created By: {issue.createdBy.username}</strong>
           </span>
+        </li>
+        <li>
+          <span style={{ ...spanStyles }}>
+            Description:
+          </span>
+          <div style={{
+            ...cellStyles,
+          }}>{issue?.description}</div>
         </li>
         <li>
           <span style={{ ...spanStyles }}>
@@ -221,7 +232,6 @@ function IssuePage({ issue, user }) {
         }}
       />
 
-
   const adminButtons = () =>
     !isMobile
       ? <Button variant="primary" onClick={toggle}>
@@ -279,7 +289,24 @@ function IssuePage({ issue, user }) {
               />
             </DialogTemplate>
             <hr />
-            {mappedComments}
+            {issue?.comments.length !== 0 ? mappedComments : <p className="lead">No comments have been made</p>}
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
+            History
+            <hr />
+            {isMobile ?
+              <HistoryListMobile history={changesData} />
+              : changesData.length 
+              ? <TestTable
+                columns={changesColumns}
+                data={changesData}
+                numColumns={10}
+                small
+              />
+              : <p className="lead">No edits have been made</p> 
+            }
           </Card.Body>
         </Card>
       </div>

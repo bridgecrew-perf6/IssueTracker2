@@ -2,9 +2,12 @@ const mongoose = require("mongoose")
 const Issue = require("./Issues")
 
 const commentSchema = new mongoose.Schema({
-  text: String,
+  text: {
+    type: String,
+    required: [true, "Comment cannot be empty"],
+  },
   createdBy: {
-    type: mongoose.Schema.Types.Object,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   }
 }, { timestamps: true })

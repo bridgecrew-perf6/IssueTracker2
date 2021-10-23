@@ -40,17 +40,6 @@ function IssueMenu({
             <i style={{ marginRight: '10px' }} className="bi bi-link-45deg"></i>
             View Issue
           </Dropdown.Item>
-          {currentUserInIssue && <DialogTemplate
-            title="Remove"
-            contentText="Are you sure you want to remove issue"
-            actionBtnText="Remove"
-            actionFunc={handleDeleteIssue}
-            trigger={{
-              type: "menu",
-              text: "Remove Issue",
-              icon: "bi-trash",
-            }}
-          />}
           {currentUserInIssue && (issue.status === "open" ? (
             <DialogTemplate
               title="Close"
@@ -104,6 +93,17 @@ function IssueMenu({
               issueId={issue._id}
             />
           </DialogTemplate>
+          {currentUserInIssue && <DialogTemplate
+            title="Remove"
+            contentText="Are you sure you want to remove issue"
+            actionBtnText="Remove"
+            actionFunc={handleDeleteIssue}
+            trigger={{
+              type: "menu",
+              text: "Remove Issue",
+              icon: "bi-trash",
+            }}
+          />}
         </Dropdown.Menu>
       </Dropdown>
     </div>

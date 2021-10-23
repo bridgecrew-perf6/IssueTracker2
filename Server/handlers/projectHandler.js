@@ -1,4 +1,4 @@
-const { User, Issue, Project } = require("../models")
+const { User, Issue, Project, ProjectHistory } = require("../models")
 //handle errors
 const handleErrors = (err) => {
   let elements = []
@@ -17,7 +17,9 @@ exports.createProject = async function (req, res, next) {
     const foundUser = await User.findById(id)
     foundUser.projects.push(post)
     await foundUser.save()
-    const project = await Project.findOne(req.body).populate("createdBy", { username: true, projects: true })
+    const project = await Project.findOne(req.body)
+    .populate("assignedUsers", { username: true, email: true })
+    .populate("createdBy", { username: true, email: true })
     return res.status(200).json(project)
   } catch (err) {
     const errorMessageArray = handleErrors(err)
@@ -28,10 +30,16 @@ exports.createProject = async function (req, res, next) {
 exports.editProject = async function (req, res, next) {
   try {
     //Update Issue/s /api/users/:id/issues/:projectId/edit
-    const { projectId } = req.params
-    const foundProject = await Project.findByIdAndUpdate(projectId, req.body, { new: true })
+    const { projectId, id } = req.params
+    const { projectData, projectDifferences } = req.body
+    const foundProject = await Project.findByIdAndUpdate(projectId, projectData, { new: true })
       .populate("assignedUsers", { username: true, email: true })
       .populate("createdBy", { username: true, email: true })
+    for (let value of projectDifferences) {
+      let projectHistory = await ProjectHistory.create({ ...value, updatedBy: id })
+      foundProject.history.push(projectHistory)
+    }
+    await foundProject.save().then(p => p.populate({ path: "history", populate: { path: "updatedBy", select: "username" } }).execPopulate())
     return res.status(200).json({
       project: foundProject
     })

@@ -1,19 +1,19 @@
 .projectPageHeader {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .projectPageHeader * {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .subtitle p {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .pageButtons {
-    margin-top: 5px;
-    display: flex;
+  margin-top: 5px;
+  display: flex;
 }
 
 .pageButtons button {
@@ -21,29 +21,38 @@
 }
 
 .card {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 
 .issuesTable {
-    width: 100%;
+  width: 100%;
 }
 
 .assignedDeveloperTable {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 
 .btn:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .h4 {
-    display: inline-block;
+  display: inline-block;
 }
 
 table {
-    text-align: center;
+  text-align: center;
 }
- 
+
 .page-btn:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+}
+
+.issuesTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tableHeaders {
+  margin-bottom: 0px;
 }

@@ -1,4 +1,4 @@
-const { User, Issue, Project, Comment } = require("../models")
+const { User, Issue, Project, Comment, IssueHistory } = require("../models")
 //handle errors, then create a more human readable error message
 const handleErrors = (err) => {
   let elements = []
@@ -21,8 +21,8 @@ exports.createIssue = async function (req, res, next) {
     foundProject.issues.push(post)
     await foundProject.save()
     const issue = await Issue.findOne(post._id)
-      .populate("createdBy", { username: true })
-      // .populate("assignedUsers", { username: true, email: true })
+      .populate("createdBy", { username: true, email: true})
+      .populate("assignedUsers", { username: true, email: true })
       .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
     return res.status(200).json(issue)
   } catch (err) {
@@ -62,14 +62,19 @@ exports.getIssue = async function (req, res, next) {
 exports.updateIssueStatus = async function (req, res, next) {
   try {
     const status = req.params.type
-    const issue = await Issue.findByIdAndUpdate(req.params.issueId, { status }, { new: true })
+    const issue = await Issue.findById(req.params.issueId)
       .populate("createdBy", { username: true, email: true })
-      // .populate("assignedUsers", { username: true, email: true })
+      .populate("assignedUsers", { username: true, email: true })
       .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
+    issue.status = status
+    const oldStatus = status === "open" ? "closed" : "open"
+    const issueHistory = await IssueHistory.create({ property: "status", oldValue: oldStatus, newValue: status, updatedBy: req.params.id })
+    issue.history.push(issueHistory)
+    await issue.save().then(t => t.populate({ path: "history", populate: { path: "updatedBy", select: "username" } }).execPopulate())
     return res.status(200).json({
-      issue,
+      issue
     })
-  } catch {
+  } catch (err) {
     return next(err)
   }
 }
@@ -77,10 +82,18 @@ exports.updateIssueStatus = async function (req, res, next) {
 //Update Issue/s /api/users/:id/issues/:issueId/edit
 exports.updateIssue = async function (req, res, next) {
   try {
-    const issue = await Issue.findByIdAndUpdate(req.params.issueId, req.body, { new: true, runValidators: true })
+    const { issueData, issueDifferences } = req.body
+    const issue = await Issue.findByIdAndUpdate(req.params.issueId, issueData, { new: true, runValidators: true })
       .populate("createdBy", { username: true, email: true })
       .populate("assignedUsers", { username: true, email: true })
       .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
+
+    for (let value of issueDifferences) {
+      let issueHistory = await IssueHistory.create({ ...value, updatedBy: req.params.id })
+      issue.history.push(issueHistory)
+    }
+    await issue.save().then(i => i.populate({ path: "history", populate: { path: "updatedBy", select: "username" } }).execPopulate())
+    console.log(issue)
     return res.status(200).json({
       issue
     })
@@ -96,8 +109,9 @@ exports.postComment = async function (req, res, next) {
     const { comment } = req.body
     const newComment = await Comment.create({ text: comment, createdBy: id })
     const issue = await Issue.findById(issueId)
-      .populate("createdBy", { username: true, email: true })
-      .populate("assignedUsers", { username: true, email: true })
+    .populate("createdBy", { username: true, email: true })
+    .populate("assignedUsers", { username: true, email: true })
+    .populate({ path: "history", populate: { path: "updatedBy", select: "username" } })
     issue.comments.push(newComment)
     await issue.save().then(t => t.populate({ path: "comments", populate: { path: "createdBy", select: "username" } }).execPopulate())
     return res.status(200).json({
@@ -117,6 +131,7 @@ exports.patchComment = async function (req, res, next) {
       .populate("createdBy", { username: true, email: true })
       .populate("assignedUsers", { username: true, email: true })
       .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
+      .populate({ path: "history", populate: { path: "updatedBy", select: "username" } })
     return res.status(200).json({
       issue
     })
@@ -130,10 +145,11 @@ exports.removeComment = async function (req, res, next) {
     const { issueId, commentId } = req.params
     const foundComment = await Comment.findById(commentId)
     await foundComment.remove()
-    const issue = await Issue.findById(issueId)
+    let issue = await Issue.findById(issueId)
       .populate("createdBy", { username: true, email: true })
       .populate("assignedUsers", { username: true, email: true })
       .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
+      .populate({ path: "history", populate: { path: "updatedBy", select: "username" } })
     await issue.comments.remove(commentId)
     return res.status(200).json({
       issue
@@ -146,11 +162,10 @@ exports.removeComment = async function (req, res, next) {
 exports.leaveIssue = async function (req, res, next) {
   try {
     const foundUser = await User.findById(req.params.id)
-    const foundIssue = await Issue.findById(req.params.issueId)
-    .populate("createdBy", { username: true, email: true })
-    .populate("assignedUsers", { username: true, email: true })
-    .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
-    console.log(req.params.issueId)
+    let foundIssue = await Issue.findById(req.params.issueId)
+      .populate("createdBy", { username: true, email: true })
+      .populate("assignedUsers", { username: true, email: true })
+      .populate({ path: "comments", populate: { path: "createdBy", select: "username" } })
     foundIssue.assignedUsers.remove(foundUser)
     await foundIssue.save()
     return res.status(200).json({

@@ -3,7 +3,7 @@ import "../styles/testTable.css"
 import { useTable, usePagination } from 'react-table'
 import Table from 'react-bootstrap/Table'
 
-function TestTable({ columns, data, title }) {
+function TestTable({ columns, data, title, numColumns }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -17,7 +17,7 @@ function TestTable({ columns, data, title }) {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize },
-  } = useTable({ columns, data, initialState: { pageSize: 10 } }, usePagination)
+  } = useTable({ columns, data, initialState: { pageSize: numColumns ? numColumns : 10 } }, usePagination)
   return (
     <div>
       <h3>{title}</h3>
@@ -74,7 +74,6 @@ function TestTable({ columns, data, title }) {
       </div>
     </div>
   )
-
 }
 
 

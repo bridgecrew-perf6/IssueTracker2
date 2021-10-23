@@ -4,7 +4,6 @@ import Card from 'react-bootstrap/Card'
 import IssueListMobile from '../components/IssueListMobile'
 import '../styles/myProfile.css'
 
-
 function MyProfile() {
   const { currentUser, issues } = useSelector(state => state)
   const { username, email, id } = currentUser.user
