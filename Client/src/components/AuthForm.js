@@ -19,8 +19,15 @@ export default function AuthForm(props) {
     e.preventDefault()
     const authType = signup ? "signup" : "login"
     dispatch(authUser(authType, state))
-      .then(() => history.push("/"))
       .catch(err => { return })
+  }
+
+  const loginGuest = (e) => {
+    e.preventDefault()
+    dispatch(authUser("login", { username: "guest", password: "guest" }))
+      .catch((err) => {
+        return
+      })
   }
 
   const handleChange = (e) => {
@@ -32,7 +39,7 @@ export default function AuthForm(props) {
   })
   return (
     <div className="authFormContainer">
-      <form className="authForm" onSubmit={handleSubmit}>
+      <form className="authForm" >
         <div className="loginInputs">
           {signup &&
             <div className="mb-3" >
@@ -49,7 +56,10 @@ export default function AuthForm(props) {
             <input onChange={handleChange} type="password" className="form-control" name="password" />
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <div className="loginButtons">
+          <button onClick={handleSubmit} type="submit" className="btn btn-primary">{signup ? "Sign Up" : "Log In"}</button>
+          {!signup && <button onClick={loginGuest} type="submit" className="btn btn-primary">Login As Guest</button>}
+        </div>
       </form>
       {errors.message &&
         <div className="alert alert-danger" role="alert">

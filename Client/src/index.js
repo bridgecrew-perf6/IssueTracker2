@@ -16,7 +16,6 @@ ReactDOM.render(
     <BrowserRouter>
       <Navbar />
       <div className="componentContainer">
-        {/* <SideBar /> */}
         <App />
       </div>
     </BrowserRouter>

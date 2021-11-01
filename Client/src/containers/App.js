@@ -42,12 +42,12 @@ function App() {
         <Route exact path="/login"
           render={routeProps => !isLoggedIn
             ? <AuthForm {...routeProps} />
-            : <Redirect to='/projects' />
+            : <Redirect to='/' />
           } />
         <Route exact path="/signup"
           render={routeProps => !isLoggedIn
             ? <AuthForm signup {...routeProps} />
-            : <Redirect to='/projects' />
+            : <Redirect to='/' />
           } />
         <Route exact path="/projects/:projectId"
           render={(routeProps) => isLoggedIn

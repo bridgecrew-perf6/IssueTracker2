@@ -16,5 +16,6 @@ code {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: #eee;
+  background-color: #f6f9fc;
+  color: #425466;
 }

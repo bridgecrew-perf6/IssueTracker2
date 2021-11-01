@@ -150,7 +150,6 @@ function ProjectPage(props) {
                 : issueData.length 
                 ? <div className="issuesTable">
                   <TestTable
-                    title="Issues"
                     columns={issueColumns}
                     data={issueData}
                     small

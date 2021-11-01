@@ -3,7 +3,7 @@ import "../styles/testTable.css"
 import { useTable, usePagination } from 'react-table'
 import Table from 'react-bootstrap/Table'
 
-function TestTable({ columns, data, title, numColumns }) {
+function TestTable({ columns, data, numColumns }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -20,7 +20,6 @@ function TestTable({ columns, data, title, numColumns }) {
   } = useTable({ columns, data, initialState: { pageSize: numColumns ? numColumns : 10 } }, usePagination)
   return (
     <div>
-      <h3>{title}</h3>
       <Table bordered hover {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (

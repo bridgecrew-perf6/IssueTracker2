@@ -62,6 +62,7 @@ export function authUser(type, userData) {
           resolve()
         })
         .catch(err => {
+          debugger;
           dispatch(addError(err.message))
           reject()
         })

@@ -1,28 +1,28 @@
 .navbar {
   display: flex;
   justify-content: space-around;
-  background-color: black;
+  background-color: #f6f9fc;
 }
 
 .navbar a {
-  color: white;
+  color: #425466;
 }
 
 .navbar-mobile {
   display: flex;
   justify-content: flex-end;
   height: 40px;
-  background-color: black;
+  background-color: #f6f9fc;
 }
 
 .navbarIcon {
-  color: white;
+  color: #425466;
   font-size: 28px;
   width: 40px;
 }
 
 .nav-button {
-  color: white;
+  color: #425466;
   background: none;
   border: none;
 }
