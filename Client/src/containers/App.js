@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import AuthForm from '../components/AuthForm'
 import ProjectPage from '../containers/ProjectPage'
-// import AllProjects from '../containers/AllProjects'
+import AllProjects from '../containers/AllProjects'
 import MyProfile from '../containers/MyProfile'
 import { useDispatch, useSelector } from 'react-redux'
 import { autoLogin } from '../store/actions/authActions'
@@ -32,14 +32,14 @@ function App() {
     <div className="container">
       <h1>This is my page</h1>
       <Switch>
-        {/* <Route exact path="/"
+        <Route exact path="/"
           render={(routeProps) => isLoggedIn
             ? <AllProjects
               currentUser={currentUser}
               {...routeProps}
             />
             : <Redirect to='/login' />
-          } /> */}
+          } />
         <Route exact path="/login"
           render={routeProps => !isLoggedIn
             ? <AuthForm {...routeProps} />
