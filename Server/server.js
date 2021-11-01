@@ -8,6 +8,7 @@ const issueRoutes = require("./routes/issueRoutes")
 const projectRoutes = require("./routes/projectRoutes")
 const errorHandler = require("./handlers/errorHandler")
 const { ensureCorrectUser, loginRequired } = require("./middleware/auth")
+const PORT = process.env.PORT || 3002
 
 app.use(cors())
 app.use(express.json())
@@ -58,6 +59,6 @@ app.use(function (req, res, next) {
 app.use(errorHandler)
 
 
-app.listen("3080", () => {
-  console.log("listening on port 3080")
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`)
 })
