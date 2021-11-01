@@ -30,15 +30,16 @@ function App() {
   // <Redirect to='/login' />
   return (
     <div className="container">
+      <h1>This is my page</h1>
       <Switch>
-        <Route exact path="/"
+        {/* <Route exact path="/"
           render={(routeProps) => isLoggedIn
             ? <AllProjects
               currentUser={currentUser}
               {...routeProps}
             />
             : <Redirect to='/login' />
-          } />
+          } /> */}
         <Route exact path="/login"
           render={routeProps => !isLoggedIn
             ? <AuthForm {...routeProps} />
