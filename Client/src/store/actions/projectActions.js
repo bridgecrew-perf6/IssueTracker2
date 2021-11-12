@@ -46,7 +46,7 @@ export function postProject(projectData, closeModal) {
     return new Promise((resolve, reject) => {
       const { currentUser } = getState()
       const { id } = currentUser.user
-      apiCall("post", `api/users/${id}/projects`, projectData)
+      apiCall("post", `/api/users/${id}/projects`, projectData)
         .then(res => {
           dispatch(removeError())
           dispatch(addProject(res))
