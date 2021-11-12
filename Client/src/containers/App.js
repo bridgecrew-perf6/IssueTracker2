@@ -30,7 +30,7 @@ function App() {
   // <Redirect to='/login' />
   return (
     <div className="container">
-      <h1>This is my page</h1>
+      <h1>New Mesage</h1>
       <Switch>
         <Route exact path="/"
           render={(routeProps) => isLoggedIn
