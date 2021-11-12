@@ -28,7 +28,7 @@ function App() {
     return issues.find(issue => issue._id === issueId)
   }
   const clickers = () => apiCall('post', "/api/testing")
-    .then(res => (console.log("works")))
+    .then(res => (console.log(res.message)))
     .catch(err => console.log(err))
   // <Redirect to='/login' />
   return (
