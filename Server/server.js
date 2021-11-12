@@ -33,6 +33,12 @@ app.get("/api/issues/history", async function (req, res, next) {
   return res.status(200).json(allHistory)
 })
 
+app.post("/api/testing", async function (req, res, next) {
+  return res.status(200).json({
+    message: "this is my message"
+  })
+})
+
 app.get("/:id/api/projects", async function (req, res, next) {
   const { id } = req.params
   const allProjects = await Project.find({ $or: [{ createdBy: id }, { assignedUsers: id }] })
