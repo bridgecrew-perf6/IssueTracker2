@@ -50,7 +50,7 @@ export function autoLogin() {
 export function authUser(type, userData) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      apiCall('post', `api/auth/${type}`, userData)
+      apiCall('post', `/api/auth/${type}`, userData)
         .then(({ token, ...userInfo }) => {
           localStorage.setItem("jwt", token)
           setTokenHeader(token)
