@@ -1,1 +1,2 @@
-/api/* https://bb-issuetracker.herokuapp.com/api/:splat 200
+/api/* https://bb-issuetracker.herokuapp.com/api/:splat 
+/* /index.html 200
