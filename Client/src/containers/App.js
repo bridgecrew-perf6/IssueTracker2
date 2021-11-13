@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { autoLogin } from '../store/actions/authActions'
 import "../App.css"
 import IssuePage from '../containers/IssuePage'
-import { apiCall } from '../services/api'
 
 function App() {
   const { currentUser, projects, issues } = useSelector(state => state)
@@ -27,14 +26,10 @@ function App() {
   const findIssue = (issueId) => {
     return issues.find(issue => issue._id === issueId)
   }
-  const clickers = () => apiCall('post', "/api/testing")
-    .then(res => (console.log(res.message)))
-    .catch(err => console.log(err))
+
   // <Redirect to='/login' />
   return (
     <div className="container">
-      <h1>New Mesage</h1>
-      <button onClick={clickers}>Click</button>
       <Switch>
         <Route exact path="/"
           render={(routeProps) => isLoggedIn
