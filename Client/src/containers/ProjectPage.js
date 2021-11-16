@@ -20,6 +20,7 @@ import "../styles/projectPage.css"
 function ProjectPage(props) {
   const { project, issues, user } = props
   const { projectId } = useParams()
+  console.log(project)
   const history = useHistory()
   const issueData = useMemo(() => issues ? issues.filter(i => i.project === projectId) : [], [issues, projectId])
   const userData = useMemo(() => project ? [...project.assignedUsers, project.createdBy] : [], [project])
@@ -32,6 +33,27 @@ function ProjectPage(props) {
   const dispatch = useDispatch()
   const handleDeleteProject = () => dispatch(deleteProject(project._id, history))
   const handleLeaveProject = () => dispatch(leaveProject(project._id, history))
+
+  const issueDataToDisplay = () => {
+    if (issueData) {
+      return isMobile ?
+        <IssueListMobile issues={issueData} />
+        : issueData.length
+          ? <div className="issuesTable">
+            <TestTable
+              columns={issueColumns}
+              data={issueData}
+              small
+            />
+          </div>
+          : <p className="lead">No Issues Added Yet</p>
+    }
+    return (
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    )
+  }
 
   const adminButtons = () =>
     project?.createdBy._id === user.id
@@ -80,7 +102,7 @@ function ProjectPage(props) {
     return (
       <div className="projectPage">
         <div className="projectPageTables">
-          <Card>
+          <Card className="projectPageCard">
             <Card.Body>
               <div className="projectPageHeader">
                 <h1 className="display-6">Project Name: {project.projectName}</h1>
@@ -125,7 +147,7 @@ function ProjectPage(props) {
               </Collapse>
             </Card.Body>
           </Card>
-          <Card>
+          <Card className="projectPageCard">
             <Card.Body>
               <div className="issuesTitle">
                 <h4 className="tableHeaders">Issues</h4>
@@ -145,36 +167,25 @@ function ProjectPage(props) {
                 </DialogTemplate>
               </div>
               <hr />
-              {isMobile ?
-                <IssueListMobile issues={issueData} />
-                : issueData.length 
-                ? <div className="issuesTable">
-                  <TestTable
-                    columns={issueColumns}
-                    data={issueData}
-                    small
-                  />
-                </div>
-                : <p className="lead">No Issues Added Yet</p>
-              }
+              {issueDataToDisplay()}
             </Card.Body>
           </Card>
-          <Card>
+          <Card className="projectPageCard">
             <Card.Body>
               <h4 className="tableHeaders">History</h4>
               <hr />
               {isMobile ?
                 <HistoryListMobile history={changesData} />
-                : changesData.length 
-                ? <div className="issuesTable">
-                  <TestTable
-                    columns={changesColumns}
-                    data={changesData}
-                    numColumns={10}
-                    small
-                  />
-                </div>
-                : <p className="lead">No edits have been made</p>
+                : changesData.length
+                  ? <div className="issuesTable">
+                    <TestTable
+                      columns={changesColumns}
+                      data={changesData}
+                      numColumns={10}
+                      small
+                    />
+                  </div>
+                  : <p className="lead">No edits have been made</p>
               }
 
             </Card.Body>

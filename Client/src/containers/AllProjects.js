@@ -14,6 +14,18 @@ function AllProjects({ history }) {
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const columns = useMemo(() => projectColumns(), [])
   const projectData = useMemo(() => projects ? projects : [], [projects])
+  const dataToDisplay = () => {
+    if (projects.length !== 0) {
+      return isMobile
+        ? <ProjectListMobile projects={projects} />
+        : <TestTable columns={columns} data={projectData} />
+    }
+    return (
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    )
+  }
 
   return (
     <div className="allProjectsContainer">
@@ -33,10 +45,7 @@ function AllProjects({ history }) {
               <ProjectForm editMode={null} />
             </DialogTemplate>
           </div>
-          {isMobile
-            ? <ProjectListMobile projects={projects} />
-            : <TestTable columns={columns} data={projectData} />
-          }
+          {dataToDisplay()}
         </Card.Body>
       </Card>
     </div>
@@ -44,3 +53,4 @@ function AllProjects({ history }) {
 }
 
 export default AllProjects
+

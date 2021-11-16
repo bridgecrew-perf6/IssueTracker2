@@ -253,7 +253,7 @@ function IssuePage({ issue, user }) {
   if (issue) {
     return (
       <div className="IssuePage">
-        <Card>
+        <Card className="issuePageCard">
           <Card.Body>
             {issueDetails()}
             <div className="issueButtons">
@@ -273,7 +273,7 @@ function IssuePage({ issue, user }) {
             </Collapse>
           </Card.Body>
         </Card>
-        <Card>
+        <Card className="issuePageCard">
           <Card.Body>
             <DialogTemplate
               title="Add Comment"
@@ -292,7 +292,7 @@ function IssuePage({ issue, user }) {
             {issue?.comments.length !== 0 ? mappedComments : <p className="lead">No comments have been made</p>}
           </Card.Body>
         </Card>
-        <Card>
+        <Card className="issuePageCard"> 
           <Card.Body>
             History
             <hr />

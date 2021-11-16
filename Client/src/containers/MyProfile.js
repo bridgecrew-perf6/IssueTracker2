@@ -11,16 +11,22 @@ function MyProfile() {
 
   return (
     <div>
-      <Card>
+      <Card className="profilePageCard">
         <Card.Body>
           <div className="projectPageHeader">
             <h1 className="display-6">{username} : {email}</h1>
           </div>
         </Card.Body>
-      </Card>
-      <Card>
+      </Card >
+      <Card className="profilePageCard">
         <Card.Body>
-          <IssueListMobile issues={filterMyIssues} />
+          {issues.length !== 0
+            ? <IssueListMobile issues={filterMyIssues} />
+            : (
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            )}
         </Card.Body>
       </Card>
     </div>

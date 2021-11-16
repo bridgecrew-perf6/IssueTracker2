@@ -1,3 +1,7 @@
+.issuePageCard {
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%)
+}
+
 .issueButtons {
   display: flex;
   margin-top: 5px;
