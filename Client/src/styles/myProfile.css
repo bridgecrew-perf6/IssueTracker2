@@ -1,3 +1,8 @@
+.projectPageHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
 .profilePageCard {
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%)
 }

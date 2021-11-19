@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import TestTable from '../components/TestTable'
 import { projectPageIssueColumns, membersColumns, issueChangesColumns } from '../data/columns'
 import Collapse from 'react-bootstrap/Collapse'
@@ -15,25 +15,33 @@ import { useHistory, useParams } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { deleteProject, leaveProject } from '../store/actions/projectActions'
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 import "../styles/projectPage.css"
 
 function ProjectPage(props) {
   const { project, issues, user } = props
   const { projectId } = useParams()
-  console.log(project)
+  const [show, toggle] = useToggler(false)
+  const [filterValue, setFilterValue] = useState("all")
+  const filterIssues = useCallback(i => {
+    switch(filterValue) {
+      case "open": return i.status === "open"
+      case "closed": return i.status === "closed"
+      default: return true
+    }
+  }, [filterValue])
   const history = useHistory()
-  const issueData = useMemo(() => issues ? issues.filter(i => i.project === projectId) : [], [issues, projectId])
+  const issueData = useMemo(() => issues ? issues.filter(i => i.project === projectId && filterIssues(i)) : [], [issues, projectId, filterIssues])
   const userData = useMemo(() => project ? [...project.assignedUsers, project.createdBy] : [], [project])
   const issueColumns = useMemo(() => projectPageIssueColumns(), [])
   const usersColumns = useMemo(() => membersColumns(project?.createdBy), [project])
   const changesColumns = useMemo(() => issueChangesColumns, [])
   const changesData = useMemo(() => project ? project.history : [], [project])
-  const [show, toggle] = useToggler(false)
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const dispatch = useDispatch()
   const handleDeleteProject = () => dispatch(deleteProject(project._id, history))
   const handleLeaveProject = () => dispatch(leaveProject(project._id, history))
-
+  console.log(issueData)
   const issueDataToDisplay = () => {
     if (issueData) {
       return isMobile ?
@@ -54,6 +62,35 @@ function ProjectPage(props) {
       </div>
     )
   }
+
+  const filterRadioButtons = (
+    <Form onChange={(e) => setFilterValue(e.target.id)}>
+      <div key="inline-radio" className="mb-3">
+        <Form.Check
+          inline
+          defaultChecked
+          label="All"
+          name="group1"
+          type="radio"
+          id="all"
+        />
+        <Form.Check
+          inline
+          label="Closed"
+          name="group1"
+          type="radio"
+          id="closed"
+        />
+        <Form.Check
+          inline
+          label="Open"
+          name="group1"
+          type="radio"
+          id="open"
+        />
+      </div>
+    </Form>
+  )
 
   const adminButtons = () =>
     project?.createdBy._id === user.id
@@ -133,7 +170,6 @@ function ProjectPage(props) {
                 }
                 {adminButtons()}
               </div>
-
               <Collapse in={show}>
                 <div className={"assignedDeveloperTable"}>
                   <i className="bi bi-people"></i>
@@ -151,6 +187,7 @@ function ProjectPage(props) {
             <Card.Body>
               <div className="issuesTitle">
                 <h4 className="tableHeaders">Issues</h4>
+                {filterRadioButtons}
                 <DialogTemplate
                   title="Create Issue"
                   actionBtnText="Create Issue"
@@ -159,8 +196,7 @@ function ProjectPage(props) {
                     type: "menu",
                     text: "Create Issue",
                     icon: "bi-pencil-square",
-                  }}
-                >
+                  }}>
                   <IssuesForm
                     projectId={projectId}
                   />
@@ -187,7 +223,6 @@ function ProjectPage(props) {
                   </div>
                   : <p className="lead">No edits have been made</p>
               }
-
             </Card.Body>
           </Card>
           <br />
