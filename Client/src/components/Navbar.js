@@ -43,8 +43,8 @@ function Navbar() {
     } else {
       return (
         <>
-          <NavLink className="nav-link text-truncate" to="/login">Login</NavLink>
-          <NavLink className="nav-link text-truncate" to="/Signup">Signup</NavLink>
+          {/* <NavLink className="nav-link text-truncate" to="/login">Login</NavLink>
+          <NavLink className="nav-link text-truncate" to="/Signup">Signup</NavLink> */}
         </>
       )
     }
