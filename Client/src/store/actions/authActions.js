@@ -47,8 +47,9 @@ export function autoLogin() {
   }
 }
 
-export function authUser(type, userData) {
+export function authUser(type, userData, setLoading) {
   return dispatch => {
+    dispatch(removeError())
     return new Promise((resolve, reject) => {
       apiCall('post', `/api/auth/${type}`, userData)
         .then(({ token, ...userInfo }) => {
@@ -59,10 +60,12 @@ export function authUser(type, userData) {
           dispatch(getProjects())
           dispatch(getUsers())
           dispatch(getIssues())
+          setLoading(false)
           resolve()
         })
         .catch(err => {
           dispatch(addError(err.message))
+          setLoading(false)
           reject()
         })
     })

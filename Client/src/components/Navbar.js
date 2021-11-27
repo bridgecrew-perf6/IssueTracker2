@@ -12,12 +12,14 @@ function Navbar() {
   const dispatch = useDispatch()
   const [show, setShow] = useState(false);
   const history = useHistory()
+  const { isAuthenticated } = currentUser
+  const { username, id: userId } = currentUser.user
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const buttons = () => {
-    if (currentUser.isAuthenticated) {
+    if (isAuthenticated) {
       const handleLogout = () => {
         dispatch(logout())
       }
@@ -27,19 +29,19 @@ function Navbar() {
             <i onClick={handleShow} className="bi bi-list navbarIcon"></i>
             <Offcanvas placement='end' style={{ width: '50%' }} show={show} onHide={handleClose}>
               <Offcanvas.Header closeButton>
-                <Offcanvas.Title>{currentUser.user.username}</Offcanvas.Title>
+                <Offcanvas.Title>{username.charAt(0).toUpperCase() + username.slice(1)}</Offcanvas.Title>
               </Offcanvas.Header>
-              <Offcanvas.Body>
+              <Offcanvas.Body className="navbarCanvas">
                 <NavLink onClick={handleClose} className="nav-link text-truncate" to="/">Projects</NavLink>
-                <NavLink onClick={handleClose} className="nav-link text-truncate" to={`/${currentUser.user.id}/profile`}>My Profile/Issues</NavLink>
-                <button onClick={handleLogout} className="nav-link text-truncate">Logout</button>
+                <NavLink onClick={handleClose} className="nav-link text-truncate" to={`/${userId}/profile`}>My Profile/Issues</NavLink>
+                <button onClick={handleLogout} className="nav-link text-truncate nav-button">Logout</button>
               </Offcanvas.Body>
             </Offcanvas>
           </>
           : <>
             <i onClick={() => history.goBack()} className="bi bi-arrow-left"></i>
             <NavLink className="nav-link text-truncate" to="/">Projects</NavLink>
-            <NavLink className="nav-link text-truncate" to={`/${currentUser.user.id}/profile`}>My Profile/Issues</NavLink>
+            <NavLink className="nav-link text-truncate" to={`/${userId}/profile`}>My Profile/Issues</NavLink>
             <button onClick={handleLogout} className="nav-link text-truncate nav-button">Logout</button>
           </>
       )

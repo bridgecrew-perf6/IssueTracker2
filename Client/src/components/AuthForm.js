@@ -11,7 +11,7 @@ export default function AuthForm(props) {
   const { errors } = useSelector(state => state)
   const dispatch = useDispatch()
   const isMobile = useMediaQuery({ maxWidth: 767 }) ? "isMobile" : ""
-
+  const [loading, setLoading] = useState(false)
 
   const [state, setState] = useState({
     username: "",
@@ -20,18 +20,16 @@ export default function AuthForm(props) {
   })
 
   const handleSubmit = (e) => {
+    setLoading(true)
     e.preventDefault()
     const authType = signup ? "signup" : "login"
-    dispatch(authUser(authType, state))
-      .catch(err => { return })
+    dispatch(authUser(authType, state, setLoading))
   }
 
   const loginGuest = (e) => {
+    setLoading(true)
     e.preventDefault()
-    dispatch(authUser("login", { username: "guest", password: "guest" }))
-      .catch((err) => {
-        return
-      })
+    dispatch(authUser("login", { username: "guest", password: "guest" }, setLoading))
   }
 
   const handleChange = (e) => {
@@ -46,9 +44,9 @@ export default function AuthForm(props) {
       <div className={`signupBox ${isMobile}`}>
         <form className="authForm" >
           <div className="loginInputs">
-            {signup 
-            ? <span className="inputTitle" >Sign Up</span>
-            : <span className="inputTitle" >Login to your account</span>
+            {signup
+              ? <span className="inputTitle" >Sign Up</span>
+              : <span className="inputTitle" >Login to your account</span>
             }
             {signup &&
               <div className="mb-3 emptySpace" >
@@ -73,6 +71,10 @@ export default function AuthForm(props) {
       </div>
       {!signup && <span className="signupPrompt">Don't have an account <Link to="/signup">Sign Up?</Link></span>}
       {signup && <span className="signupPrompt">Already have an account <Link to="/login">Log In?</Link></span>}
+      {loading && <>
+        <div className="spinner-border" role="status"></div>
+        <span>Loading...</span>
+      </>}
       {errors.message &&
         <div className="alert alert-danger" role="alert">
           {errors.message}

@@ -19,6 +19,15 @@
   background-color: #f6f9fc;
 }
 
+.navbarCanvas a{
+  color: rgb(99, 91, 255);
+  padding-left: 0px;
+}
+.navbarCanvas button {
+  color: rgb(99, 91, 255);
+  padding-left: 0px;
+}
+
 .navbarIcon {
   color: #425466;
   font-size: 28px;
