@@ -7,6 +7,10 @@
 .navbar a {
   color: #425466;
 }
+.navbar a:hover {
+  background-color: rgb(130, 178, 225);
+  color: #425466;
+}
 
 .navbar-mobile {
   display: flex;
@@ -25,4 +29,19 @@
   color: #425466;
   background: none;
   border: none;
+}
+.nav-button:hover {
+  background-color: rgb(130, 178, 225);
+  color: #425466;
+}
+
+.bi-arrow-left {
+  font-size: 25px;
+  width: 2em;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.bi-arrow-left:hover {
+  background-color: rgb(130, 178, 225);
 }

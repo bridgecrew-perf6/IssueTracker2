@@ -4,12 +4,14 @@ import { logout } from '../store/actions/authActions'
 import { NavLink } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import Offcanvas from 'react-bootstrap/Offcanvas'
+import { useHistory } from "react-router-dom"
 import '../styles/navbar.css'
 
 function Navbar() {
   const { currentUser } = useSelector(state => state)
   const dispatch = useDispatch()
   const [show, setShow] = useState(false);
+  const history = useHistory()
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -35,6 +37,7 @@ function Navbar() {
             </Offcanvas>
           </>
           : <>
+            <i onClick={() => history.goBack()} className="bi bi-arrow-left"></i>
             <NavLink className="nav-link text-truncate" to="/">Projects</NavLink>
             <NavLink className="nav-link text-truncate" to={`/${currentUser.user.id}/profile`}>My Profile/Issues</NavLink>
             <button onClick={handleLogout} className="nav-link text-truncate nav-button">Logout</button>

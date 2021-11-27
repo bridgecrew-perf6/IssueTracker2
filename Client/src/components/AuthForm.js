@@ -72,6 +72,7 @@ export default function AuthForm(props) {
         </form>
       </div>
       {!signup && <span className="signupPrompt">Don't have an account <Link to="/signup">Sign Up?</Link></span>}
+      {signup && <span className="signupPrompt">Already have an account <Link to="/login">Log In?</Link></span>}
       {errors.message &&
         <div className="alert alert-danger" role="alert">
           {errors.message}
