@@ -37,3 +37,35 @@
 -	Responsive UI for desktop and mobile
 -	Loading spinners for backend processes
 -	Ability to filter issues by their status
+
+## Usage
+
+
+#### Env variable:
+
+Create a .env file in server directory and add the following:
+
+```
+PORT = 3001
+SECRET_KEY = "secret key"
+MONGODB_URI = "your mongodb URI key
+```
+
+#### Client:
+open client/src/services/api and change url to localhost or external server
+
+Run client:
+
+```
+cd client
+npm install
+npm start
+```
+
+#### Server:
+
+Run backend server:
+```
+cd server
+nodemon server.js or node server.js
+```
