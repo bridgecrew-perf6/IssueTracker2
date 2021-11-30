@@ -49,7 +49,7 @@ export function autoLogin() {
 
 export function authUser(type, userData, setLoading) {
   return dispatch => {
-    dispatch(removeError())
+    dispatch(removeError()) 
     return new Promise((resolve, reject) => {
       apiCall('post', `/api/auth/${type}`, userData)
         .then(({ token, ...userInfo }) => {

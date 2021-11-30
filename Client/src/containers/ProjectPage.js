@@ -41,7 +41,7 @@ function ProjectPage(props) {
   const dispatch = useDispatch()
   const handleDeleteProject = () => dispatch(deleteProject(project._id, history))
   const handleLeaveProject = () => dispatch(leaveProject(project._id, history))
-  console.log(issueData)
+
   const issueDataToDisplay = () => {
     if (issueData) {
       return isMobile ?
