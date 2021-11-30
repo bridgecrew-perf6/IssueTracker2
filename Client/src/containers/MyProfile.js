@@ -10,7 +10,7 @@ function MyProfile() {
   const { username, email, id } = currentUser.user
   const [filterValue, setFilterValue] = useState("all")
   const filterIssues = i => {
-    switch(filterValue) {
+    switch (filterValue) {
       case "open": return i.status === "open"
       case "closed": return i.status === "closed"
       default: return true
@@ -18,8 +18,9 @@ function MyProfile() {
   }
   const filterMyIssues = issues.filter(issue => filterIssues(issue) && (issue.createdBy._id === id || issue.assignedUsers.map(user => user._id).includes(id)))
   const filterRadioButtons = (
-    <Form onChange={(e) => setFilterValue(e.target.id)}>
-      <div key="inline-radio" className="mb-3">
+    <Form className="filterButtons" onChange={(e) => setFilterValue(e.target.id)}>
+      <div key="inline-radio">
+        <p>Filter Issues By</p>
         <Form.Check
           inline
           defaultChecked
@@ -49,7 +50,7 @@ function MyProfile() {
     <div>
       <Card className="profilePageCard">
         <Card.Body>
-          <div className="projectPageHeader">
+          <div className="profilePageHeader">
             <h1 className="display-6">{username} : {email}</h1>
             {filterRadioButtons}
           </div>

@@ -7,10 +7,6 @@
   align-items: center;
 }
 
-.projectPageHeader * {
-  margin-right: 20px;
-}
-
 .subtitle p {
   margin-bottom: 0px;
 }
@@ -55,8 +51,21 @@ table {
 .issuesTitle {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .tableHeaders {
   margin-bottom: 0px;
 }
+.filterButtons p {
+  margin-bottom: 0px;
+  font-size:0.9em;
+}
+@media (max-width: 767px) {
+  .filterButtons {
+    order: 3;
+    width: 100%;
+    margin-right: 0px;
+  }
+}
+

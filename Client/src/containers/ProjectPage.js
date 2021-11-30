@@ -64,8 +64,9 @@ function ProjectPage(props) {
   }
 
   const filterRadioButtons = (
-    <Form onChange={(e) => setFilterValue(e.target.id)}>
-      <div key="inline-radio" className="mb-3">
+    <Form className="filterButtons" onChange={(e) => setFilterValue(e.target.id)}>
+      <div key="inline-radio">
+        <p>Filter Issues By</p>
         <Form.Check
           inline
           defaultChecked
