@@ -22,7 +22,7 @@ function DialogTemplate({
     actionFunc()
     handleModalClose()
   }
-
+  console.log("test")
   const triggerButton = () => {
     switch (trigger.type) {
       case "icon":
