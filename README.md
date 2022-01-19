@@ -2,7 +2,7 @@
 
 ## Demo App
 
-[Frontend deployed on Netlify & Backend on Heroku](https://bb-issuetracker.netlify.app/issues/619341b53b3f510016b773cc)
+[Frontend deployed on Netlify & Backend on Vercel](https://bb-issuetracker.netlify.app/issues/619341b53b3f510016b773cc)
 
 ## Built using
 
