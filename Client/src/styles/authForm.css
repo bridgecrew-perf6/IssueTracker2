@@ -4,11 +4,19 @@
   align-items: center;
   justify-content: center;
   margin-top: 8em;
+  transform: translateY(100px);
+  animation: upFade 1s forwards;
+}
+@keyframes upFade {
+  to {
+    transform: translateY(0px);
+  }
 }
 
 .authForm {
   width: 100%;
   padding: 0px 20px;
+
 }
 
 .signupBox {

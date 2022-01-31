@@ -55,9 +55,9 @@ function Navbar() {
     }
   }
   return (
-    <div className={isMobile ? "navbar-mobile" : "navbar"}>
+    <nav className={isMobile ? "navbar-mobile" : "navbar"}>
       {buttons()}
-    </div>
+    </nav>
   )
 }
 
