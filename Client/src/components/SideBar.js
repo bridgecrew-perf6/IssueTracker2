@@ -25,6 +25,7 @@ function SideBar() {
     return (
       show ?
         <div className="sidebar open">
+          HELLLLL
           <div className="icon">
             {openButton()}
           </div>
