@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Offcanvas from 'react-bootstrap/Offcanvas'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../store/actions/authActions'
 import { NavLink } from 'react-router-dom'
@@ -8,7 +7,7 @@ import "../styles/sidebar.css"
 function SideBar() {
   const { currentUser } = useSelector(state => state)
   const { isAuthenticated } = currentUser
-  const { username, id: userId } = currentUser.user
+  const { id: userId } = currentUser.user
   const dispatch = useDispatch()
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
