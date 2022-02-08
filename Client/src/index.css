@@ -14,8 +14,14 @@ code {
 
 .componentContainer {
   display: flex;
-  width: 100vw;
+  flex-direction: column;
+  width: 100%;
   height: 100vh;
   background-color: #f6f9fc;
   color: #425466;
+}
+.main-container {
+  display: flex;
+  /* margin: 0px;
+  padding: 0px; */
 }

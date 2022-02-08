@@ -7,16 +7,19 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store'
 import Navbar from './components/Navbar'
-
+import SideBar from './components/SideBar';
 
 const store = configureStore()
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Navbar />
-      <div className="componentContainer">
-        <App />
+      <div className="main-container">
+        <SideBar />
+        <div className="componentContainer">
+          <Navbar />
+          <App />
+        </div>
       </div>
     </BrowserRouter>
   </Provider>

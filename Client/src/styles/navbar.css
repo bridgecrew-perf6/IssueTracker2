@@ -1,9 +1,11 @@
 .navbar {
+  /* width: 50vw; */
   display: flex;
   justify-content: space-around;
-  /* background-color: #f6f9fc; */
+  align-items: baseline;
+  background-color: #f6f9fc;
   background-color: white;
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%)
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
 }
 
 .navbar a {
@@ -46,13 +48,13 @@
   color: #425466;
 }
 
-.bi-arrow-left {
+.nav-left {
   font-size: 25px;
   width: 2em;
   text-align: center;
   border-radius: 4px;
 }
 
-.bi-arrow-left:hover {
+.nav-left:hover {
   background-color: rgb(130, 178, 225);
 }
