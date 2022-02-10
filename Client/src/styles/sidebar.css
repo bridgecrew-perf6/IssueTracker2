@@ -14,24 +14,35 @@
   list-style: none;
   padding-inline-start: 0px;
 }
-.items > * {
+
+.items>* {
   color: white;
 }
+
 .sidebar-button {
   background: none;
   border: none;
   padding: 0px;
 }
+
 .sidebar-button:hover {
   color: #1868D9;
 }
+
 .list-item {
   display: flex;
   align-items: baseline;
 }
-.list-item > * {
+
+.list-item>* {
   padding: 0px 10px;
   color: white;
+}
+.list-item *:not(i, div) {
+  font-size: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  margin: 0px;
 }
 
 .collapse {

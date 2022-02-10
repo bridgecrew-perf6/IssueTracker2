@@ -46,6 +46,13 @@ function DialogTemplate({
             {trigger.text}
           </Dropdown.Item>
         )
+      case "sidebar-icon": return (
+        <i
+          className={`bi ${trigger.icon}`}
+          onClick={handleModalOpen}
+        >
+        </i>
+      )
       default:
         return (
           <Button variant={`outline-${trigger.variant ? trigger.variant : "primary"}`} size={trigger.size} onClick={handleModalOpen}>
