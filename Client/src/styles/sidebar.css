@@ -31,7 +31,7 @@
 
 .list-item {
   display: flex;
-  align-items: baseline;
+  align-items: center;
 }
 
 .list-item>* {
@@ -45,7 +45,7 @@
   margin: 0px;
 }
 
-.collapse {
+.collapsed {
   height: 100vh;
   z-index: 100;
 }
@@ -61,7 +61,7 @@
   border-radius: 4px;
 }
 
-.icon-collapse {
+.icon-collapsed {
   font-size: 35px;
   width: 1.2em;
   text-align: center;

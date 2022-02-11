@@ -40,18 +40,18 @@ function SideBar() {
               <NavLink onClick={handleClose} className="nav-link" to={`/${userId}/profile`}>Issues</NavLink>
             </li>
             <li className="list-item">
+              <i className="bi bi-plus-circle"></i>
               <DialogTemplate
                 title="Create Project"
                 dialogType="form"
                 trigger={{
-                  type: "sidebar-icon",
+                  type: "sidebar-text",
                   text: "Create Project",
                   icon: "bi-plus-circle",
                 }}
               >
                 <ProjectForm editMode={null} />
               </DialogTemplate>
-              <p className="sidebar-button">New Project</p>
             </li>
             <li className="list-item">
               <i className="bi bi-power"></i>
@@ -61,7 +61,7 @@ function SideBar() {
         </div>
         :
         <div className="sidebar collapsed">
-          <div className="icon-collapse">
+          <div className="icon-collapsed">
             {openButton()}
           </div>
           <div className="items">

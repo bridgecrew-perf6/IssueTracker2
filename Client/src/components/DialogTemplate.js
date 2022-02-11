@@ -53,6 +53,9 @@ function DialogTemplate({
         >
         </i>
       )
+      case "sidebar-text": return (
+        <p onClick={handleModalOpen} className="sidebar-button">{trigger.text}</p>
+      )
       default:
         return (
           <Button variant={`outline-${trigger.variant ? trigger.variant : "primary"}`} size={trigger.size} onClick={handleModalOpen}>
