@@ -1,9 +1,9 @@
 .sidebar {
-  height: 100vh;
   z-index: 100;
   box-shadow: 2px 2px 1px -1px rgb(0 0 0 / 20%);
   background-color: #1868D9;
   color: white;
+  /* position: sticky; */
 }
 
 .items {
@@ -46,12 +46,13 @@
 }
 
 .collapsed {
-  height: 100vh;
+  /* height: 100%; */
   z-index: 100;
 }
 
 .open {
   width: 250px;
+  /* margin-right: 250px; */
 }
 
 .icon {

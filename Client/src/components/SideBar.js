@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../store/actions/authActions'
 import { NavLink } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
 import DialogTemplate from '../components/DialogTemplate'
 import ProjectForm from '../components/ProjectForm'
 import "../styles/sidebar.css"
@@ -9,6 +10,7 @@ import "../styles/sidebar.css"
 function SideBar() {
   const { currentUser } = useSelector(state => state)
   const { isAuthenticated } = currentUser
+  const isMobile = useMediaQuery({ maxWidth: 767 })
   const { id: userId } = currentUser.user
   const dispatch = useDispatch()
   const [show, setShow] = useState(false);
@@ -23,7 +25,7 @@ function SideBar() {
   const openButton = () =>
     hover ? <i onMouseLeave={handleHover2} onClick={handleShow} className={`bi bi-arrow-${show ? "left" : "right"}`}></i>
       : <i onMouseEnter={handleHover} className="bi bi-list"></i>
-  if (isAuthenticated) {
+  if (isAuthenticated && !isMobile) {
     return (
       show ?
         <div className="sidebar open">

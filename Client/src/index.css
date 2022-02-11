@@ -1,5 +1,8 @@
 body {
   margin: 0;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -16,12 +19,14 @@ code {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   background-color: #f6f9fc;
   color: #425466;
 }
 .main-container {
   display: flex;
-  /* margin: 0px;
-  padding: 0px; */
+  width: 100%;
+  position: relative;
+  /* height: 100%; */
 }
