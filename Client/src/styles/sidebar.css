@@ -18,6 +18,9 @@
 .items>* {
   color: white;
 }
+.items>*:hover {
+  color: #ce7882;
+}
 
 .sidebar-button {
   background: none;
@@ -26,7 +29,7 @@
 }
 
 .sidebar-button:hover {
-  color: #1868D9;
+  color: #ce7882;
 }
 
 .list-item {
@@ -38,11 +41,16 @@
   padding: 0px 10px;
   color: white;
 }
+
 .list-item *:not(i, div) {
   font-size: 20px;
   white-space: nowrap;
   cursor: pointer;
   margin: 0px;
+}
+
+.list-item *:not(i, div):hover {
+  color: #ce7882;
 }
 
 .collapsed {
@@ -60,6 +68,10 @@
   text-align: end;
   margin-right: 10px;
   border-radius: 4px;
+}
+
+.icon:hover, .icon-collapsed:hover {
+  color: #ce7882;
 }
 
 .icon-collapsed {
