@@ -3,10 +3,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 8em;
-  transform: translateY(100px);
-  animation: upFade 1s forwards;
+  /* transform: translateY(100px); */
+  /* animation: upFade 1s forwards; */
+  min-height: 100vh;
 }
+
 @keyframes upFade {
   to {
     transform: translateY(0px);
@@ -16,26 +17,34 @@
 .authForm {
   width: 100%;
   padding: 0px 20px;
+}
 
+.formBox {
+  background-image: url('./formpic.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 80vh;
+  width: 80vw;
+  border-radius: 12px;
+}
+.formBox-isMobile {
+  height: 100vh;
+  width: 100vw;
 }
 
 .signupBox {
+  min-height: 70%;
+  min-width: 40%;
   display: flex;
   align-items: center;
-  height: 480px;
-  width: 540px;
   justify-content: center;
   color: rgb(60, 66, 87);
-  padding: 56px 48px;
+  padding: 26px 28px;
   background: rgb(255, 255, 255);
-  border-radius: 8px;
+  border-radius: 0px 8px 8px 0px;
   box-shadow: rgba(60, 66, 87, 0.08) 0px 15px 35px 0px, rgba(0, 0, 0, 0.12) 0px 5px 15px 0px;
-}
-
-.isMobile {
-  padding: 32px 0px;
-  width: 100%;
-  height: auto;
+  opacity: 0.8;
+  text-align: center;
 }
 
 .emptySpace {
@@ -60,6 +69,7 @@
   font-size: 14px;
   text-align: center;
 }
+
 .loginButtons span:hover {
   color: black;
   cursor: pointer;
@@ -74,6 +84,7 @@
   color: rgb(99, 91, 255);
   text-decoration: none;
 }
+
 .signupPrompt a:hover {
   color: black;
 }
@@ -81,4 +92,37 @@
 .loginButtons button {
   background-color: rgb(99, 91, 255);
   border-color: rgb(99, 91, 255)
+}
+
+.bg-glass {
+  background-color: hsla(0, 0%, 100%, 0.9) !important;
+  backdrop-filter: saturate(200%) blur(25px);
+}
+
+@media (max-width: 768px) {
+  .formBox {
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0px;
+  }
+  .signupBox {
+    height: 100vh;
+    border-radius: 0px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 450px) {
+  .formBox {
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0px;
+    background-image: none;
+  }
+  .signupBox {
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0px;
+    padding: 10px;
+  }
 }
