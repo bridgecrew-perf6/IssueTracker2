@@ -1,11 +1,17 @@
 .sidebar {
   z-index: 100;
   box-shadow: 2px 2px 1px -1px rgb(0 0 0 / 20%);
-  background-color: #1868D9;
+  background-color: #3445b4;
   color: white;
+  padding: 10px;
   /* position: sticky; */
 }
 
+.sidebarH1 {
+  font-weight: 700;
+  font-size: 30px; 
+  padding: 0px 10px;
+}
 .items {
   width: 1.2em;
   font-size: 35px;
@@ -13,6 +19,7 @@
   height: 100px;
   list-style: none;
   padding-inline-start: 0px;
+  
 }
 
 .items>* {
@@ -35,6 +42,8 @@
 .list-item {
   display: flex;
   align-items: center;
+  padding: 10px 0;
+  font-size: 20px;
 }
 
 .list-item>* {

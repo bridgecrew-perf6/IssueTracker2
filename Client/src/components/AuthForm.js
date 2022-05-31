@@ -43,7 +43,7 @@ export default function AuthForm(props) {
   return (
     <div className="authFormContainer">
       <div className="formBox d-flex align-items-center">
-        <div className="signupBox bg-glass">
+        <div className="d-flex flex-column signupBox bg-glass">
           <AnimatePresence>
             <motion.form className="authForm">
               {signup ? (
@@ -149,19 +149,19 @@ export default function AuthForm(props) {
                 </motion.div>
               )}
             </motion.form>
+            {loading && (
+              <>
+                <div className="spinner-border mt-3" role="status"></div>
+                <span>Loading...</span>
+              </>
+            )}
+            {errors.message && (
+              <div className="alert alert-danger mt-3" role="alert">
+                {errors.message}
+              </div>
+            )}
           </AnimatePresence>
         </div>
-        {loading && (
-          <>
-            <div className="spinner-border" role="status"></div>
-            <span>Loading...</span>
-          </>
-        )}
-        {errors.message && (
-          <div className="alert alert-danger" role="alert">
-            {errors.message}
-          </div>
-        )}
       </div>
     </div>
   )
