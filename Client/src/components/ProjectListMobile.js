@@ -68,7 +68,6 @@ function ProjectListMobile({ projects = [] }) {
   ))
   return (
     <div className="projectListContainer">
-      <hr />
       {projects.length !== 0 ? mappedProjects : "No Projects Added Yet"}
     </div>
   )

@@ -1,52 +1,64 @@
-import React, { useMemo } from 'react'
-import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
-import { useDispatch } from 'react-redux'
-import DialogTemplate from '../components/DialogTemplate'
-import { formatDateTime, formatTimeAgo } from '../utils/helperFunctions'
-import { deleteIssue, updateIssueStatus, deleteComment, leaveIssue } from '../store/actions/issueActions'
-import CommentsForm from '../components/CommentsForm'
-import IssuesForm from '../components/IssuesForm'
-import HistoryListMobile from '../components/HistoryListMobile'
-import { cellStyles, cellColors, spanStyles } from '../styles/customStyles'
-import TestTable from '../components/TestTable'
-import { membersColumns, issueChangesColumns } from '../data/columns'
-import Collapse from 'react-bootstrap/Collapse'
-import useToggler from '../hooks/useToggle'
-import { useMediaQuery } from 'react-responsive'
-import '../styles/issuePage.css'
+import React, { useMemo } from "react"
+import Card from "react-bootstrap/Card"
+import Button from "react-bootstrap/Button"
+import { useDispatch } from "react-redux"
+import DialogTemplate from "../components/DialogTemplate"
+import { formatDateTime, formatTimeAgo } from "../utils/helperFunctions"
+import {
+  deleteIssue,
+  updateIssueStatus,
+  deleteComment,
+  leaveIssue,
+} from "../store/actions/issueActions"
+import CommentsForm from "../components/CommentsForm"
+import IssuesForm from "../components/IssuesForm"
+import HistoryListMobile from "../components/HistoryListMobile"
+import { cellStyles, cellColors, spanStyles } from "../styles/customStyles"
+import TestTable from "../components/TestTable"
+import { membersColumns, issueChangesColumns } from "../data/columns"
+import Collapse from "react-bootstrap/Collapse"
+import useToggler from "../hooks/useToggle"
+import { useMediaQuery } from "react-responsive"
+import "../styles/issuePage.css"
 
 function IssuePage({ issue, user }) {
   const dispatch = useDispatch()
   const [show, toggle] = useToggler(false)
   const usersColumns = useMemo(() => membersColumns(issue?.createdBy), [issue])
-  const userData = useMemo(() => issue ? [...issue.assignedUsers, issue.createdBy] : [], [issue])
+  const userData = useMemo(
+    () => (issue ? [...issue.assignedUsers, issue.createdBy] : []),
+    [issue]
+  )
   const changesColumns = useMemo(() => issueChangesColumns, [])
-  const changesData = useMemo(() => issue ? issue.history : [], [issue])
+  const changesData = useMemo(() => (issue ? issue.history : []), [issue])
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const isAdmin = user.id === issue?.createdBy._id
-  const isMember = issue?.assignedUsers.map(user => user._id).includes(user.id) || isAdmin
+  const isMember =
+    issue?.assignedUsers.map((user) => user._id).includes(user.id) || isAdmin
   const handleDeleteIssue = () => dispatch(deleteIssue(issue._id))
   const handleLeaveIssue = () => dispatch(leaveIssue(issue._id))
-  const handleDeleteComment = (commentId) => dispatch(deleteComment(commentId, issue._id))
+  const handleDeleteComment = (commentId) =>
+    dispatch(deleteComment(commentId, issue._id))
   const handleIssueStatus = () => {
     const type = issue.status === "open" ? "closed" : "open"
     dispatch(updateIssueStatus(issue._id, type))
   }
 
-  const mappedComments = issue?.comments.map(comment =>
+  const mappedComments = issue?.comments.map((comment) => (
     <div key={comment._id}>
       <ul className="list-unstyled">
         <li className="title">
           <span style={spanStyles}>
             {comment.createdBy.username} :
             <em> Created {formatTimeAgo(comment.createdAt)} ago</em>
-            {comment.createdAt !== comment.updatedAt && <em> ~ updated {formatTimeAgo(comment.updatedAt)} ago</em>}
+            {comment.createdAt !== comment.updatedAt && (
+              <em> ~ updated {formatTimeAgo(comment.updatedAt)} ago</em>
+            )}
           </span>
         </li>
-        <li><span style={{ spanStyles }}>
-          {comment.text}
-        </span></li>
+        <li>
+          <span style={{ spanStyles }}>{comment.text}</span>
+        </li>
         <li className="issueButtons">
           <DialogTemplate
             title="Edit Comment"
@@ -59,11 +71,7 @@ function IssuePage({ issue, user }) {
               icon: "bi-pencil-square",
             }}
           >
-            <CommentsForm
-              issueId={issue._id}
-              comment={comment}
-              edit
-            />
+            <CommentsForm issueId={issue._id} comment={comment} edit />
           </DialogTemplate>
           <DialogTemplate
             title="Remove"
@@ -82,9 +90,9 @@ function IssuePage({ issue, user }) {
       </ul>
       <hr />
     </div>
-  )
+  ))
 
-  const issueDetails = () =>
+  const issueDetails = () => (
     // Title, description, status, type
     <>
       <div className="projectPageHeader">
@@ -98,76 +106,88 @@ function IssuePage({ issue, user }) {
           </span>
         </li>
         <li>
-          <span style={{ ...spanStyles }}>
-            Description:
-          </span>
-          <div style={{
-            ...cellStyles,
-          }}>{issue?.description}</div>
+          <span style={{ ...spanStyles }}>Description:</span>
+          <div
+            style={{
+              ...cellStyles,
+            }}
+          >
+            {issue?.description}
+          </div>
         </li>
         <li>
-          <span style={{ ...spanStyles }}>
-            Your Role:
-          </span>
-          <div style={{
-            ...cellStyles,
-          }}>{isMember ? isAdmin ? "Admin" : "Member" : "None"}</div>
+          <span style={{ ...spanStyles }}>Your Role:</span>
+          <div
+            style={{
+              ...cellStyles,
+            }}
+          >
+            {isMember ? (isAdmin ? "Admin" : "Member") : "None"}
+          </div>
         </li>
         <li>
-          <span style={{ ...spanStyles }}>
-            Priority:
-          </span>
-          <div style={{
-            ...cellStyles,
-            backgroundColor: cellColors[issue.priority],
-            color: issue.priority === 'low' ? '#000' : '#fff',
-          }}>{issue.priority}</div>
+          <span style={{ ...spanStyles }}>Priority:</span>
+          <div
+            style={{
+              ...cellStyles,
+              backgroundColor: cellColors[issue.priority],
+              color: issue.priority === "low" ? "#000" : "#fff",
+            }}
+          >
+            {issue.priority}
+          </div>
         </li>
         <li>
-          <span style={{ ...spanStyles }}>
-            Status:
-          </span>
-          <div style={{
-            ...cellStyles,
-            backgroundColor: cellColors[issue.status],
-            color: issue.status === 'closed' ? '#008000' : '#000080',
-          }}>{issue.status}</div>
-        </li>
-
-        <li>
-          <span style={{ ...spanStyles }}>
-            Type:
-          </span>
-          <div style={{
-            ...cellStyles,
-            backgroundColor: cellColors[issue.type],
-          }}>{issue.type}</div>
+          <span style={{ ...spanStyles }}>Status:</span>
+          <div
+            style={{
+              ...cellStyles,
+              backgroundColor: cellColors[issue.status],
+              color: issue.status === "closed" ? "#008000" : "#000080",
+            }}
+          >
+            {issue.status}
+          </div>
         </li>
         <li>
-          <span style={{ ...spanStyles }}>
-            Created:
-          </span>
-          <div style={{
-            ...cellStyles,
-
-          }}>{formatDateTime(issue.createdAt)}</div>
+          <span style={{ ...spanStyles }}>Type:</span>
+          <div
+            style={{
+              ...cellStyles,
+              backgroundColor: cellColors[issue.type],
+            }}
+          >
+            {issue.type}
+          </div>
         </li>
         <li>
-          <span style={{ ...spanStyles }}>
-            Updated:
-          </span>
-          <div style={{
-            ...cellStyles,
-
-          }}>{formatDateTime(issue.updatedAt)}</div>
+          <span style={{ ...spanStyles }}>Created:</span>
+          <div
+            style={{
+              ...cellStyles,
+            }}
+          >
+            {formatDateTime(issue.createdAt)}
+          </div>
+        </li>
+        <li>
+          <span style={{ ...spanStyles }}>Updated:</span>
+          <div
+            style={{
+              ...cellStyles,
+            }}
+          >
+            {formatDateTime(issue.updatedAt)}
+          </div>
         </li>
       </ul>
     </>
+  )
 
   const issueButtons = () =>
     //close issue, update, and delete
-    issue?.createdBy._id === user.id
-      ? <>
+    issue?.createdBy._id === user.id ? (
+      <>
         {issue.status === "open" ? (
           <DialogTemplate
             title="Close"
@@ -203,10 +223,7 @@ function IssuePage({ issue, user }) {
             icon: "bi-pencil-square",
           }}
         >
-          <IssuesForm
-            issue={issue}
-            edit
-          />
+          <IssuesForm issue={issue} edit />
         </DialogTemplate>
         <DialogTemplate
           title="Remove"
@@ -220,35 +237,41 @@ function IssuePage({ issue, user }) {
           }}
         />
       </>
-      : isMember && <DialogTemplate
-        title="Leave Issue"
-        contentText="Are you sure you want to leave this Issue"
-        actionBtnText="Leave Issue"
-        actionFunc={handleLeaveIssue}
-        trigger={{
-          type: isMobile ? "icon" : "normal",
-          text: "Leave Issue",
-          icon: "bi-pencil-square",
-        }}
-      />
+    ) : (
+      isMember && (
+        <DialogTemplate
+          title="Leave Issue"
+          contentText="Are you sure you want to leave this Issue"
+          actionBtnText="Leave Issue"
+          actionFunc={handleLeaveIssue}
+          trigger={{
+            type: isMobile ? "icon" : "normal",
+            text: "Leave Issue",
+            icon: "bi-pencil-square",
+          }}
+        />
+      )
+    )
 
   const adminButtons = () =>
-    !isMobile
-      ? <Button variant="primary" onClick={toggle}>
-        <i style={{ marginRight: '10px' }} className="bi bi-people"></i>
+    !isMobile ? (
+      <Button variant="primary" onClick={toggle}>
+        <i style={{ marginRight: "10px" }} className="bi bi-people"></i>
         {show ? "HIDE MEMBERS" : "SHOW MEMBERS"}
       </Button>
-      : <Button
+    ) : (
+      <Button
         variant="secondary"
         onClick={toggle}
         style={{
           height: "45px",
           width: "45px",
-          borderRadius: '2em',
+          borderRadius: "2em",
         }}
       >
         <i className="bi bi-people"></i>
       </Button>
+    )
 
   if (issue) {
     return (
@@ -264,11 +287,7 @@ function IssuePage({ issue, user }) {
               <div className={"assignedDeveloperTable"}>
                 <i className="bi bi-people"></i>
                 <h4 className="h4">Members</h4>
-                <TestTable
-                  columns={usersColumns}
-                  data={userData}
-                  small
-                />
+                <TestTable columns={usersColumns} data={userData} small />
               </div>
             </Collapse>
           </Card.Body>
@@ -284,29 +303,32 @@ function IssuePage({ issue, user }) {
                 icon: "bi-card-text",
               }}
             >
-              <CommentsForm
-                issueId={issue._id}
-              />
+              <CommentsForm issueId={issue._id} />
             </DialogTemplate>
             <hr />
-            {issue?.comments.length !== 0 ? mappedComments : <p className="lead">No comments have been made</p>}
+            {issue?.comments.length !== 0 ? (
+              mappedComments
+            ) : (
+              <p className="lead">No comments have been made</p>
+            )}
           </Card.Body>
         </Card>
-        <Card className="issuePageCard"> 
+        <Card className="issuePageCard">
           <Card.Body>
             History
             <hr />
-            {isMobile ?
+            {isMobile ? (
               <HistoryListMobile history={changesData} />
-              : changesData.length 
-              ? <TestTable
+            ) : changesData.length ? (
+              <TestTable
                 columns={changesColumns}
                 data={changesData}
                 numColumns={10}
                 small
               />
-              : <p className="lead">No edits have been made</p> 
-            }
+            ) : (
+              <p className="lead">No edits have been made</p>
+            )}
           </Card.Body>
         </Card>
       </div>

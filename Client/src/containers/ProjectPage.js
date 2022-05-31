@@ -56,11 +56,6 @@ function ProjectPage(props) {
           </div>
           : <p className="lead">No Issues Added Yet</p>
     }
-    return (
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    )
   }
 
   const filterRadioButtons = (
@@ -143,7 +138,7 @@ function ProjectPage(props) {
           <Card className="projectPageCard">
             <Card.Body>
               <div className="projectPageHeader">
-                <h1 className="display-6">Project Name: {project.projectName}</h1>
+                <h1 className="display-6">{project.projectName}</h1>
               </div>
               <p className="display">Project Description: {project.description}</p>
               <hr />

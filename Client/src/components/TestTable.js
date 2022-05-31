@@ -20,7 +20,7 @@ function TestTable({ columns, data, numColumns }) {
   } = useTable({ columns, data, initialState: { pageSize: numColumns ? numColumns : 10 } }, usePagination)
   return (
     <div>
-      <Table bordered hover {...getTableProps()}>
+      <Table hover {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -38,7 +38,7 @@ function TestTable({ columns, data, numColumns }) {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return <td style={{ padding: "16px" }} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
             )

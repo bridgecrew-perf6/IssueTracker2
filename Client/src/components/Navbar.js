@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../store/actions/authActions'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import { useHistory } from "react-router-dom"
@@ -20,6 +20,7 @@ function Navbar() {
   const handleLogout = () => {
     dispatch(logout())
   }
+
   const buttons = () => {
     return (
       isMobile
