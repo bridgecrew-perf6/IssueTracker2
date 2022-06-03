@@ -4,6 +4,7 @@ import { authUser } from "../store/actions/authActions"
 import { removeError } from "../store/actions/errorActions"
 import { AnimatePresence, motion } from "framer-motion"
 import "../styles/authForm.css"
+import stuff from "../styles/issuesIcon.png"
 import { Link } from "react-router-dom"
 
 export default function AuthForm(props) {
@@ -42,8 +43,8 @@ export default function AuthForm(props) {
   })
   return (
     <div className="authFormContainer">
-      <div className="formBox d-flex align-items-center">
-        <div className="d-flex flex-column signupBox bg-glass">
+      <div className="formBox">
+        <div className="d-flex flex-column signupBox">
           <AnimatePresence>
             <motion.form className="authForm">
               {signup ? (
@@ -54,42 +55,48 @@ export default function AuthForm(props) {
                   transition={{ duration: 0.5 }}
                   key={1}
                 >
+                  <div className="logo">
+                    <img src={stuff} />
+                    <h1>Issues Tracker</h1>
+                  </div>
                   <span className="inputTitle">Sign Up</span>
-                  <div className="mb-3 emptySpace">
+                  <div className="labelAndInput">
                     <label htmlFor="email" className="form-label">
                       Email Address
                     </label>
                     <input
                       onChange={handleChange}
                       type="text"
-                      className="form-control"
+                      className="form-control form-input"
                       name="email"
                       placeholder="name@example.com"
                     />
                   </div>
-                  <div className="mb-3 emptySpace">
+                  <div className="labelAndInput">
                     <label htmlFor="username" className="form-label">
                       Username
                     </label>
                     <input
                       onChange={handleChange}
                       type="text"
-                      className="form-control"
+                      className="form-control form-input"
                       name="username"
+                      placeholder="Username"
                     />
                   </div>
-                  <div className="mb-3 emptySpace">
+                  <div className="labelAndInput">
                     <label htmlFor="password" className="form-label">
                       Password
                     </label>
                     <input
                       onChange={handleChange}
                       type="password"
-                      className="form-control"
+                      className="form-control form-input"
                       name="password"
+                      placeholder="Password"
                     />
                   </div>
-                  <div className="loginButtons emptySpace">
+                  <div className="loginButtons">
                     <button
                       onClick={handleSubmit}
                       type="submit"
@@ -98,7 +105,7 @@ export default function AuthForm(props) {
                       Sign Up
                     </button>
                   </div>
-                  <span className="signupPrompt">
+                  <span className="signupPrompt loginPrompt">
                     Already have an account <Link to="/login">Log In?</Link>
                   </span>
                 </motion.div>
@@ -110,30 +117,39 @@ export default function AuthForm(props) {
                   transition={{ duration: 0.5 }}
                   key={2}
                 >
-                  <span className="inputTitle">Login to your account</span>
-                  <div className="mb-3 emptySpace">
+                  <div className="logo">
+                    <img src={stuff} />
+                    <h1>Issues Tracker</h1>
+                  </div>
+                  <span className="inputTitle">Log In To Issues</span>
+                  <p className="inputAside">
+                    Enter your email and password below
+                  </p>
+                  <div className="labelAndInput">
                     <label htmlFor="username" className="form-label">
                       Username
                     </label>
                     <input
                       onChange={handleChange}
                       type="text"
-                      className="form-control"
+                      className="form-control form-input"
                       name="username"
+                      placeholder="Username/Email Address"
                     />
                   </div>
-                  <div className="mb-3 emptySpace">
+                  <div className="labelAndInput">
                     <label htmlFor="password" className="form-label">
                       Password
                     </label>
                     <input
                       onChange={handleChange}
                       type="password"
-                      className="form-control"
+                      className="form-control form-input"
                       name="password"
+                      placeholder="Password"
                     />
                   </div>
-                  <div className="loginButtons emptySpace">
+                  <div className="loginButtons">
                     <button
                       onClick={handleSubmit}
                       type="submit"

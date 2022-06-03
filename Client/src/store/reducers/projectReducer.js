@@ -14,16 +14,6 @@ const projectReducer = (state = [], action) => {
       ))
     case REMOVE_USER_FROM_PROJECT:
       return state.assignedUsers.filter(users => users)
-    //functions for if Issues are taken from project Reducer
-    // case ADD_ISSUE_TO_PROJECT:
-    // return state.map(project => {
-    //   return project._id === action.issue.project._id ? { ...project, issues: [...project.issues, action.issue] } : { ...project, [project.issues]: [] }
-    // })
-    // case REMOVE_ISSUE_FROM_PROJECT:
-    //   return state.map(project => {
-    //     const filteredIssues = project.issues.filter(issue => action.issue._id !== issue._id)
-    //     return project._id === action.issue.project ? { ...project, issues: filteredIssues } : project
-    //   })
     default:
       return state
   }
