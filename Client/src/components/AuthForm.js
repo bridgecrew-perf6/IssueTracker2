@@ -4,7 +4,6 @@ import { authUser } from "../store/actions/authActions"
 import { removeError } from "../store/actions/errorActions"
 import { AnimatePresence, motion } from "framer-motion"
 import "../styles/authForm.css"
-import stuff from "../styles/issuesIcon.png"
 import { Link } from "react-router-dom"
 
 export default function AuthForm(props) {
@@ -56,10 +55,13 @@ export default function AuthForm(props) {
                   key={1}
                 >
                   <div className="logo">
-                    <img src={stuff} />
+                    <img src="/issuesIcon.png" />
                     <h1>Issues Tracker</h1>
                   </div>
                   <span className="inputTitle">Sign Up</span>
+                  <p className="inputAside">
+                    Enter your Details below
+                  </p>
                   <div className="labelAndInput">
                     <label htmlFor="email" className="form-label">
                       Email Address
@@ -118,12 +120,12 @@ export default function AuthForm(props) {
                   key={2}
                 >
                   <div className="logo">
-                    <img src={stuff} />
+                    <img src="/issuesIcon.png" />
                     <h1>Issues Tracker</h1>
                   </div>
                   <span className="inputTitle">Log In To Issues</span>
                   <p className="inputAside">
-                    Enter your email and password below
+                    Enter your Email and Password below
                   </p>
                   <div className="labelAndInput">
                     <label htmlFor="username" className="form-label">
