@@ -59,8 +59,8 @@
 }
 
 .signupBox {
-  min-height: 70%;
-  min-width: 40%;
+  min-height: 50%;
+  min-width: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,7 +182,7 @@
   .signupBox {
     height: 100%;
     border-radius: 0px;
-    padding: 10px;
+    padding: 32px;
     min-width: 50%;
   }
 }
@@ -199,7 +199,23 @@
     height: 100vh;
     width: 100vw;
     border-radius: 0px;
-    padding: 10px;
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .formBox {
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0px;
+    justify-content: center;
+  }
+
+  .signupBox {
+    border-radius: 8px;
+    padding: 40px 32px;
+    max-width: 33vw;
+    min-height: 50%;
   }
 }
 

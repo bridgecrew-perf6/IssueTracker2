@@ -17,7 +17,7 @@ ReactDOM.render(
       <div className="main-container">
         <SideBar />
         <div className="componentContainer">
-          <Navbar />
+          {/* <Navbar /> */}
           <App />
         </div>
       </div>
