@@ -32,7 +32,7 @@ function AllProjects({ history }) {
 
   return (
     <div className="pageWithTableContainer">
-      <div className="pageTitle">
+      <div className="pageTitle" style={{ padding: "0px 10px"}}>
         <h1>Projects</h1>
         <h1>{email}</h1>
       </div>

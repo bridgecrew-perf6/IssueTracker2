@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { deleteProject } from "../store/actions/projectActions"
 import DialogTemplate from "./DialogTemplate"
 import ProjectForm from "./ProjectForm"
+import "../styles/menu.css"
 
 export function ProjectMenu({ project }) {
   const CustomToggle = React.forwardRef(({ onClick }, ref) => (
@@ -30,11 +31,12 @@ export function ProjectMenu({ project }) {
           title="Dropdown button"
         />
 
-        <Dropdown.Menu>
+        <Dropdown.Menu className="dropdownMenu">
           <Dropdown.Item
             as={Link}
             to={`/projects/${project._id}`}
             href="#/action-2"
+            className="dropdownItem"
           >
             <i style={{ marginRight: "10px" }} className="bi bi-link-45deg"></i>
             View Project

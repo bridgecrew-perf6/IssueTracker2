@@ -45,7 +45,7 @@ function IssuePage({ issue, user }) {
   }
 
   const mappedComments = issue?.comments.map((comment) => (
-    <div key={comment._id}>
+    <div key={comment._id} style={{ padding: "10px 32px" }}>
       <ul className="list-unstyled">
         <li className="title">
           <span style={spanStyles}>
@@ -95,7 +95,7 @@ function IssuePage({ issue, user }) {
   const issueDetails = () => (
     // Title, description, status, type
     <>
-      <div className="projectPageHeader">
+      <div className="pageTitle" style={{ margin: "0px" }}>
         <h1 className="display-6">Issue: {issue.title}</h1>
       </div>
       <hr />
@@ -275,8 +275,8 @@ function IssuePage({ issue, user }) {
 
   if (issue) {
     return (
-      <div className="IssuePage">
-        <Card className="issuePageCard">
+      <div className="pageWithTableContainer">
+        <Card className="projectIssuesCard" style={{ padding: "10px 16px" }}>
           <Card.Body>
             {issueDetails()}
             <div className="issueButtons">
@@ -285,27 +285,29 @@ function IssuePage({ issue, user }) {
             </div>
             <Collapse in={show}>
               <div className={"assignedDeveloperTable"}>
-                <i className="bi bi-people"></i>
                 <h4 className="h4">Members</h4>
                 <TestTable columns={usersColumns} data={userData} small />
               </div>
             </Collapse>
           </Card.Body>
         </Card>
-        <Card className="issuePageCard">
-          <Card.Body>
-            <DialogTemplate
-              title="Add Comment"
-              dialogType="form"
-              trigger={{
-                type: "menu",
-                text: "Add Comment",
-                icon: "bi-card-text",
-              }}
-            >
-              <CommentsForm issueId={issue._id} />
-            </DialogTemplate>
-            <hr />
+        <Card className="projectIssuesCard">
+          <Card.Body className="cardBody">
+            <div className="cardHeader">
+              <h2>Comments</h2>
+              <DialogTemplate
+                title="Add Comment"
+                dialogType="form"
+                trigger={{
+                  type: "menu",
+                  text: "Add Comment",
+                  icon: "bi-card-text",
+                }}
+              >
+                <CommentsForm issueId={issue._id} />
+              </DialogTemplate>
+            </div>
+
             {issue?.comments.length !== 0 ? (
               mappedComments
             ) : (
@@ -313,10 +315,11 @@ function IssuePage({ issue, user }) {
             )}
           </Card.Body>
         </Card>
-        <Card className="issuePageCard">
-          <Card.Body>
-            History
-            <hr />
+        <Card className="projectIssuesCard">
+          <Card.Body className="cardBody">
+            <div className="cardHeader">
+              <h2>History</h2>
+            </div>
             {isMobile ? (
               <HistoryListMobile history={changesData} />
             ) : changesData.length ? (

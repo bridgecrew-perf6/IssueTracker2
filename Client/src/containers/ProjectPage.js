@@ -150,14 +150,15 @@ function ProjectPage(props) {
     return (
       <div className="pageWithTableContainer">
         <div className="projectPageTables">
-          <div className="pageTitle">
-            <h1 className="display-6">{project.projectName}</h1>
-            <p className="display">
-              Project Description: {project.description}
-            </p>
-          </div>
-          <Card className="projectIssuesCard">
+          <Card className="projectIssuesCard" style={{ padding: "10px 16px"}}>
             <Card.Body>
+              <div className="pageTitle" style={{ margin: "0px"}}>
+                <h1 className="display-6">{project.projectName}</h1>
+              </div>
+              <p className="display">
+                Project Description: {project.description}
+              </p>
+              <hr />
               <div className="subtitle">
                 <p>
                   <strong>Admin: {project.createdBy.username}</strong>
@@ -192,7 +193,6 @@ function ProjectPage(props) {
               </div>
               <Collapse in={show}>
                 <div className={"assignedDeveloperTable"}>
-                  <i className="bi bi-people"></i>
                   <h4 className="h4">Members</h4>
                   <TestTable columns={usersColumns} data={userData} small />
                 </div>
@@ -217,7 +217,6 @@ function ProjectPage(props) {
                   <IssuesForm projectId={projectId} />
                 </DialogTemplate>
               </div>
-              <hr />
               {issueDataToDisplay()}
             </Card.Body>
           </Card>

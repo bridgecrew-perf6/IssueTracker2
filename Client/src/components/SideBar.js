@@ -69,7 +69,10 @@ function SideBar() {
             key="sidebarkey"
           >
             <div className="icon">{openButton()}</div>
-            <h1 className="sidebarH1">IssueTracker</h1>
+            <div className="sidebarLogo">
+              <img src="/issuesIcon.png" />
+              <h1>Issues Tracker</h1>
+            </div>
             <motion.ul
               className="items"
               initial="closed"

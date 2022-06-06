@@ -24,7 +24,11 @@ const infoActions = (values, type) => (
     ) : (
       <h3 className="infoHeader">No Date Set</h3>
     )}
-    {type === "project" ? <ProjectMenu project={values} /> : <IssueMenu issue={values}/>}
+    {type === "project" ? (
+      <ProjectMenu project={values} />
+    ) : (
+      <IssueMenu issue={values} />
+    )}
   </div>
 )
 const issuePriorityInfo = ({ priority }) => (
@@ -97,14 +101,20 @@ export const membersColumns = (admin) => [
   {
     Header: "Username",
     accessor: "username",
+    Cell: ({ value }) => <div className="infoHeader">{value}</div>,
   },
   {
     Header: "Role",
-    Cell: ({ row }) => (admin._id === row.original._id ? "Admin" : "Member"),
+    Cell: ({ row }) => (
+      <div className="infoHeader">
+        {admin._id === row.original._id ? "Admin" : "Member"}
+      </div>
+    ),
   },
   {
     Header: "Email Address",
     accessor: "email",
+    Cell: ({ value }) => <div className="infoHeader">{value}</div>,
   },
 ]
 
@@ -112,6 +122,7 @@ export const issueChangesColumns = [
   {
     Header: "Property",
     accessor: "property",
+    Cell: ({ value }) => <div className="infoHeader">{value}</div>,
   },
   {
     Header: "Old Value",
@@ -119,13 +130,17 @@ export const issueChangesColumns = [
     Cell: ({ value, row }) => {
       switch (row.values.property) {
         case "targetEndDate":
-          return formatFormDate(value)
+          return <div className="infoHeader">{formatFormDate(value)}</div>
         case "assignedUsers":
-          return value.length
-            ? value.map((val) => val.username + ", ")
-            : "No Users"
+          return value.length ? (
+            value.map((val) => (
+              <div className="infoHeader">{val.username + ", "}</div>
+            ))
+          ) : (
+            <div className="infoHeader">No Users</div>
+          )
         default:
-          return value
+          return <div className="infoHeader">{value}</div>
       }
     },
   },
@@ -135,13 +150,17 @@ export const issueChangesColumns = [
     Cell: ({ value, row }) => {
       switch (row.values.property) {
         case "targetEndDate":
-          return formatFormDate(value)
+          return <div className="infoHeader">{formatFormDate(value)}</div>
         case "assignedUsers":
-          return value.length
-            ? value.map((val) => val.username + ", ")
-            : "No Users"
+          return value.length ? (
+            value.map((val) => (
+              <div className="infoHeader">{val.username + ", "}</div>
+            ))
+          ) : (
+            <div className="infoHeader">No Users</div>
+          )
         default:
-          return value
+          return <div className="infoHeader">{value}</div>
       }
     },
   },
@@ -149,8 +168,15 @@ export const issueChangesColumns = [
     Header: "Updated By",
     accessor: "updatedBy",
     Cell: ({ value, row }) =>
-      value?.username
-        ? `${value.username} ~${formatDateTime(row.original.updatedAt)}`
-        : "Undefined User",
+      value?.username ? (
+        <>
+          <div className="infoHeader">{value.username}</div>
+          <p className="infoDate">
+            updated {formatTimeAgo(row.original.updatedAt)} ago
+          </p>
+        </>
+      ) : (
+        <div className="infoHeader">Undefined User</div>
+      ),
   },
 ]

@@ -1,0 +1,19 @@
+.dropdownMenu {
+  border-radius: 6px !important;
+  padding: 2px 0px !important;
+}
+
+.dropdownItem {
+  padding: 8px 12px !important;
+  font-family: 'Mulish';
+  font-weight: 600 !important;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #575861 !important;
+  margin-bottom: 0px;
+}
+
+.dropdownItem>i {
+  color: rgb(167, 139, 250) !important;
+}

@@ -38,7 +38,7 @@ function DialogTemplate({
         )
       case "menu":
         return (
-          <Dropdown.Item onClick={handleModalOpen}>
+          <Dropdown.Item className="dropdownItem" onClick={handleModalOpen}>
             <i
               style={{ marginRight: "10px" }}
               className={`bi ${trigger.icon}`}

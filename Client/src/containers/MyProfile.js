@@ -15,6 +15,7 @@ function MyProfile() {
   const { username, email, id } = currentUser.user
   const [filterValue, setFilterValue] = useState("all")
   const filterIssues = (i) => {
+    console.log(i.status)
     switch (filterValue) {
       case "open":
         return i.status === "open"
@@ -24,6 +25,7 @@ function MyProfile() {
         return true
     }
   }
+
   const filterMyIssues = useMemo(
     () =>
       issues
@@ -34,9 +36,9 @@ function MyProfile() {
                 issue.assignedUsers.map((user) => user._id).includes(id))
           )
         : [],
-    [issues]
+    [issues, filterValue]
   )
-
+                console.log(filterMyIssues)
   const filterRadioButtons = (
     <Form
       className="filterButtons"
@@ -70,7 +72,7 @@ function MyProfile() {
         <IssueListMobile issues={filterMyIssues} />
       ) : filterMyIssues.length ? (
         <div className="issuesTable">
-          <TestTable columns={issueColumns} data={filterMyIssues} small />
+          <TestTable columns={issueColumns} data={filterMyIssues} />
         </div>
       ) : (
         <p className="lead">No Issues Added Yet</p>
