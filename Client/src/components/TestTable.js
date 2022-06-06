@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react"
 import "../styles/testTable.css"
-import { useTable, usePagination } from 'react-table'
-import Table from 'react-bootstrap/Table'
+import { useTable, usePagination } from "react-table"
+import Table from "react-bootstrap/Table"
 
 function TestTable({ columns, data, numColumns }) {
   const {
@@ -17,17 +17,18 @@ function TestTable({ columns, data, numColumns }) {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize },
-  } = useTable({ columns, data, initialState: { pageSize: numColumns ? numColumns : 10 } }, usePagination)
+  } = useTable(
+    { columns, data, initialState: { pageSize: numColumns ? numColumns : 10 } },
+    usePagination
+  )
   return (
     <div>
       <Table hover {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>
-                  {column.render('Header')}
-                </th>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
           ))}
@@ -37,8 +38,8 @@ function TestTable({ columns, data, numColumns }) {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td style={{ padding: "16px" }} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                {row.cells.map((cell) => {
+                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 })}
               </tr>
             )
@@ -46,35 +47,41 @@ function TestTable({ columns, data, numColumns }) {
         </tbody>
       </Table>
       <div className="pagination">
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>&nbsp;
-          <button className="btn page-btn" onClick={() => previousPage()} disabled={!canPreviousPage}>
-            Previous
-          </button>&nbsp;
-          <button className="btn page-btn" onClick={() => nextPage()} disabled={!canNextPage}>
-            Next
-          </button>&nbsp;
-        </span>
+        <p>Rows Per Page</p>
         <select
+          className="rowOption"
           value={pageSize}
-          onChange={e => {
+          onChange={(e) => {
             setPageSize(Number(e.target.value))
           }}
         >
-          {[5, 10, 20].map(pageSize => (
+          {[5, 10, 20].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
-              Show {pageSize}
+              {pageSize}
             </option>
           ))}
         </select>
+          <p>Page {pageIndex + 1} of {pageOptions.length}</p>
+          &nbsp;
+          <button
+            className="btn page-btn"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            <i className="bi bi-chevron-left"></i>
+          </button>
+          &nbsp;
+          <button
+            className="btn page-btn"
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          >
+            <i className="bi bi-chevron-right"></i>
+          </button>
+          &nbsp;
       </div>
     </div>
   )
 }
 
-
 export default TestTable
-

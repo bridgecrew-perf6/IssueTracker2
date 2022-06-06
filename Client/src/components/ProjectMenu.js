@@ -1,23 +1,22 @@
-import React from 'react'
-import Dropdown from 'react-bootstrap/Dropdown'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { deleteProject } from '../store/actions/projectActions'
-import DialogTemplate from './DialogTemplate'
-import ProjectForm from './ProjectForm'
+import React from "react"
+import Dropdown from "react-bootstrap/Dropdown"
+import { useDispatch } from "react-redux"
+import { Link } from "react-router-dom"
+import { deleteProject } from "../store/actions/projectActions"
+import DialogTemplate from "./DialogTemplate"
+import ProjectForm from "./ProjectForm"
 
 export function ProjectMenu({ project }) {
   const CustomToggle = React.forwardRef(({ onClick }, ref) => (
     <i
-      className="bi bi-three-dots"
+      className="bi bi-three-dots-vertical"
       href=""
       ref={ref}
       onClick={(e) => {
         e.preventDefault()
         onClick(e)
       }}
-    >
-    </i>
+    ></i>
   ))
   const dispatch = useDispatch()
   const handleDeleteProject = () => dispatch(deleteProject(project._id))
@@ -25,11 +24,19 @@ export function ProjectMenu({ project }) {
   return (
     <div>
       <Dropdown>
-        <Dropdown.Toggle as={CustomToggle} id="dropdown-basic-button" title="Dropdown button" />
+        <Dropdown.Toggle
+          as={CustomToggle}
+          id="dropdown-basic-button"
+          title="Dropdown button"
+        />
 
         <Dropdown.Menu>
-          <Dropdown.Item as={Link} to={`/projects/${project._id}`} href="#/action-2">
-            <i style={{ marginRight: '10px' }} className="bi bi-link-45deg"></i>
+          <Dropdown.Item
+            as={Link}
+            to={`/projects/${project._id}`}
+            href="#/action-2"
+          >
+            <i style={{ marginRight: "10px" }} className="bi bi-link-45deg"></i>
             View Project
           </Dropdown.Item>
           <DialogTemplate

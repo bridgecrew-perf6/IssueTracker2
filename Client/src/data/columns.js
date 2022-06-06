@@ -1,68 +1,94 @@
-import { Link } from 'react-router-dom'
-import IssueMenu from '../components/IssueMenu'
-import { formatDateTime, formatFormDate } from '../utils/helperFunctions'
-import '../styles/columnStyles.css'
-import { ProjectMenu } from '../components/ProjectMenu'
+import { Link } from "react-router-dom"
+import IssueMenu from "../components/IssueMenu"
+import {
+  formatDateTime,
+  formatDateTable,
+  formatFormDate,
+  formatTimeAgo,
+} from "../utils/helperFunctions"
+import "../styles/columnStyles.css"
+import { ProjectMenu } from "../components/ProjectMenu"
+
+const createdInfo = ({ createdAt, createdBy }) => (
+  <div>
+    <h3 className="infoHeader">{createdBy.username}</h3>
+    <p className="infoDate">on {formatDateTable(createdAt)}</p>
+  </div>
+)
+const infoActions = (values, type) => (
+  <div className="infoActions">
+    {values.targetEndDate ? (
+      <h3 className="infoHeader">
+        {new Date(values.targetEndDate).toDateString()}
+      </h3>
+    ) : (
+      <h3 className="infoHeader">No Date Set</h3>
+    )}
+    {type === "project" ? <ProjectMenu project={values} /> : <IssueMenu issue={values}/>}
+  </div>
+)
+const issuePriorityInfo = ({ priority }) => (
+  <div className={`priorityInfo priority-${priority}`}>{priority}</div>
+)
+const projectLink = (values) => (
+  <>
+    <Link to={`/projects/${values._id}`} className="link infoHeader">
+      {values.projectName}
+    </Link>
+    <p className="infoDate">updated {formatTimeAgo(values.createdAt)} ago</p>
+  </>
+)
+const issuesLink = (values) => (
+  <>
+    <Link to={`/issues/${values._id}`} className="link infoHeader">
+      {values.title}
+    </Link>
+    <p className="infoDate">updated {formatTimeAgo(values.createdAt)} ago</p>
+  </>
+)
 
 export const projectColumns = () => {
-  const projectLink = (values) => <Link to={`/projects/${values._id}`} className="link">{values.projectName}</Link>
   return [
     {
-      Header: "Title",
-      accessor: "projectName",
-      Cell: (cellInfo) => projectLink(cellInfo.row.original)
+      Header: "Project Details",
+      Cell: (cellInfo) => projectLink(cellInfo.row.original),
     },
     {
       Header: "Created By",
-      accessor: "createdBy.username",
-    },
-    {
-      Header: "Created At",
-      accessor: "createdAt",
-      Cell: ({ value }) => value ? new Date(value).toDateString() : "No Date Set"
+      Cell: (cellInfo) => createdInfo(cellInfo.row.original),
     },
     {
       Header: "Members",
-      Cell: (cellInfo) => cellInfo.row.original.assignedUsers.length + 1
+      Cell: (cellInfo) => (
+        <h3 className="infoHeader">
+          {cellInfo.row.original.assignedUsers.length + 1}
+        </h3>
+      ),
     },
     {
       Header: "Target Date",
-      accessor: "targetEndDate",
-      Cell: ({ value }) => value ? new Date(value).toDateString() : "No Date Set"
-    },
-    {
-      Header: "Actions",
-      Cell: (cellInfo) => <ProjectMenu project={cellInfo.row.original} />
+      Cell: (cellInfo) => infoActions(cellInfo.row.original, "project"),
     },
   ]
 }
 
-
 export const projectPageIssueColumns = () => {
-  const issueLink = (values) => <Link to={`/issues/${values._id}`} className="link">{values.title}</Link>
   return [
     {
-      Header: "Title",
-      accessor: "title",
-      Cell: (cellInfo) => issueLink(cellInfo.row.original)
+      Cell: (cellInfo) => issuesLink(cellInfo.row.original),
+      Header: "Issue Details",
     },
     {
       Header: "Created By",
-      accessor: "createdBy.username",
+      Cell: (cellInfo) => createdInfo(cellInfo.row.original),
     },
     {
-      Header: "Added",
-      accessor: "createdAt",
-      Cell: ({ value }) => formatDateTime(value)
+      Header: "Priority",
+      Cell: (cellInfo) => issuePriorityInfo(cellInfo.row.original),
     },
     {
-      Header: "Updated",
-      accessor: "updatedAt",
-      Cell: ({ value }) => formatDateTime(value)
-    },
-    {
-      Header: "Actions",
-      Cell: (cellInfo) => <IssueMenu issue={cellInfo.row.original} />
+      Header: "Target Date",
+      Cell: (cellInfo) => infoActions(cellInfo.row.original, "issue"),
     },
   ]
 }
@@ -74,7 +100,7 @@ export const membersColumns = (admin) => [
   },
   {
     Header: "Role",
-    Cell: ({ row }) => admin._id === row.original._id ? "Admin" : "Member"
+    Cell: ({ row }) => (admin._id === row.original._id ? "Admin" : "Member"),
   },
   {
     Header: "Email Address",
@@ -92,28 +118,39 @@ export const issueChangesColumns = [
     accessor: "oldValue",
     Cell: ({ value, row }) => {
       switch (row.values.property) {
-        case "targetEndDate": return formatFormDate(value)
-        case "assignedUsers": return value.length ? value.map(val => val.username + ", ") : "No Users"
-        default: return value
+        case "targetEndDate":
+          return formatFormDate(value)
+        case "assignedUsers":
+          return value.length
+            ? value.map((val) => val.username + ", ")
+            : "No Users"
+        default:
+          return value
       }
-    }
+    },
   },
   {
     Header: "New Value",
     accessor: "newValue",
     Cell: ({ value, row }) => {
       switch (row.values.property) {
-        case "targetEndDate": return formatFormDate(value)
-        case "assignedUsers": return value.length ? value.map(val => val.username + ", ") : "No Users"
-        default: return value
+        case "targetEndDate":
+          return formatFormDate(value)
+        case "assignedUsers":
+          return value.length
+            ? value.map((val) => val.username + ", ")
+            : "No Users"
+        default:
+          return value
       }
-    }
+    },
   },
   {
     Header: "Updated By",
     accessor: "updatedBy",
-    Cell: ({ value, row }) => value?.username 
-    ?`${value.username} ~${formatDateTime(row.original.updatedAt)}`
-    : "Undefined User"
+    Cell: ({ value, row }) =>
+      value?.username
+        ? `${value.username} ~${formatDateTime(row.original.updatedAt)}`
+        : "Undefined User",
   },
 ]

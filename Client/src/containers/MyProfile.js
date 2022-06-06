@@ -78,19 +78,17 @@ function MyProfile() {
     }
   }
   return (
-    <div>
-      <Card className="profilePageCard">
-        <Card.Body>
-          <div className="profilePageHeader">
-            <h1 className="display-6">
-              {username} : {email}
-            </h1>
-            {filterRadioButtons}
-          </div>
-        </Card.Body>
-      </Card>
-      <Card className="profilePageCard">
-        <Card.Body>{issueDataToDisplay()}</Card.Body>
+    <div className="pageWithTableContainer">
+      <div className="pageTitle">
+        <h1>{username}'s Profile</h1>
+        <h1>{email}</h1>
+      </div>
+      <Card className="projectIssuesCard">
+        <div className="cardHeader">
+          <h2>My Issues</h2>
+          {filterRadioButtons}
+        </div>
+        <Card.Body className="cardBody">{issueDataToDisplay()}</Card.Body>
       </Card>
     </div>
   )

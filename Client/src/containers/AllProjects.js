@@ -10,11 +10,11 @@ import ProjectListMobile from "../components/ProjectListMobile"
 import "../styles/allProjects.css"
 
 function AllProjects({ history }) {
-  const { projects } = useSelector((state) => state)
+  const { projects, currentUser } = useSelector((state) => state)
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const columns = useMemo(() => projectColumns(), [])
   const projectData = useMemo(() => (projects ? projects : []), [projects])
-  
+  const { email } = currentUser.user
   const dataToDisplay = () => {
     if (projects.length !== 0) {
       return isMobile ? (
@@ -31,25 +31,27 @@ function AllProjects({ history }) {
   }
 
   return (
-    <div className="allProjectsContainer">
-      <Card>
-        <Card.Header className="allProjectsTitle" as="h2">
-          Projects
+    <div className="pageWithTableContainer">
+      <div className="pageTitle">
+        <h1>Projects</h1>
+        <h1>{email}</h1>
+      </div>
+      <Card className="projectIssuesCard">
+        <div className="cardHeader">
+          <h2>All Projects</h2>
           <DialogTemplate
             title="Create Project"
             dialogType="form"
             trigger={{
+              type: "table-button",
               text: "Create Project",
               icon: "bi-pencil-square",
             }}
           >
             <ProjectForm editMode={null} />
           </DialogTemplate>
-        </Card.Header>
-        <Card.Body>
-          <div className="allProjectsTitle"></div>
-          {dataToDisplay()}
-        </Card.Body>
+        </div>
+        <Card.Body className="cardBody">{dataToDisplay()}</Card.Body>
       </Card>
     </div>
   )

@@ -6,3 +6,55 @@
 .link:hover {
   text-decoration: underline;
 }
+
+.infoHeader {
+  font-family: 'Mulish';
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #252733;
+  margin-bottom: 0px;
+}
+
+.infoDate {
+  font-family: 'Mulish';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  color: #C5C7CD;
+  margin-bottom: 0px;
+}
+
+.infoActions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 32px 0px 0px;
+}
+
+.priorityInfo {
+  border-radius: 100px;
+  padding: 5px 12px;
+  min-width: 60px;
+  width: fit-content;
+  text-align: center;
+  font-family: 'Mulish';
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.priority-low {
+  background: #29CC97;
+}
+
+.priority-med {
+  background: #FEC400;
+}
+
+.priority-high {
+  background: #F12B2C;
+}

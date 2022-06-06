@@ -29,7 +29,7 @@ function App() {
 
   // <Redirect to='/login' />
   return (
-    <div className="scontainer">
+    <div className="appContainer">
       <Switch>
         <Route
           exact

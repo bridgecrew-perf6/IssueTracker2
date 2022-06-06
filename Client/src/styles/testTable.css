@@ -1,0 +1,64 @@
+td {
+  padding-left: 32px !important;
+  height: 92px;
+  vertical-align: middle;
+  text-align: left !important;
+  font-size: 14px;
+}
+
+th {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.2px;
+  color: #9FA2B4;
+  padding-bottom: 12px !important;
+  padding-left: 32px !important;
+  text-align: left !important;
+}
+
+.pagination {
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 32px;
+}
+
+.pagination>span {
+  font-family: 'Mulish';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  color: #9FA2B4;
+}
+
+.pagination>button>i {
+  font-size: 16px;
+}
+
+.pagination>select {
+  border: none;
+  margin-right: 60px;
+}
+
+.pagination>p, .pagination>strong {
+  font-family: 'Mulish';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  color: #9FA2B4;
+  margin-bottom: 0px;
+}
+
+.rowOption {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: right;
+  letter-spacing: 0.3px;
+  color: #4B506D;
+}

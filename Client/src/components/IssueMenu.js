@@ -6,13 +6,14 @@ import { deleteIssue, updateIssueStatus } from '../store/actions/issueActions'
 import DialogTemplate from './DialogTemplate'
 import IssuesForm from './IssuesForm'
 import CommentsForm from './CommentsForm'
+import "../styles/menu.css"
 
 function IssueMenu({
   issue,
 }) {
   const CustomToggle = React.forwardRef(({ onClick }, ref) => (
     <i
-      className="bi bi-three-dots"
+    className="bi bi-three-dots-vertical"
       href=""
       ref={ref}
       onClick={(e) => {
@@ -33,7 +34,7 @@ function IssueMenu({
 
   return (
     <div >
-      <Dropdown >
+      <Dropdown>
         <Dropdown.Toggle as={CustomToggle} id="dropdown-basic-button" title="Dropdown button" />
         <Dropdown.Menu >
           <Dropdown.Item as={Link} to={`/issues/${issue._id}`} href="#/action-2">

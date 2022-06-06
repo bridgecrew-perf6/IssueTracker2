@@ -1,6 +1,38 @@
 .appContainer {
   width: 100%;
   background-color: #eee;
-  height: 100vh;
-  padding: 0 24px;
+  min-height: 100vh;
+  /* padding: 30px; */
+}
+
+.pageWithTableContainer {
+  width: 100%;
+  padding: 36px 30px 30px 30px;
+}
+
+.pageTitle {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 54px;
+  padding: 0px 10px;
+}
+
+.pageTitle>h1 {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 30px;
+  letter-spacing: 0.3px;
+  color: #252733;
+}
+
+.projectIssuesCard {
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 32px 0px 16px;
+  border-radius: 8px !important;
+}
+
+.cardBody {
+  padding: 0px !important;
 }

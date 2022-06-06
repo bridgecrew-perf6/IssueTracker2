@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import Dropdown from 'react-bootstrap/Dropdown'
+import React, { useState } from "react"
+import Dropdown from "react-bootstrap/Dropdown"
 import Modal from "react-bootstrap/Modal"
-import Button from 'react-bootstrap/Button'
+import Button from "react-bootstrap/Button"
 
 function DialogTemplate({
   title,
@@ -12,7 +12,6 @@ function DialogTemplate({
   dialogType,
   children,
 }) {
-
   const [modalShow, setModalShow] = useState(false)
   const handleModalClose = () => {
     setModalShow(false)
@@ -27,39 +26,62 @@ function DialogTemplate({
     switch (trigger.type) {
       case "icon":
         return (
-          <Button style={{
-            height: "45px",
-            width: "45px",
-            borderRadius: '2em',
-          }}>
-            <i
-              className={`bi ${trigger.icon}`}
-              onClick={handleModalOpen}
-            >
-            </i>
+          <Button
+            style={{
+              height: "45px",
+              width: "45px",
+              borderRadius: "2em",
+            }}
+          >
+            <i className={`bi ${trigger.icon}`} onClick={handleModalOpen}></i>
           </Button>
         )
       case "menu":
         return (
-          <Dropdown.Item onClick={handleModalOpen} >
-            <i style={{ marginRight: '10px' }} className={`bi ${trigger.icon}`}></i>
+          <Dropdown.Item onClick={handleModalOpen}>
+            <i
+              style={{ marginRight: "10px" }}
+              className={`bi ${trigger.icon}`}
+            ></i>
             {trigger.text}
           </Dropdown.Item>
         )
-      case "sidebar-icon": return (
-        <i
-          className={`bi ${trigger.icon}`}
-          onClick={handleModalOpen}
-        >
-        </i>
-      )
-      case "sidebar-text": return (
-        <p onClick={handleModalOpen} className="sidebar-button">{trigger.text}</p>
-      )
+      case "sidebar-icon":
+        return (
+          <i className={`bi ${trigger.icon}`} onClick={handleModalOpen}></i>
+        )
+      case "sidebar-text":
+        return (
+          <p onClick={handleModalOpen} className="sidebar-button">
+            {trigger.text}
+          </p>
+        )
+      case "table-button":
+        return (
+          <div
+            onClick={handleModalOpen}
+            style={{ fontWeight: "600", color: "#424660", padding: "4px 16px" }}
+          >
+            <i
+              style={{ marginRight: "10px" }}
+              className={`bi ${trigger.icon}`}
+            ></i>
+            {trigger.text}
+          </div>
+        )
       default:
         return (
-          <Button variant={`outline-${trigger.variant ? trigger.variant : "primary"}`} size={trigger.size} onClick={handleModalOpen}>
-            {trigger.icon && <i style={{ marginRight: '10px' }} className={`bi ${trigger.icon}`}></i>}
+          <Button
+            variant={`outline-${trigger.variant ? trigger.variant : "primary"}`}
+            size={trigger.size}
+            onClick={handleModalOpen}
+          >
+            {trigger.icon && (
+              <i
+                style={{ marginRight: "10px" }}
+                className={`bi ${trigger.icon}`}
+              ></i>
+            )}
             {trigger.text}
           </Button>
         )
@@ -68,22 +90,22 @@ function DialogTemplate({
 
   const proppedChildren = React.isValidElement(children)
     ? React.cloneElement(children, {
-      closeModal: handleModalClose,
-    })
+        closeModal: handleModalClose,
+      })
     : children
 
   return (
     <div>
       {triggerButton()}
       <Modal show={modalShow} onHide={handleModalClose}>
-        <Modal.Header >
+        <Modal.Header>
           <Modal.Title>{title}</Modal.Title>
           <i onClick={handleModalClose} className="bi bi-x-lg"></i>
         </Modal.Header>
         <Modal.Body>
           {dialogType === "form" ? proppedChildren : contentText}
         </Modal.Body>
-        {dialogType !== "form" &&
+        {dialogType !== "form" && (
           <Modal.Footer>
             <Button variant="secondary" onClick={handleModalClose}>
               Close
@@ -92,7 +114,7 @@ function DialogTemplate({
               {actionBtnText}
             </Button>
           </Modal.Footer>
-        }
+        )}
       </Modal>
     </div>
   )

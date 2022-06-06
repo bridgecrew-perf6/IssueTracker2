@@ -14,7 +14,7 @@ function SideBar() {
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const { id: userId } = currentUser.user
   const dispatch = useDispatch()
-  const [show, setShow] = useCycle(false, true)
+  const [show, setShow] = useCycle(true, false)
   const [hover, setHover] = useState(false)
   const handleHover = () => setHover(true)
   const handleHover2 = () => setHover(false)
@@ -70,24 +70,38 @@ function SideBar() {
           >
             <div className="icon">{openButton()}</div>
             <h1 className="sidebarH1">IssueTracker</h1>
-            <motion.ul className="items" initial="closed" animate="open" exit="closed" variants={sideVariants}>
-              <motion.li className="list-item" variants={itemVariants} whileHover={{ scale: 1.1 }}>
+            <motion.ul
+              className="items"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={sideVariants}
+            >
+              <motion.li
+                className="list-item"
+                variants={itemVariants}
+                whileHover={{ scale: 1.1 }}
+              >
                 <i className="bi bi-card-list"></i>
-                <NavLink onClick={setShow} className="nav-link" to="/">
+                <NavLink className="nav-link" to="/">
                   Projects
                 </NavLink>
               </motion.li>
-              <motion.li className="list-item" variants={itemVariants} whileHover={{ scale: 1.1 }}>
+              <motion.li
+                className="list-item"
+                variants={itemVariants}
+                whileHover={{ scale: 1.1 }}
+              >
                 <i className="bi bi-person-circle"></i>
-                <NavLink
-                  onClick={setShow}
-                  className="nav-link"
-                  to={`/${userId}/profile`}
-                >
+                <NavLink className="nav-link" to={`/${userId}/profile`}>
                   Issues
                 </NavLink>
               </motion.li>
-              <motion.li className="list-item" variants={itemVariants} whileHover={{ scale: 1.1 }}>
+              <motion.li
+                className="list-item"
+                variants={itemVariants}
+                whileHover={{ scale: 1.1 }}
+              >
                 <i className="bi bi-plus-circle"></i>
                 <DialogTemplate
                   title="Create Project"
@@ -101,7 +115,11 @@ function SideBar() {
                   <ProjectForm editMode={null} />
                 </DialogTemplate>
               </motion.li>
-              <motion.li className="list-item" variants={itemVariants} whileHover={{ scale: 1.1 }}>
+              <motion.li
+                className="list-item"
+                variants={itemVariants}
+                whileHover={{ scale: 1.1 }}
+              >
                 <i className="bi bi-power"></i>
                 <button
                   onClick={handleLogout}

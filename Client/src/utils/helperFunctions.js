@@ -11,3 +11,7 @@ export const formatTimeAgo = date => (
 export const formatFormDate = date => (
   date ? format(new Date(date), "yyyy-MM-dd") : undefined
 )
+
+export const formatDateTable = date => (
+  date ? format(new Date(date), "dd-MM-yyyy") : undefined
+)
