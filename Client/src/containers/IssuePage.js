@@ -44,8 +44,8 @@ function IssuePage({ issue, user }) {
     dispatch(updateIssueStatus(issue._id, type))
   }
 
-  const mappedComments = issue?.comments.map((comment) => (
-    <div key={comment._id} style={{ padding: "10px 32px" }}>
+  const mappedComments = issue?.comments.map((comment, i) => (
+    <div key={comment._id} className="mappedIssuesContainer">
       <ul className="list-unstyled">
         <li className="title">
           <span style={spanStyles}>
@@ -88,7 +88,7 @@ function IssuePage({ issue, user }) {
           />
         </li>
       </ul>
-      <hr />
+      {issue.comments.length !== i + 1 && <hr className="comments-divider" />}
     </div>
   ))
 
@@ -276,7 +276,7 @@ function IssuePage({ issue, user }) {
   if (issue) {
     return (
       <div className="pageWithTableContainer">
-        <Card className="projectIssuesCard" style={{ padding: "10px 16px" }}>
+        <Card className="projectIssuesCard px-md-3 py-md-3 py-1">
           <Card.Body>
             {issueDetails()}
             <div className="issueButtons">
@@ -307,7 +307,6 @@ function IssuePage({ issue, user }) {
                 <CommentsForm issueId={issue._id} />
               </DialogTemplate>
             </div>
-
             {issue?.comments.length !== 0 ? (
               mappedComments
             ) : (

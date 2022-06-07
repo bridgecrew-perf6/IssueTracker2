@@ -16,3 +16,14 @@
   font-size: 0.7rem;
 }
 
+.mappedIssuesContainer {
+  padding: 10px 32px;
+}
+.comments-divider {
+  margin-bottom: 0px;
+}
+@media (max-width: 450px) {
+  .mappedIssuesContainer {
+    padding: 10px 0px;
+  }
+}

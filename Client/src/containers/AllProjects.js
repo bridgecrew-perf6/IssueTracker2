@@ -32,26 +32,28 @@ function AllProjects({ history }) {
 
   return (
     <div className="pageWithTableContainer">
-      <div className="pageTitle" style={{ padding: "0px 10px"}}>
+      <div className="pageTitle px-3">
         <h1>Projects</h1>
         <h1>{email}</h1>
       </div>
       <Card className="projectIssuesCard">
-        <div className="cardHeader">
-          <h2>All Projects</h2>
-          <DialogTemplate
-            title="Create Project"
-            dialogType="form"
-            trigger={{
-              type: "table-button",
-              text: "Create Project",
-              icon: "bi-pencil-square",
-            }}
-          >
-            <ProjectForm editMode={null} />
-          </DialogTemplate>
-        </div>
-        <Card.Body className="cardBody">{dataToDisplay()}</Card.Body>
+        <Card.Body className="cardBody">
+          <div className="cardHeader">
+            <h2>All Projects</h2>
+            <DialogTemplate
+              title="Create Project"
+              dialogType="form"
+              trigger={{
+                type: "table-button",
+                text: "Create Project",
+                icon: "bi-pencil-square",
+              }}
+            >
+              <ProjectForm editMode={null} />
+            </DialogTemplate>
+          </div>
+          {dataToDisplay()}
+        </Card.Body>
       </Card>
     </div>
   )

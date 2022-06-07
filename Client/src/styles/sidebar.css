@@ -3,10 +3,14 @@
   box-shadow: 2px 2px 1px -1px rgb(0 0 0 / 20%);
   background-color: #1B1B20;
   color: white;
-  padding: 10px;
+  padding: 0px 10px 10px;
   position: sticky;
+  top: 0;
 }
-
+.stickySidebar {
+  position: sticky;
+  top: 0;
+}
 .sidebarH1 {
   font-weight: 700;
   font-size: 30px;

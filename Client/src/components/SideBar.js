@@ -68,70 +68,72 @@ function SideBar() {
             }}
             key="sidebarkey"
           >
-            <div className="icon">{openButton()}</div>
-            <div className="sidebarLogo">
-              <img src="/issuesIcon.png" />
-              <h1>Issues Tracker</h1>
+            <div className="stickySidebar">
+              <div className="icon">{openButton()}</div>
+              <div className="sidebarLogo">
+                <img src="/issuesIcon.png" />
+                <h1>Issues Tracker</h1>
+              </div>
+              <motion.ul
+                className="items"
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={sideVariants}
+              >
+                <motion.li
+                  className="list-item"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <i className="bi bi-card-list"></i>
+                  <NavLink className="nav-link" to="/">
+                    Projects
+                  </NavLink>
+                </motion.li>
+                <motion.li
+                  className="list-item"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <i className="bi bi-person-circle"></i>
+                  <NavLink className="nav-link" to={`/${userId}/profile`}>
+                    Issues
+                  </NavLink>
+                </motion.li>
+                <motion.li
+                  className="list-item"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <i className="bi bi-plus-circle"></i>
+                  <DialogTemplate
+                    title="Create Project"
+                    dialogType="form"
+                    trigger={{
+                      type: "sidebar-text",
+                      text: "Create Project",
+                      icon: "bi-plus-circle",
+                    }}
+                  >
+                    <ProjectForm editMode={null} />
+                  </DialogTemplate>
+                </motion.li>
+                <motion.li
+                  className="list-item"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <i className="bi bi-power"></i>
+                  <button
+                    onClick={handleLogout}
+                    className="nav-link sidebar-button"
+                  >
+                    Logout
+                  </button>
+                </motion.li>
+              </motion.ul>
             </div>
-            <motion.ul
-              className="items"
-              initial="closed"
-              animate="open"
-              exit="closed"
-              variants={sideVariants}
-            >
-              <motion.li
-                className="list-item"
-                variants={itemVariants}
-                whileHover={{ scale: 1.1 }}
-              >
-                <i className="bi bi-card-list"></i>
-                <NavLink className="nav-link" to="/">
-                  Projects
-                </NavLink>
-              </motion.li>
-              <motion.li
-                className="list-item"
-                variants={itemVariants}
-                whileHover={{ scale: 1.1 }}
-              >
-                <i className="bi bi-person-circle"></i>
-                <NavLink className="nav-link" to={`/${userId}/profile`}>
-                  Issues
-                </NavLink>
-              </motion.li>
-              <motion.li
-                className="list-item"
-                variants={itemVariants}
-                whileHover={{ scale: 1.1 }}
-              >
-                <i className="bi bi-plus-circle"></i>
-                <DialogTemplate
-                  title="Create Project"
-                  dialogType="form"
-                  trigger={{
-                    type: "sidebar-text",
-                    text: "Create Project",
-                    icon: "bi-plus-circle",
-                  }}
-                >
-                  <ProjectForm editMode={null} />
-                </DialogTemplate>
-              </motion.li>
-              <motion.li
-                className="list-item"
-                variants={itemVariants}
-                whileHover={{ scale: 1.1 }}
-              >
-                <i className="bi bi-power"></i>
-                <button
-                  onClick={handleLogout}
-                  className="nav-link sidebar-button"
-                >
-                  Logout
-                </button>
-              </motion.li>
-            </motion.ul>
           </motion.div>
         ) : (
           <div className="sidebar collapsed">

@@ -23,7 +23,9 @@ function Navbar() {
 
   if (isAuthenticated && isMobile) {
     return (
-      <nav className="navbar-mobile">
+      <nav className="navbar">
+          <img src="/issuesIcon.png" height="28" width="28" />
+          <h1 className="navbar-heading">Issues Tracker</h1>
         <i onClick={handleShow} className="bi bi-list navbarIcon"></i>
         <Offcanvas
           placement="end"

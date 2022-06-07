@@ -14,31 +14,27 @@ function MyProfile() {
   const { currentUser, issues } = useSelector((state) => state)
   const { username, email, id } = currentUser.user
   const [filterValue, setFilterValue] = useState("all")
-  const filterIssues = (i) => {
-    console.log(i.status)
-    switch (filterValue) {
-      case "open":
-        return i.status === "open"
-      case "closed":
-        return i.status === "closed"
-      default:
-        return true
-    }
-  }
 
-  const filterMyIssues = useMemo(
+  const authMyIssues = (issue) =>
+    issue.createdBy._id === id ||
+    issue.assignedUsers.map((user) => user._id).includes(id)
+
+  const allIssues = useMemo(
     () =>
       issues
-        ? issues.filter(
-            (issue) =>
-              filterIssues(issue) &&
-              (issue.createdBy._id === id ||
-                issue.assignedUsers.map((user) => user._id).includes(id))
-          )
+        ? {
+            openIssues: issues.filter(
+              (issue) => issue.status === "open" && authMyIssues(issue)
+            ),
+            closedIssues: issues.filter(
+              (issue) => issue.status === "closed" && authMyIssues(issue)
+            ),
+            all: issues,
+          }
         : [],
-    [issues, filterValue]
+    [issues]
   )
-                console.log(filterMyIssues)
+
   const filterRadioButtons = (
     <Form
       className="filterButtons"
@@ -59,20 +55,26 @@ function MyProfile() {
           label="Closed"
           name="group1"
           type="radio"
-          id="closed"
+          id="closedIssues"
         />
-        <Form.Check inline label="Open" name="group1" type="radio" id="open" />
+        <Form.Check
+          inline
+          label="Open"
+          name="group1"
+          type="radio"
+          id="openIssues"
+        />
       </div>
     </Form>
   )
 
   const issueDataToDisplay = () => {
-    if (filterMyIssues) {
+    if (allIssues) {
       return isMobile ? (
-        <IssueListMobile issues={filterMyIssues} />
-      ) : filterMyIssues.length ? (
+        <IssueListMobile issues={allIssues[filterValue]} />
+      ) : allIssues[filterValue].length ? (
         <div className="issuesTable">
-          <TestTable columns={issueColumns} data={filterMyIssues} />
+          <TestTable columns={issueColumns} data={allIssues[filterValue]} />
         </div>
       ) : (
         <p className="lead">No Issues Added Yet</p>
@@ -86,11 +88,13 @@ function MyProfile() {
         <h1>{email}</h1>
       </div>
       <Card className="projectIssuesCard">
-        <div className="cardHeader">
-          <h2>My Issues</h2>
-          {filterRadioButtons}
-        </div>
-        <Card.Body className="cardBody">{issueDataToDisplay()}</Card.Body>
+        <Card.Body className="cardBody">
+          <div className="cardHeader">
+            <h2>My Issues</h2>
+            {filterRadioButtons}
+          </div>
+          {issueDataToDisplay()}
+        </Card.Body>
       </Card>
     </div>
   )

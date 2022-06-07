@@ -13,16 +13,17 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 54px;
+  flex-wrap:wrap;
 }
 
 .pageTitle>h1 {
   font-family: 'Mulish';
-  font-style: normal;
   font-weight: 700;
   font-size: 28px;
   line-height: 30px;
   letter-spacing: 0.3px;
   color: #252733;
+  padding: 0px 10px 0px 0px;
 }
 
 .projectIssuesCard {
@@ -55,4 +56,33 @@
   line-height: 24px;
   letter-spacing: 0.4px;
   color: #252731;
+  margin-bottom: 0px;
+}
+
+.non-table {
+  padding: 28px 32px;
+}
+
+@media (max-width: 450px) {
+  .cardBody {
+    padding: 0px 20px !important;
+    overflow:visible !important;
+  }  
+  .pageWithTableContainer {
+    padding: 0px 12px 20px 12px;
+  }
+  .pageTitle {
+    margin-bottom: 0px;
+    padding-top: 10px;
+  }
+  .cardHeader {
+    padding: 0px;
+    flex-wrap: wrap;
+  }
+  .projectIssuesCard {
+    padding: 20px 0px;
+  }
+  .non-table {
+    padding: 20px 0px;
+  }
 }

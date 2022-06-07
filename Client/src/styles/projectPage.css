@@ -61,6 +61,14 @@ table {
   margin-bottom: 0px;
   font-size:0.9em;
 }
+
+@media (max-width: 450px) {
+  .filterButtons {
+    order: 3;
+    width: 100%;
+    margin-right: 0px;
+  }
+}
 @media (max-width: 767px) {
   .filterButtons {
     order: 3;

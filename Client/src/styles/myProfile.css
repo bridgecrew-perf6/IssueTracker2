@@ -5,13 +5,14 @@
   width: 100%;
 }
 
-.profilePageCard {
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%)
-}
-
 .filterButtons p {
   margin-bottom: 0px;
-  font-size:0.9em;
+  font-size: 0.9em;
+}
+
+.smallCards {
+  display: flex;
+
 }
 
 @media (max-width: 767px) {
