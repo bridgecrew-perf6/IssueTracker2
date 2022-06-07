@@ -11,7 +11,7 @@ import "../styles/allProjects.css"
 
 function AllProjects({ history }) {
   const { projects, currentUser } = useSelector((state) => state)
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 450 })
   const columns = useMemo(() => projectColumns(), [])
   const projectData = useMemo(() => (projects ? projects : []), [projects])
   const { email } = currentUser.user

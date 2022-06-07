@@ -10,7 +10,7 @@ import TestTable from "../components/TestTable"
 
 function MyProfile() {
   const issueColumns = useMemo(() => projectPageIssueColumns(), [])
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 450 })
   const { currentUser, issues } = useSelector((state) => state)
   const { username, email, id } = currentUser.user
   const [filterValue, setFilterValue] = useState("all")

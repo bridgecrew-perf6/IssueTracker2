@@ -58,3 +58,9 @@
 .priority-high {
   background: #F12B2C;
 }
+
+@media (max-width: 768px) {
+  .infoActions {
+    padding: 0px;
+  }
+}

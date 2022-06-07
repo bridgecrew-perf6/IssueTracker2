@@ -31,7 +31,7 @@ function IssuePage({ issue, user }) {
   )
   const changesColumns = useMemo(() => issueChangesColumns, [])
   const changesData = useMemo(() => (issue ? issue.history : []), [issue])
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 450 })
   const isAdmin = user.id === issue?.createdBy._id
   const isMember =
     issue?.assignedUsers.map((user) => user._id).includes(user.id) || isAdmin

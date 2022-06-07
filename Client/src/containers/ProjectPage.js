@@ -59,7 +59,7 @@ function ProjectPage(props) {
   )
   const changesColumns = useMemo(() => issueChangesColumns, [])
   const changesData = useMemo(() => (project ? project.history : []), [project])
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 450 })
   const dispatch = useDispatch()
   const handleDeleteProject = () =>
     dispatch(deleteProject(project._id, history))
