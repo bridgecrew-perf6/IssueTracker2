@@ -11,7 +11,7 @@ import "../styles/sidebar.css"
 function SideBar() {
   const { currentUser } = useSelector((state) => state)
   const { isAuthenticated } = currentUser
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 768 })
   const { id: userId } = currentUser.user
   const dispatch = useDispatch()
   const [show, setShow] = useCycle(true, false)

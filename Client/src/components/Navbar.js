@@ -16,7 +16,7 @@ function Navbar() {
   const { username, id: userId } = currentUser.user
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 768 })
   const handleLogout = () => {
     dispatch(logout())
   }
