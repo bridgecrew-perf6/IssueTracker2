@@ -12,8 +12,9 @@
 .pageTitle {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 54px;
-  flex-wrap:wrap;
+  align-items: center;
+  margin-bottom: 38px;
+  flex-wrap: wrap;
 }
 
 .pageTitle>h1 {
@@ -35,7 +36,7 @@
 
 .cardBody {
   padding: 0px !important;
-  overflow:visible !important;
+  overflow: visible !important;
 }
 
 .cardHeader {
@@ -63,31 +64,93 @@
   padding: 28px 32px;
 }
 
+.priority-low {
+  background-color: #4F9C20;
+  color: #EBFAE2 !important;
+}
+
+.priority-medium {
+  background: #F87407;
+  color: #FFF2E4 !important;
+}
+
+.priority-high {
+  background: #C2434B;
+  color: #FDF2F2 !important;
+}
+
+.contrast-box {
+  padding: 6px;
+  border-radius: 8px;
+  min-width: 50px;
+}
+
+.bugs-card {
+  background-color: #EBFAE2;
+  color: #4F9C20 !important;
+}
+
+.feature-card {
+  background-color: #EEF3FF;
+  color: #0846E4 !important;
+}
+
+.closed-card {
+  background: #FDF2F2;
+  color: #C2434B !important;
+}
+
+.open-card {
+  background: #FFF2E4;
+  color: #F87407 !important;
+}
+
+.icon-box {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #DEDEDE;
+  box-shadow: 0px 2px 2px -1px rgb(0 0 0 / 20%);
+  margin-left: 10px;
+}
+.icon-box-div:hover {
+  transform: scale(1.1);
+}
+
+.icon-box>i {
+  height: 24px;
+  width: 24px;
+}
+
 @media (max-width: 450px) {
   .cardBody {
     padding: 0px 20px !important;
-    overflow:visible !important;
-  }  
+    overflow: visible !important;
+  }
+
   .pageWithTableContainer {
     padding: 0px 12px 20px 12px;
   }
+
   .pageTitle {
     margin-bottom: 0px;
     padding-top: 10px;
   }
+
   .cardHeader {
     padding: 0px;
     flex-wrap: wrap;
   }
+
   .projectIssuesCard {
     padding: 20px 0px;
   }
+
   .non-table {
     padding: 20px 0px;
   }
 }
 
-@media (max-width: 768px) {  
+@media (max-width: 768px) {
   .pageWithTableContainer {
     padding: 0px 12px 20px 12px;
   }

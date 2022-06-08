@@ -1,7 +1,7 @@
 .issueButtons {
   display: flex;
   margin-top: 5px;
-  overflow:auto
+  overflow: auto
 }
 
 .issueButtons button {
@@ -12,18 +12,69 @@
   font-size: 0.8em;
 }
 
-.title em{
+.title em {
   font-size: 0.7rem;
 }
 
 .mappedIssuesContainer {
   padding: 10px 32px;
 }
+
 .comments-divider {
   margin-bottom: 0px;
 }
+
+.list-details {
+  list-style-type: none;
+}
+
+.list-text>span {
+  margin-right: 10px;
+  margin-bottom: 25px;
+  min-width: 150px;
+  display: inline-block;
+  font-family: 'Mulish';
+  color: #666666;
+  letter-spacing: 0.3px;
+}
+
+.list-text>p {
+  font-family: 'Mulish';
+  color: #252525;
+  letter-spacing: 0px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bread-first {
+  font-family: 'Mulish';
+  color: #666666;
+  letter-spacing: 0.3px;
+  text-decoration: none !important;
+  font-weight: 600;
+}
+
+.bread-last {
+  font-family: 'Mulish';
+  color: #252525;
+  letter-spacing: 0.3px;
+  font-weight: 600;
+}
+
+.icon-boxes {
+  display: flex;
+}
+
 @media (max-width: 450px) {
   .mappedIssuesContainer {
     padding: 10px 0px;
+  }
+
+  .icon-boxes {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: 20px;
   }
 }

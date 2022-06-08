@@ -36,6 +36,12 @@ function DialogTemplate({
             <i className={`bi ${trigger.icon}`} onClick={handleModalOpen}></i>
           </Button>
         )
+      case "icon-box":
+        return (
+          <div className="icon-box-div">
+            <i className={`bi ${trigger.icon} icon-box`} onClick={handleModalOpen}></i>
+          </div>
+        )
       case "menu":
         return (
           <Dropdown.Item className="dropdownItem" onClick={handleModalOpen}>

@@ -1,9 +1,12 @@
 import React, { useMemo } from "react"
 import Card from "react-bootstrap/Card"
-import Button from "react-bootstrap/Button"
 import { useDispatch } from "react-redux"
 import DialogTemplate from "../components/DialogTemplate"
-import { formatDateTime, formatTimeAgo } from "../utils/helperFunctions"
+import {
+  Capitalize,
+  formatDateMonthDayYear,
+  formatTimeAgo,
+} from "../utils/helperFunctions"
 import {
   deleteIssue,
   updateIssueStatus,
@@ -13,22 +16,16 @@ import {
 import CommentsForm from "../components/CommentsForm"
 import IssuesForm from "../components/IssuesForm"
 import HistoryListMobile from "../components/HistoryListMobile"
-import { cellStyles, cellColors, spanStyles } from "../styles/customStyles"
+import { spanStyles } from "../styles/customStyles"
 import TestTable from "../components/TestTable"
 import { membersColumns, issueChangesColumns } from "../data/columns"
-import Collapse from "react-bootstrap/Collapse"
 import useToggler from "../hooks/useToggle"
 import { useMediaQuery } from "react-responsive"
 import "../styles/issuePage.css"
+import { Link } from "react-router-dom"
 
 function IssuePage({ issue, user }) {
   const dispatch = useDispatch()
-  const [show, toggle] = useToggler(false)
-  const usersColumns = useMemo(() => membersColumns(issue?.createdBy), [issue])
-  const userData = useMemo(
-    () => (issue ? [...issue.assignedUsers, issue.createdBy] : []),
-    [issue]
-  )
   const changesColumns = useMemo(() => issueChangesColumns, [])
   const changesData = useMemo(() => (issue ? issue.history : []), [issue])
   const isMobile = useMediaQuery({ maxWidth: 450 })
@@ -92,98 +89,6 @@ function IssuePage({ issue, user }) {
     </div>
   ))
 
-  const issueDetails = () => (
-    // Title, description, status, type
-    <>
-      <div className="pageTitle" style={{ margin: "0px" }}>
-        <h1 className="display-6">Issue: {issue.title}</h1>
-      </div>
-      <hr />
-      <ul className="list-unstyled">
-        <li>
-          <span style={{ ...spanStyles }}>
-            <strong>Created By: {issue.createdBy.username}</strong>
-          </span>
-        </li>
-        <li>
-          <span style={{ ...spanStyles }}>Description:</span>
-          <div
-            style={{
-              ...cellStyles,
-            }}
-          >
-            {issue?.description}
-          </div>
-        </li>
-        <li>
-          <span style={{ ...spanStyles }}>Your Role:</span>
-          <div
-            style={{
-              ...cellStyles,
-            }}
-          >
-            {isMember ? (isAdmin ? "Admin" : "Member") : "None"}
-          </div>
-        </li>
-        <li>
-          <span style={{ ...spanStyles }}>Priority:</span>
-          <div
-            style={{
-              ...cellStyles,
-              backgroundColor: cellColors[issue.priority],
-              color: issue.priority === "low" ? "#000" : "#fff",
-            }}
-          >
-            {issue.priority}
-          </div>
-        </li>
-        <li>
-          <span style={{ ...spanStyles }}>Status:</span>
-          <div
-            style={{
-              ...cellStyles,
-              backgroundColor: cellColors[issue.status],
-              color: issue.status === "closed" ? "#008000" : "#000080",
-            }}
-          >
-            {issue.status}
-          </div>
-        </li>
-        <li>
-          <span style={{ ...spanStyles }}>Type:</span>
-          <div
-            style={{
-              ...cellStyles,
-              backgroundColor: cellColors[issue.type],
-            }}
-          >
-            {issue.type}
-          </div>
-        </li>
-        <li>
-          <span style={{ ...spanStyles }}>Created:</span>
-          <div
-            style={{
-              ...cellStyles,
-            }}
-          >
-            {formatDateTime(issue.createdAt)}
-          </div>
-        </li>
-        <li>
-          <span style={{ ...spanStyles }}>Updated:</span>
-          <div
-            style={{
-              ...cellStyles,
-            }}
-          >
-            {formatDateTime(issue.updatedAt)}
-          </div>
-        </li>
-      </ul>
-    </>
-  )
-
   const issueButtons = () =>
     //close issue, update, and delete
     issue?.createdBy._id === user.id ? (
@@ -195,7 +100,7 @@ function IssuePage({ issue, user }) {
             actionBtnText="Close Issue"
             actionFunc={handleIssueStatus}
             trigger={{
-              type: isMobile ? "icon" : "normal",
+              type: "icon-box",
               text: "Close Issue",
               icon: "bi-check2",
             }}
@@ -207,7 +112,7 @@ function IssuePage({ issue, user }) {
             actionBtnText="Re-open Issue"
             actionFunc={handleIssueStatus}
             trigger={{
-              type: isMobile ? "icon" : "normal",
+              type: "icon-box",
               text: "Re-open Issue",
               icon: "bi-arrow-return-right",
             }}
@@ -218,7 +123,7 @@ function IssuePage({ issue, user }) {
           actionBtnText="Edit Issue"
           dialogType="form"
           trigger={{
-            type: isMobile ? "icon" : "normal",
+            type: "icon-box",
             text: "Edit Issue",
             icon: "bi-pencil-square",
           }}
@@ -231,7 +136,7 @@ function IssuePage({ issue, user }) {
           actionBtnText="Remove"
           actionFunc={handleDeleteIssue}
           trigger={{
-            type: isMobile ? "icon" : "normal",
+            type: "icon-box",
             text: "Remove Issue",
             icon: "bi-trash",
           }}
@@ -245,7 +150,7 @@ function IssuePage({ issue, user }) {
           actionBtnText="Leave Issue"
           actionFunc={handleLeaveIssue}
           trigger={{
-            type: isMobile ? "icon" : "normal",
+            type: "icon-box",
             text: "Leave Issue",
             icon: "bi-pencil-square",
           }}
@@ -253,43 +158,76 @@ function IssuePage({ issue, user }) {
       )
     )
 
-  const adminButtons = () =>
-    !isMobile ? (
-      <Button variant="primary" onClick={toggle}>
-        <i style={{ marginRight: "10px" }} className="bi bi-people"></i>
-        {show ? "HIDE MEMBERS" : "SHOW MEMBERS"}
-      </Button>
-    ) : (
-      <Button
-        variant="secondary"
-        onClick={toggle}
-        style={{
-          height: "45px",
-          width: "45px",
-          borderRadius: "2em",
-        }}
-      >
-        <i className="bi bi-people"></i>
-      </Button>
-    )
+  const usersDetails = issue?.assignedUsers.map(
+    (user) => `${Capitalize(user.username)}, `
+  )
 
+  const IssueDetails = () => {
+    return (
+      <div className="">
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item bread-first" aria-current="page">
+              <Link className="bread-first" to={`/projects/${issue.project}`}>
+                <i className="bi bi-chevron-left me-2"></i>
+                Project
+              </Link>
+            </li>
+            <li className="breadcrumb-item bread-last" aria-current="page">
+              Issue
+            </li>
+          </ol>
+        </nav>
+        <div className="pageTitle">
+          <h1 className="display-6">Issue: {issue.title}</h1>
+          <div className="icon-boxes">{issueButtons()}</div>
+        </div>
+        <div className="list-details">
+          <div className="list-text">
+            <span>Created By</span>
+            <p>{Capitalize(issue?.createdBy.username)}</p>
+          </div>
+          <div className="list-text">
+            <span>Updated</span>
+            <p>{formatTimeAgo(issue.createdAt)} ago</p>
+          </div>
+          <div className="list-text">
+            <span>Members</span>
+            <p>{usersDetails.length > 0 ? usersDetails : "No Members"}</p>
+          </div>
+          <div className="list-text">
+            <span>Target Date</span>
+            <p>{formatDateMonthDayYear(issue.createdAt)}</p>
+          </div>
+          <div className="list-text">
+            <span>Priority</span>
+            <p>{Capitalize(issue.priority)}</p>
+          </div>
+          <div className="list-text">
+            <span>Status</span>
+            <p className={`contrast-box ${issue.status}-card`}>
+              {Capitalize(issue.status)}
+            </p>
+          </div>
+          <div className="list-text">
+            <span>Type</span>
+            <p
+              className={`contrast-box ${
+                issue.type === "feature" ? "feature" : "bugs"
+              }-card`}
+            >
+              {Capitalize(issue.type)}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
   if (issue) {
     return (
       <div className="pageWithTableContainer">
         <Card className="projectIssuesCard px-md-3 py-md-3 py-1">
-          <Card.Body>
-            {issueDetails()}
-            <div className="issueButtons">
-              {adminButtons()}
-              {issueButtons()}
-            </div>
-            <Collapse in={show}>
-              <div className={"assignedDeveloperTable"}>
-                <h4 className="h4">Members</h4>
-                <TestTable columns={usersColumns} data={userData} small />
-              </div>
-            </Collapse>
-          </Card.Body>
+          <Card.Body>{IssueDetails()}</Card.Body>
         </Card>
         <Card className="projectIssuesCard">
           <Card.Body className="cardBody">

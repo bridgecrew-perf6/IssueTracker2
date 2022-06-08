@@ -47,18 +47,6 @@
   color: #FFFFFF;
 }
 
-.priority-low {
-  background: #29CC97;
-}
-
-.priority-med {
-  background: #FEC400;
-}
-
-.priority-high {
-  background: #F12B2C;
-}
-
 @media (max-width: 768px) {
   .infoActions {
     padding: 0px;
