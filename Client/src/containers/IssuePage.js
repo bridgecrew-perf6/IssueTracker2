@@ -18,8 +18,7 @@ import IssuesForm from "../components/IssuesForm"
 import HistoryListMobile from "../components/HistoryListMobile"
 import { spanStyles } from "../styles/customStyles"
 import TestTable from "../components/TestTable"
-import { membersColumns, issueChangesColumns } from "../data/columns"
-import useToggler from "../hooks/useToggle"
+import { issueChangesColumns } from "../data/columns"
 import { useMediaQuery } from "react-responsive"
 import "../styles/issuePage.css"
 import { Link } from "react-router-dom"
@@ -179,17 +178,17 @@ function IssuePage({ issue, user }) {
           </ol>
         </nav>
         <div className="pageTitle">
-          <h1 className="display-6">Issue: {issue.title}</h1>
+          <h1 className="display-6">{issue.title}</h1>
           <div className="icon-boxes">{issueButtons()}</div>
         </div>
         <div className="list-details">
           <div className="list-text">
             <span>Created By</span>
-            <p>{Capitalize(issue?.createdBy.username)}</p>
+            <p>{Capitalize(issue?.createdBy.username)}, {formatDateMonthDayYear(issue?.createdAt)}</p>
           </div>
           <div className="list-text">
             <span>Updated</span>
-            <p>{formatTimeAgo(issue.createdAt)} ago</p>
+            <p>{formatTimeAgo(issue?.updatedAt)} ago</p>
           </div>
           <div className="list-text">
             <span>Members</span>
@@ -197,16 +196,16 @@ function IssuePage({ issue, user }) {
           </div>
           <div className="list-text">
             <span>Target Date</span>
-            <p>{formatDateMonthDayYear(issue.createdAt)}</p>
+            <p>{formatDateMonthDayYear(issue?.targetEndDate)}</p>
           </div>
           <div className="list-text">
             <span>Priority</span>
-            <p>{Capitalize(issue.priority)}</p>
+            <p>{Capitalize(issue?.priority)}</p>
           </div>
           <div className="list-text">
             <span>Status</span>
-            <p className={`contrast-box ${issue.status}-card`}>
-              {Capitalize(issue.status)}
+            <p className={`contrast-box ${issue?.status}-card`}>
+              {Capitalize(issue?.status)}
             </p>
           </div>
           <div className="list-text">

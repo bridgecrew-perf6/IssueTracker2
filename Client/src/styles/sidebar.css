@@ -72,11 +72,6 @@
   z-index: 100;
 }
 
-.open {
-  width: 250px;
-  /* margin-right: 250px; */
-}
-
 .icon {
   font-size: 35px;
   text-align: end;

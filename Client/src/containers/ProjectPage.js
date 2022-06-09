@@ -11,7 +11,6 @@ import DialogTemplate from "../components/DialogTemplate"
 import useToggler from "../hooks/useToggle"
 import IssueListMobile from "../components/IssueListMobile"
 import HistoryListMobile from "../components/HistoryListMobile"
-import { formatDateTime } from "../utils/helperFunctions"
 import { useMediaQuery } from "react-responsive"
 import IssuesForm from "../components/IssuesForm"
 import ProjectForm from "../components/ProjectForm"
@@ -21,6 +20,13 @@ import { deleteProject, leaveProject } from "../store/actions/projectActions"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import "../styles/projectPage.css"
+import {
+  Capitalize,
+  formatDateMonthDayYear,
+  formatTimeAgo,
+  formatDateTime,
+} from "../utils/helperFunctions"
+import { Link } from "react-router-dom"
 
 function ProjectPage(props) {
   const { project, issues, user } = props
@@ -113,7 +119,7 @@ function ProjectPage(props) {
           title="Edit Project"
           dialogType="form"
           trigger={{
-            type: isMobile ? "icon" : "normal",
+            type: "icon-box",
             text: "Edit Project",
             icon: "bi-pencil-square",
           }}
@@ -126,7 +132,7 @@ function ProjectPage(props) {
           actionBtnText="Remove Project"
           actionFunc={handleDeleteProject}
           trigger={{
-            type: isMobile ? "icon" : "normal",
+            type: "icon-box",
             text: "Delete Project",
             icon: "bi-trash",
           }}
@@ -139,58 +145,67 @@ function ProjectPage(props) {
         actionBtnText="Leave Project"
         actionFunc={handleLeaveProject}
         trigger={{
-          type: isMobile ? "icon" : "normal",
+          type: "icon-box",
           text: "Leave Project",
           icon: "bi-pencil-square",
         }}
       />
     )
-
+  console.log(project)
+  const usersDetails = project?.assignedUsers.map(
+    (user) => `${Capitalize(user.username)}, `
+  )
+  const projectDetails = () => {
+    return (
+      <div className="">
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item bread-first" aria-current="page">
+              <Link className="bread-first" to="/">
+                <i className="bi bi-chevron-left me-2"></i>
+                Projects
+              </Link>
+            </li>
+            <li className="breadcrumb-item bread-last" aria-current="page">
+              Project
+            </li>
+          </ol>
+        </nav>
+        <div className="pageTitle">
+          <h1 className="display-6">{project.projectName}</h1>
+          <div className="icon-boxes">{adminButtons()}</div>
+        </div>
+        <div className="list-details">
+          <div className="list-text">
+            <span>Created By</span>
+            <p>
+              {Capitalize(project?.createdBy.username)},{" "}
+              {formatDateMonthDayYear(project?.createdAt)}
+            </p>
+          </div>
+          <div className="list-text">
+            <span>Updated</span>
+            <p>{formatTimeAgo(project?.updatedAt)} ago</p>
+          </div>
+          <div className="list-text">
+            <span>Members</span>
+            <p>{usersDetails.length > 0 ? usersDetails : "No Members"}</p>
+          </div>
+          <div className="list-text">
+            <span>Target Date</span>
+            <p>{formatDateMonthDayYear(project?.createdAt)}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
   if (project) {
     return (
       <div className="pageWithTableContainer">
         <div className="projectPageTables">
           <Card className="projectIssuesCard non-table">
             <Card.Body className="cardBody">
-              <div className="pageTitle" style={{ margin: "0px" }}>
-                <h1 className="display-6">{project.projectName}</h1>
-              </div>
-              <p className="display">
-                Project Description: {project.description}
-              </p>
-              <hr />
-              <div className="subtitle">
-                <p>
-                  <strong>Admin: {project.createdBy.username}</strong>
-                </p>
-                <p>
-                  <em>Created At: {formatDateTime(project.createdAt)}</em>
-                </p>
-              </div>
-              <div className="pageButtons">
-                {!isMobile ? (
-                  <Button variant="primary" onClick={toggle}>
-                    <i
-                      style={{ marginRight: "10px" }}
-                      className="bi bi-people"
-                    ></i>
-                    {show ? "HIDE MEMBERS" : "SHOW MEMBERS"}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="secondary"
-                    onClick={toggle}
-                    style={{
-                      height: "45px",
-                      width: "45px",
-                      borderRadius: "2em",
-                    }}
-                  >
-                    <i className="bi bi-people"></i>
-                  </Button>
-                )}
-                {adminButtons()}
-              </div>
+              {projectDetails()}
               <Collapse in={show}>
                 <div className={"assignedDeveloperTable"}>
                   <div className="cardHeader">
